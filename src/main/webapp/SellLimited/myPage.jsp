@@ -64,25 +64,54 @@
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<img src="index.gif" class="rounded" width="428" height="160">
-			</div>
-			<div class="col" style="align-content: right">
-				<nav class="navbar navbar-expand-sm bg-light navbar-light">
-				  <ul class="navbar-nav">
-				    <li class="nav-item active">
-				      <a class="nav-link" href="#">로그아웃</a>
-				    </li>
-				    <li class="nav-item">
-				      <a class="nav-link" href="#">배송정보</a>
-				    </li>
-				    <li class="nav-item">
-				      <a class="nav-link" href="#">충전하기</a>
-				    </li>
-				    <li class="nav-item">
-				      <a class="nav-link" href="main.jsp">시작화면</a>
-				    </li>
-				  </ul>
+				<nav class="navbar navbar-expand-sm navbar-light">
+					 <ul class="navbar-nav">
+					 	<li class="nav-item">
+					 		<p>OOO 님 환영합니다.  보유캐쉬 OOOP입니다.</p>
+					 	</li>
+					 </ul>
 				</nav>
+			</div>
+			<div class="col">
+				<nav class="navbar navbar-expand-sm navbar-light justify-content-end">
+				  	<ul class="navbar-nav">
+				    	<li class="nav-item">
+				      		<a class="nav-link" href="main.jsp">시작화면</a>
+				    	</li>
+				    	<li class="nav-item active">
+				      		<a class="nav-link" href="#">로그아웃</a>
+				    	</li>
+				    	<li class="nav-item">
+				      		<a class="nav-link" href="#">이용안내</a>
+				    	</li>
+				  	</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+		<div class="container-fluid" style="margin-top: 10px;align:right">
+		<div class="row">
+			<div class="col-sm-1">
+			
+			</div>
+			<div class="col-sm-2" style="align-self: center;">
+				<img src="../images/index.gif" class="rounded" width="214" height="80">
+			</div>
+			<div class="col-sm-6" style="align-self: center;">
+				<form>
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search here">
+						<div class="input-group-append">
+							<button class="btn btn-success" type="submit">검색</button> 
+						</div>
+					</div>
+				</form>			
+			</div>
+			<div class="col-sm-2" style="align-self: center;">
+				<input type="text" placeholder="실시간 검색기능">
+			</div>
+			<div class="col-sm-1">
+			
 			</div>
 		</div>
 	</div>
@@ -90,76 +119,56 @@
 <!-- MyPage-Body -->
 	<div class="container-fluid">
 		<div class="row">
-		<!-- 배너 삽입 column -->
-			<div class="col-sm-1">
+			<div class="col-sm-1" style="background-color: highlight;">
+			
 			</div>
 			<div class="col-sm-10">
 				<div class="tab">
 				  <button class="tablinks" onclick="openCity(event, 'memberUpdate')">회원 정보 수정</button>
-				  <button class="tablinks" onclick="openCity(event, 'insertProducts')">회원 상품 등록</button>
-				  <button class="tablinks" onclick="openCity(event, 'memberAccount')">회원 계좌 정보</button>
-				  <button class="tablinks" onclick="openCity(event, 'joinSeeds')" id="defaultOpen">참여 시드 정보</button>
-				  <button class="tablinks" onclick="openCity(event, 'winningProducts')">낙찰 상품 조회</button>
+				  <button class="tablinks" onclick="openCity(event, 'myFavoritePage')" id="defaultOpen">관심회원 및 상품</button>
+				  <button class="tablinks" onclick="openCity(event, 'myProductInsert')">회원 상품 등록</button>
+				  <button class="tablinks" onclick="openCity(event, 'myProductList')">등록 상품 조회</button>
+				  <button class="tablinks" onclick="openCity(event, 'joinProductList')">참여 상품 정보</button>
+				  <button class="tablinks" onclick="openCity(event, 'myAccountList')">거래 내역 정보</button>
 				  <button class="tablinks" onclick="openCity(event, 'deliveryService')">상품 배송 정보</button>
-				  <button class="tablinks" onclick="openCity(event, 'customerService')">고객 센터 문의</button>
+				  <button class="tablinks" onclick="openCity(event, 'CS')">고객 센터 문의</button>
 				</div>
 				<div id="memberUpdate" class="tabcontent">
 					<h1>memberUpdate.jsp</h1>
 				</div>
-				<div id="insertProducts" class="tabcontent">
-					<%@include file="myProductInsert.jsp"%>
+				<div id="myFavoritePage" class="tabcontent">
+					<h1>myFavoritePage.jsp</h1>
 				</div>
-				<div id="memberAccount" class="tabcontent">
-					<h1>memberAccount.jsp</h1>
+				<div id="myProductInsert" class="tabcontent">
+					<h1>myProductInsert.jsp</h1>
 				</div>
-				<div id="joinSeeds" class="tabcontent">
-					<h1>joinSeeds.jsp</h1>
+				<div id="myProductList" class="tabcontent">
+					<h1>myProductList.jsp</h1>
 				</div>
-				<div id="winningProducts" class="tabcontent">
-					<h1>winningProducts.jsp</h1>
+				<div id="joinProductList" class="tabcontent">
+					<h1>joinProductList.jsp</h1>
+				</div>
+				<div id="myAccountList" class="tabcontent">
+					<h1>myAccountList.jsp</h1>
 				</div>
 				<div id="deliveryService" class="tabcontent">
 					<h1>deliveryService.jsp</h1>
 				</div>
-				<div id="customerService" class="tabcontent">
-<!--  -->
-					<div class="container-fluid">
-						<!-- Nav tabs -->
-						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#noticeBoard">공지사항</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#FAQ">자주 묻는 질문</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" data-toggle="tab" href="#messageBoard">게시판</a>
-							</li>
-						</ul>
-						<!-- Tab panes -->
-						<div class="tab-content">
-							<div id="noticeBoard" class="container tab-pane fade">
-							
-							</div>
-							<div id="FAQ" class="container tab-pane fade">
-							
-							</div>
-							<div id="messageBoard" class="container tab-pane fade">
-								<jsp:include page="CS_board.jsp" flush="false"/>
-							</div>
-						</div>
-					</div>
-<!--  -->
+				<div id="CS" class="tabcontent">
+				<h1>customerService</h1>
 				</div>
 			</div>
-		<!-- 배너 삽입 column-->
-			<div class="col-sm-1">
+			<div class="col-sm-1" style="background-color: highlight">
+			
 			</div>
 		</div>
 	</div>
 <!-- /MyPage-Body -->
 <!-- MyPage-Footer -->
 	<div class="container">	
+		<div class="jumbotron">
+		
+		</div>
 	</div>
 <!-- /MyPage-Footer -->
 <script>
