@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.aucLogMapper">
+	<select id="aucLogList" parameterType="map" resultType="map">
+		SELECT final_price 
+		FROM BID_LOG
+		WHERE bid_code = #{bid_code}
+		ORDER BY R_NUM
+	</select>
+	
+	<insert id="aucLogIns" parameterType="map">
+		INSERT INTO bid_log (bid_code, bidder, final_price, r_num)	
+    	VALUES (#{bid_code}, #{mem_id}, (SELECT MAX(final_price) AS maxBid FROM bid_log
+    	WHERE bid_code=#{bid_code})+#{increase_rate}, (SELECT MAX(r_num) FROM bid_log WHERE bid_code=#{bid_code})+1)   
+	</insert>
+	
+ </mapper>

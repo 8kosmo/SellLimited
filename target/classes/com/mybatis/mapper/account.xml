@@ -2,14 +2,63 @@
 <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.AccountMapper">
 
-	<insert id="accountIns" parameterType="map">
+	<insert id="accountMake" parameterType="map">
 		INSERT INTO account(acct_number,r_num,acct_balance,acct_dealdate
 						   ,tr_ammount,tr, tr_detail,tr_target,mem_id)
 					values(#{acct_number},0,0,0
 							,0,0,0,0,#{mem_id})					
 	</insert>
 	
+	<insert id="accountIns" parameterType="map">
+	INSERT INTO account(acct_number
+	                    ,r_num
+	                    ,acct_balance
+	                    ,acct_dealdate
+	                    ,tr_ammount
+	                    ,tr
+	                    ,tr_detail
+	                    ,tr_target
+	                    ,mem_id
+	                    ,hidden)
+	             VALUES(#{acct_number}
+	                    ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
+	                    ,(SELECT acct_balance+#{tr_ammount} FROM account 
+	                       WHERE r_num=(SELECT max(r_num) FROM account)                         
+	                         AND mem_id=#{mem_id})
+	                    ,(SELECT TO_CHAR(SYSDATE, 'YYYY'||'/'||'MM'||'/'||'DD') FROM DUAL)
+	                    ,#{tr_ammount}
+	                    ,#{tr}
+	                    ,#{tr_detail}
+	                    ,#{tr_target}
+	                    ,#{mem_id}
+	                    ,'no'
+	                    )
+	</insert>
+	
 	<select id="getAcct_number" resultType="string">
 		select seq_acct_number.nextval from dual
 	</select>
+	
+	<select id="accountList" parameterType="map" resultType="map" >
+		SELECT acct_balance, acct_dealdate, tr_ammount, tr
+			  ,tr_detail,tr_target
+          FROM account
+         WHERE mem_id=#{mem_id}
+           AND hidden='no'
+	</select>
+	
+	<select id="nowPoint" parameterType="map" resultType="string">
+        SELECT acct_balance
+          FROM account
+         WHERE mem_id =#{mem_id}
+           AND r_num=(SELECT max(r_num) FROM account)
+    </select>
+	
+	<delete id="accountHidden" parameterType="map">
+		UPDATE account
+		   SET hidden='yes'
+		 WHERE mem_id=#{mem_id}
+		   AND r_num = #{r_num}
+	</delete>
+	
 </mapper> 

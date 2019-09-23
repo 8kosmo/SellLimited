@@ -7,25 +7,21 @@
 	FROM member
 	where mem_id=#{mem_id}  
 	</select>
+		
+	<select id="idInspection" parameterType="map" resultType="string">
+		 SELECT NVL((SELECT MEM_ID FROM member WHERE mem_id=#{mem_id}),'-1') FROM DUAL
+	</select>
 	
-<!-- 	<insert id="memberIns" parameterType="map">
+	<insert id="memberIns" parameterType="map">
 		INSERT INTO MEMBER
 			(mem_id,mem_name,mem_bdate,mem_gender,mem_jdate
 			,mem_email,mem_address,mem_nickname,mem_pw,mem_ph) 
 		VALUES 
-			(#{mem_id,mode=IN,javatype=String}, #{mem_name}, #{mem_bdate}, #{mem_gender}, #{mem_jdate}
+			(#{mem_id}, #{mem_name}, #{mem_bdate}, #{mem_gender}
+			,(SELECT TO_CHAR(SYSDATE, 'YYYY'||'/'||'MM'||'/'||'DD') FROM DUAL)
 			,#{mem_email}, #{mem_address}, #{mem_nickname}, #{mem_pw}, #{mem_ph})
 	</insert>
-	 -->
-	<insert id="memberIns" parameterType="map">
-		INSERT INTO MEMBER
-			(mem_id
-			,mem_pw,mem_ph) 
-		VALUES 
-			(#{mem_id}, 
-			 #{mem_pw}, #{mem_ph})
-	</insert>
-	
+
 	<update id="memberUpd" parameterType="map">
 		UPDATE MEMBER
 		SET mem_email=#{mem_email}
@@ -44,10 +40,11 @@
 						)}
 	</select> 
 	
-	<delete id="memberDel" parameterType="map">
-		DELETE FROM member 
-			WHERE mem_id=#{mem_id} and mem_pw=#{mem_pw}
-	</delete>
+	<select id="memberDel" parameterType="map" statementType="CALLABLE">
+      {call proc_memberDel(#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                      	  ,#{mem_pw, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  			)}
+   </select>
 	
 </mapper> 
 

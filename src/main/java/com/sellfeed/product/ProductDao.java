@@ -40,7 +40,11 @@ public class ProductDao {
 //★	Delete
 	public int productDel(Map<String, Object> pMap) {
 		logger.info("ProductDao| Call productDel");
-		result = sqlSessionTemplate.delete("productDel",pMap);
+		Map<String,Object> DelResult = null;
+		DelResult = sqlSessionTemplate.selectOne("productDel",pMap);
+		if(DelResult!=null) {
+			result =1;
+		}
 		return result;
 	}
 }

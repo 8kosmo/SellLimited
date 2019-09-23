@@ -1,0 +1,131 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<%@ include file="/common/cssJs.jsp" %>
+</head>
+<body>
+<!-- top은 페이지 맨 위에 로그인, 회원가입 등 있는 하얀 부분 , top의 css에 하단에 보라색 줄그어진거 그려져있음.-->
+<div id="top" align="center">
+<!-- head -->
+<ul class="head">
+	<li class="head_txt" style="width: auto; float: right;">
+		<a href="/testview/login.jsp">로그인</a><span>|</span>
+		<a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
+		<a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
+		<div class="layer_add2">
+			<a href="#">고객센터</a>
+			<ul class="list_layer2">
+					<li><a href="#">공지사항</a></li>
+					<li><a href="#">1:1문의</a></li>
+					<li><a href="#">FAQ</a></li>
+			</ul>
+			</div>
+	</li>  
+</ul>
+<!-- 로고,검색창,검색버튼 있는부분 -->
+<ul class="logopart">
+	<!-- 로고있는부분 -->
+	<li class="logopart_left"><a href="#"><img src="/images/logo.png"></a></li>
+	<!-- 검색창있는부분 -->
+	<li class="logopart_center">
+		<span class="searchbox_form">
+		   <!-- 검색창 -->
+		   <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
+		</span>
+		<!-- 검색버튼 -->
+		<span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
+	</li>
+	<!-- 검색창 오른쪽 광고배너 -->
+	<li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>
+</ul>
+<!-- 대분류  -->
+<ul class="gnb">
+	<li class="gnb_left">
+		<a href="#"><span>패션</span></a>
+		<a href="#"><span>카메라</span></a>
+		<a href="#"><span>악기</span></a>
+		<a href="#"><span>키덜트</span></a>
+		<a href="#"><span>연예인 굿즈</span></a>
+		<a href="#"><span>골동품</span></a>
+		<a href="#"><span>게임</span></a>
+		<a href="#"><span>음반</span></a>
+	</li>
+</ul>
+</div><!-- end of div top -->
+<div id="mypage">
+<form action="#" method="post" accept-charset="utf-8" id="login_frm" name="login_frm">
+<input type="hidden" name="url" value="/mypage/qna/write">
+
+   <ul class="mypage_title">
+      <li>
+         <table class="order_title_table">
+            <colgroup>
+            <col width="110px;">
+            <col width="">
+            </colgroup>
+            <tbody><tr>
+               <td class="ott_left"><img src="/images/integ/20150925_05.png"></td>
+               <td class="ott_right">로그인
+                  <p><strong>SellLimited</strong>의 다양한 혜택과 회원서비스를 누리십시오.</p>
+               </td>
+            </tr>
+         </tbody></table>
+      </li>
+      <li>
+         <table class="login_table">
+            <colgroup>
+            <col width="500px;">
+            <col width="">
+            </colgroup>
+            <tbody><tr>
+               <td> <div>
+               <!-- 로그인화면1 -->
+                  <table class="login_table_inner">
+                     <tbody><tr>
+                        <td class="lti_title" style="line-height:50px;">회원 로그인</td>
+                     </tr>
+                     <tr>
+                        <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="login" id="login" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
+                     </tr>
+                     <tr>
+                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="password" id="password" tabindex="2" maxlength="20"></td>
+                     </tr>
+                     <tr style="height:5px;"><td></td></tr><tr>
+                     </tr><tr>
+                        <td>
+                        <span style="color:#929292"><!-- ※아이디/이메일 둘다 가능 합니다. --></span>
+                                                </td>
+                     </tr>
+                     <tr>
+                        <td><input type="checkbox" name="remember" value="1"> 아이디 저장<span class="lti_slash">|</span><a href="/testview/findIdPassword.jsp">아이디/비밀번호 찾기</a></td><!-- !! -->
+                     </tr>
+                     <tr>
+                        <td>
+                           <button type="submit" class="login_submit_button">로그인</button>
+                        </td>
+                     </tr>
+                  </tbody></table>
+
+                  </div> </td>
+               <td><img src="/images/integ/login_side.png"></td>
+            </tr>
+            <tr>
+               <td colspan="2" class="caspi">아직 SellLimited 회원이 아니십니까?<p>SellLimited의 회원이 되시면 찾으시던 상품경매 및 다양한 혜택과 서비스를 누리실 수 있습니다.</p><button type="button" class="onduras" onclick="location.href='#'" style="cursor:pointer">회원가입</button></td>
+            </tr>
+         </tbody></table>
+      </li>
+   </ul>
+</form><br>
+<script type="text/javascript">
+$(function() {
+   $('#login').focus();
+});
+</script>
+</div>
+<%@ include file="/common/bottom.jsp" %>
+</body>
+</html>

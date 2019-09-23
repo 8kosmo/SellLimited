@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
-@RequestMapping(value="/product/*")
+@RequestMapping(value="/product")
 public class ProductController {
 	Logger logger = LoggerFactory.getLogger(ProductController.class);
 	String path;
@@ -27,11 +27,11 @@ public class ProductController {
 	@Autowired
 	public ProductLogic productLogic = null;
 	
-	@GetMapping("productList")
-	public String productList(@RequestParam Map<String, Object> pMap) {
+	@GetMapping("/productList.sf")
+	public String productList(@RequestParam (required=false) Map<String, Object> pMap) {
 		logger.info("Controller| Call productList");
 		List<Map<String,Object>> productList = null;
-		
+		pMap.put("mem_id","uh4ng");
 		productList=productLogic.productList(pMap);
 		
 //		System.out.println("$$$$$$$$$$$$$$$$$$$셀렉트 단위테스트"+productList.get(0)); 		 ★CLEAR
@@ -41,7 +41,7 @@ public class ProductController {
 		return path;
 	}
 	
-	@PostMapping("productIns")
+	@PostMapping("/productIns.sf")
 	public String productIns(@RequestParam Map<String, Object> pMap1,
 			 				@RequestParam (value="attached_file", required=false) MultipartFile product_file) {
 		logger.info("Controller| Call productIns");
@@ -69,39 +69,31 @@ public class ProductController {
 				e.printStackTrace();
 			}
 		}
-		pMap.put("mem_id", "InsertTest")          ;
+		pMap.put("mem_id", "uh4ng")          ;
 		pMap.put("brand", "InsertTest")           ;
 		pMap.put("product_name", "InsertTest")    ;
 		pMap.put("status", "InsertTest")          ;
-		pMap.put("admin_ok", "InsertTest")        ;
-		pMap.put("warranty", "InsertTest")        ;
-		pMap.put("sub_category", "베이스기타")    ;
+		pMap.put("sub_category", "일렉 기타")    ;
 		pMap.put("modelname", "InsertTest")       ;
 		pMap.put("explanation", "InsertTest")     ;
 		pMap.put("attached_file", "")   ;
-		pMap.put("bid_title", "InsertTest")       ;
-		pMap.put("bid_state", "InsertTest")       ;
 		pMap.put("start_price", "1111")     ;
 		result = productLogic.productIns(pMap);
-		if(result==1) {
-			path = "정해야함";
-		}else {
-			path = "redirect:ProductInsertError.jsp";			
-		}
+		
 		return path;
 	}
-	@PostMapping("productUpd")
+	@PostMapping("/productUpd.sf")
 	public String productUpd(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller| Call productUpd");
 		pMap.put("brand","fender");
 		pMap.put("product_name","재즈마스터");
 		pMap.put("status","A");
 		pMap.put("admin_ok","AA");
-		pMap.put("sub_category","AA");
+		pMap.put("sub_category","베이스기타");
 		pMap.put("modelname","AA");
 		pMap.put("explanation","AA");
 		pMap.put("attached_file","AA");
-		pMap.put("mem_id","uh4ng");
+		pMap.put("item_code","YMUW5132");
 		result = productLogic.productUpd(pMap);
 		if(result==1) {
 			path = "정해야함";
@@ -110,9 +102,10 @@ public class ProductController {
 		}
 		return path;
 	}
-	@GetMapping("productDel")
+	@GetMapping("/productDel.sf")
 	public String productDel(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller| Call productDel");
+		pMap.put("item_code","TUXV7614");
 		result = productLogic.productDel(pMap);
 		if(result==1) {
 			path = "정해야함";

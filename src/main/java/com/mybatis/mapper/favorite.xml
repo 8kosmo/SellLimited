@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.favMapper">
+	
+	<select id="favSellerList" parameterType="string" resultType="map">
+		SELECT fav_sellerid FROM fav_seller
+		WHERE mem_id = #{mem_id}
+	</select>
+	
+	<delete id="favSellerDel" parameterType="map">
+		DELETE fav_seller
+		WHERE mem_id = #{mem_id}
+		AND fav_sellerid = #{fav_sellerid}
+	</delete>
+	
+	<select id="favProductList" parameterType="string" resultType="map">
+	<!-- 즉시구매가격 없음 테이블 수정 필요 -->
+		SELECT attached_file,product_name, mem_id ,start_price 
+		FROM sale_item,auct_progress
+		WHERE sale_item.item_code = (SELECT prod_code FROM fav_item WHERE  mem_id = #{mem_id})
+	
+	</select>
+	
+	<delete id="favProductDel">
+		DELETE fav_item
+		WHERE mem_id = #{mem_id}
+		AND prod_code = #{prod_code}
+	</delete>
+	
+	<insert id="favSellerIns">
+		INSERT INTO FAV_SELLER (fav_sellerid,mem_id)
+		VALUES(#{fav_sellerid},#{mem_id})
+	</insert>
+	
+	<insert id="favProductIns">
+		INSERT INTO FAV_ITEM (prod_code,mem_id)
+		VALUES(#{prod_code},#{mem_id})
+	</insert>
+	
+</mapper>
