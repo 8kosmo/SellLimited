@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.SeedMapper">
+
+	<select id="seedList" parameterType="map" resultType="map">
+		SELECT bidders_id 
+		  FROM seed 
+	     WHERE bid_code=#{bid_code}
+	</select>
+	
+	<insert id="seedIns" parameterType="map">
+		INSERT INTO seed
+			        (bidders_id, bid_code, outcome)
+		     VALUES
+			        (#{bidders_id},#{bid_code},'대기중')			
+	</insert>
+	
+	<insert id="bidWin" parameterType="map">
+		UPDATE seed
+		   SET outcome ='낙찰'
+		 WHERE bidders_id=#{bidders_id}
+		   AND bid_code=#{bid_code}			
+	</insert>
+	
+	<insert id="bidLose" parameterType="map">
+		UPDATE seed
+		   SET outcome ='패찰'
+		 WHERE bid_code=#{bid_code}			
+	</insert>
+	
+</mapper>

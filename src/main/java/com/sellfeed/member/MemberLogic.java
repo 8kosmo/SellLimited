@@ -11,7 +11,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sellfeed.account.AccountDao;
 import com.sellfeed.account.AccountLogic;
 
 @Service
@@ -20,42 +22,62 @@ public class MemberLogic {
    @Autowired
    public MemberDao memberDao = null;
    @Autowired
-   public AccountLogic accountLogic = null;
+   public AccountDao accountDao = null;
    
-//   @Autowired
-//   public AccountDao accountDao = null;
 
+   public String idInspection(Map<String,Object> pMap) {
+	   String inspectedId="";
+	   //String u_id=p_id;
+	   inspectedId = memberDao.idInspection(pMap);
+	   logger.info("=================>inspectedId : "+inspectedId);
+	   //logger.info("=================>u_id : "+u_id);
+	   if(inspectedId.equals("-1")) {
+		   logger.info("==================>아이디 사용 가능.계속진행하세요-종현-");
+	   }else {
+		   logger.info("==============================>아이디 사용 불가");
+	   }
+	   return inspectedId;
+		
+	}
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="execution(* com.sellfeed.member.*Logic.*(..)")
-   public void memberIns(Map<String, Object> pMap) {
+   public int memberIns(Map<String, Object> pMap)  {
       logger.info("=================>memberIns 호출 성공");
+      int result=0;
+      String acct_number = "";
       //트랜잭션처리
-      //servlet-context.xml에 <tx:annotation-driven /> 넣어주기.
-      try {
-         memberDao.memberIns(pMap);
-         accountLogic.accountIns(pMap);
-         
-      } catch (DataAccessException e) {
-         e.printStackTrace();
-      }
+    	  try {
+    		  result = memberDao.memberIns(pMap);
+    		  acct_number = accountDao.getAcct_number();
+			  pMap.put("acct_number", acct_number);
+			  accountDao.accountMake(pMap);
+    	  } 
+    	  catch (DataAccessException e) {
+    		  throw e;
+    	  }
+    	  return result;
    }
    
    public String login(Map<String, Object> pMap) {
       logger.info("=================>login 호출 성공");
       String mem_name="";
       mem_name = memberDao.login(pMap);
+      logger.info("================"+pMap.get("mem_name"));
       return mem_name;
    }
 
-   public void memberUpd(Map<String, Object> pMap) {
+   public int memberUpd(Map<String, Object> pMap) {
       logger.info("=================>memberUpd 호출 성공");
-      //회원정보 수정
-      memberDao.memberUpd(pMap);
+      int result = 0;
+      result = memberDao.memberUpd(pMap);
+      return result;
    }
 
-   public void memberDel(Map<String, Object> pMap) {
+   public int memberDel(Map<String, Object> pMap) {
       logger.info("=================>memberDel 호출 성공");
-      memberDao.memberDel(pMap);
+      int result = 0;
+      result = memberDao.memberDel(pMap);
+      return result;
    }
 
    public List<Map<String, Object>> memberList(Map<String, Object> pMap) {
@@ -65,4 +87,6 @@ public class MemberLogic {
       return rList;
       
    }
+
+
 }

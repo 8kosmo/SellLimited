@@ -40,6 +40,10 @@
       </property>
    </bean>
    
+   <!-- transaction 설정 -->
+   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+   	  <property name="dataSource" ref="dataSource"/>
+   </bean>
    <!-- LocaleResolver 등록 -->
    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
       <property name="defaultLocale" value="ko" />
