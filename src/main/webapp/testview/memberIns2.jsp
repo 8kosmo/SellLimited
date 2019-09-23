@@ -57,7 +57,7 @@
 </ul>
 </div><!-- end of div top -->
 <div id="mypage">
-	<form action="#" method="post" accept-charset="utf-8" id="register_frm" name="register_frm">
+	<form action="/member/memberIns.sf" method="post" accept-charset="utf-8" id="register_frm" name="register_frm">
 		<ul class="mypage_title">
 			<li>
 				<table class="order_title_table">
@@ -87,15 +87,16 @@
 					</colgroup>
 										<tr>
 						<th>아이디</th>
-						<td><input type="text" class="input_name" name="username" style="IME-MODE:disabled;" maxlength='20' required="true"><button type="button" class="btn_hawaii" onclick="id_overlap()" style="cursor:pointer">중복확인</button>
+						<td><input type="text" class="input_name" name="mem_id" id="mem_id" style="IME-MODE:disabled;" maxlength='20' required="true"><button type="button" class="btn_hawaii" onclick="id_overlap()" style="cursor:pointer">중복확인</button>
 							<div class="reg_notice" id="notice_id" style="color:#929292;font-size:11px;">
+								<input type="hidden" name="overlap"/>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
 						<td>
-							<input type="password" class="input_name" name="password" id="password" maxlength='20' required="true">
+							<input type="password" class="input_name" name="mem_password" id="password" maxlength='20' required="true">
 							<img src="/images/join/unlock_1.gif" id="pw_chk_img1" class="q">
 							<div class="reg_notice"  id="notice_password" style="color:#929292;font-size:11px;">
 							</div>
@@ -115,15 +116,15 @@
 					</tr>
 					<tr>
 						<th>이름</th>
-						<td><input type="text" class="input_name" name="realname" value="" maxlength="30" onfocus="inFocus(this);" onBlur="outFocus(this)" required="true"><p id="notice_name"></p></td>
+						<td><input type="text" class="input_name" name="mem_name" value="" maxlength="30" onfocus="inFocus(this);" onBlur="outFocus(this)" required="true"><p id="notice_name"></p></td>
 					</tr>
 					<tr>
 						<th>닉네임</th>
-						<td><input type="text" class="input_name" name="nickname" value="" maxlength="30" onfocus="inFocus(this);" onBlur="outFocus(this)"></td>
+						<td><input type="text" class="input_name" name="mem_nickname" value="" maxlength="30" onfocus="inFocus(this);" onBlur="outFocus(this)"></td>
 					</tr>
 					<tr>
 						<th>성별</th>
-						<td><input type="radio" name="gender" value="1" checked> 남<input type="radio" style="margin-left:20px;" name="gender" value="2" > 여
+						<td><input type="radio" name="mem_gender" value="male" checked> 남<input type="radio" style="margin-left:20px;" name="mem_gender" value="female" > 여
 							<div class="reg_notice" style="color:#929292;font-size:11px;"></div>
 						</td>
 					</tr>
@@ -132,13 +133,13 @@
 						<td>
 
 							<span class="info_input2">
-								<select name="birth_year" id="birth_year" style='height:25px;line-height:18px;padding:1px 5px 2px 8px;border:1px solid #d5d5d5;margin-right:7px;'><option>연도</option><option value='2005'>2005</option><option value='2004'>2004</option><option value='2003'>2003</option><option value='2002'>2002</option><option value='2001'>2001</option><option value='2000'>2000</option><option value='1999'>1999</option><option value='1998'>1998</option><option value='1997'>1997</option><option value='1996'>1996</option><option value='1995'>1995</option><option value='1994'>1994</option><option value='1993'>1993</option><option value='1992'>1992</option><option value='1991'>1991</option><option value='1990'>1990</option><option value='1989'>1989</option><option value='1988'>1988</option><option value='1987'>1987</option><option value='1986'>1986</option><option value='1985'>1985</option><option value='1984'>1984</option><option value='1983'>1983</option><option value='1982'>1982</option><option value='1981'>1981</option><option value='1980'>1980</option><option value='1979'>1979</option><option value='1978'>1978</option><option value='1977'>1977</option><option value='1976'>1976</option><option value='1975'>1975</option><option value='1974'>1974</option><option value='1973'>1973</option><option value='1972'>1972</option><option value='1971'>1971</option><option value='1970'>1970</option><option value='1969'>1969</option><option value='1968'>1968</option><option value='1967'>1967</option><option value='1966'>1966</option><option value='1965'>1965</option><option value='1964'>1964</option><option value='1963'>1963</option><option value='1962'>1962</option><option value='1961'>1961</option><option value='1960'>1960</option><option value='1959'>1959</option><option value='1958'>1958</option><option value='1957'>1957</option><option value='1956'>1956</option><option value='1955'>1955</option><option value='1954'>1954</option><option value='1953'>1953</option><option value='1952'>1952</option><option value='1951'>1951</option><option value='1950'>1950</option><option value='1949'>1949</option><option value='1948'>1948</option><option value='1947'>1947</option><option value='1946'>1946</option><option value='1945'>1945</option><option value='1944'>1944</option><option value='1943'>1943</option><option value='1942'>1942</option><option value='1941'>1941</option><option value='1940'>1940</option><option value='1939'>1939</option><option value='1938'>1938</option><option value='1937'>1937</option><option value='1936'>1936</option><option value='1935'>1935</option><option value='1934'>1934</option><option value='1933'>1933</option><option value='1932'>1932</option><option value='1931'>1931</option><option value='1930'>1930</option><option value='1929'>1929</option><option value='1928'>1928</option><option value='1927'>1927</option><option value='1926'>1926</option><option value='1925'>1925</option><option value='1924'>1924</option><option value='1923'>1923</option><option value='1922'>1922</option><option value='1921'>1921</option><option value='1920'>1920</option><option value='1919'>1919</option><option value='1918'>1918</option><option value='1917'>1917</option><option value='1916'>1916</option><option value='1915'>1915</option><option value='1914'>1914</option><option value='1913'>1913</option><option value='1912'>1912</option><option value='1911'>1911</option><option value='1910'>1910</option><option value='1909'>1909</option><option value='1908'>1908</option><option value='1907'>1907</option><option value='1906'>1906</option><option value='1905'>1905</option></select>
+								<select name="yyyy" id="birth_year" style='height:25px;line-height:18px;padding:1px 5px 2px 8px;border:1px solid #d5d5d5;margin-right:7px;'><option>연도</option><option value='2005'>2005</option><option value='2004'>2004</option><option value='2003'>2003</option><option value='2002'>2002</option><option value='2001'>2001</option><option value='2000'>2000</option><option value='1999'>1999</option><option value='1998'>1998</option><option value='1997'>1997</option><option value='1996'>1996</option><option value='1995'>1995</option><option value='1994'>1994</option><option value='1993'>1993</option><option value='1992'>1992</option><option value='1991'>1991</option><option value='1990'>1990</option><option value='1989'>1989</option><option value='1988'>1988</option><option value='1987'>1987</option><option value='1986'>1986</option><option value='1985'>1985</option><option value='1984'>1984</option><option value='1983'>1983</option><option value='1982'>1982</option><option value='1981'>1981</option><option value='1980'>1980</option><option value='1979'>1979</option><option value='1978'>1978</option><option value='1977'>1977</option><option value='1976'>1976</option><option value='1975'>1975</option><option value='1974'>1974</option><option value='1973'>1973</option><option value='1972'>1972</option><option value='1971'>1971</option><option value='1970'>1970</option><option value='1969'>1969</option><option value='1968'>1968</option><option value='1967'>1967</option><option value='1966'>1966</option><option value='1965'>1965</option><option value='1964'>1964</option><option value='1963'>1963</option><option value='1962'>1962</option><option value='1961'>1961</option><option value='1960'>1960</option><option value='1959'>1959</option><option value='1958'>1958</option><option value='1957'>1957</option><option value='1956'>1956</option><option value='1955'>1955</option><option value='1954'>1954</option><option value='1953'>1953</option><option value='1952'>1952</option><option value='1951'>1951</option><option value='1950'>1950</option><option value='1949'>1949</option><option value='1948'>1948</option><option value='1947'>1947</option><option value='1946'>1946</option><option value='1945'>1945</option><option value='1944'>1944</option><option value='1943'>1943</option><option value='1942'>1942</option><option value='1941'>1941</option><option value='1940'>1940</option><option value='1939'>1939</option><option value='1938'>1938</option><option value='1937'>1937</option><option value='1936'>1936</option><option value='1935'>1935</option><option value='1934'>1934</option><option value='1933'>1933</option><option value='1932'>1932</option><option value='1931'>1931</option><option value='1930'>1930</option><option value='1929'>1929</option><option value='1928'>1928</option><option value='1927'>1927</option><option value='1926'>1926</option><option value='1925'>1925</option><option value='1924'>1924</option><option value='1923'>1923</option><option value='1922'>1922</option><option value='1921'>1921</option><option value='1920'>1920</option><option value='1919'>1919</option><option value='1918'>1918</option><option value='1917'>1917</option><option value='1916'>1916</option><option value='1915'>1915</option><option value='1914'>1914</option><option value='1913'>1913</option><option value='1912'>1912</option><option value='1911'>1911</option><option value='1910'>1910</option><option value='1909'>1909</option><option value='1908'>1908</option><option value='1907'>1907</option><option value='1906'>1906</option><option value='1905'>1905</option></select>
 							</span>
 							<span class="info_input3">
-								<select name="birth_month" id="birth_month" style='height:25px;line-height:18px;padding:1px 5px 2px 8px;border:1px solid #d5d5d5;margin-right:7px;'><option>월</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option></select>
+								<select name="mm" id="birth_month" style='height:25px;line-height:18px;padding:1px 5px 2px 8px;border:1px solid #d5d5d5;margin-right:7px;'><option>월</option><option value='01'>1</option><option value='02'>2</option><option value='03'>3</option><option value='04'>4</option><option value='05'>5</option><option value='06'>6</option><option value='07'>7</option><option value='08'>8</option><option value='09'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option></select>
 							</span>
 							<span class="info_input3">
-								<select name="birth_days" id="birth_days" style='height:25px;line-height:18px;padding:1px 5px 2px 8px;border:1px solid #d5d5d5;margin-right:7px;'><option>일</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option><option value='13'>13</option><option value='14'>14</option><option value='15'>15</option><option value='16'>16</option><option value='17'>17</option><option value='18'>18</option><option value='19'>19</option><option value='20'>20</option><option value='21'>21</option><option value='22'>22</option><option value='23'>23</option><option value='24'>24</option><option value='25'>25</option><option value='26'>26</option><option value='27'>27</option><option value='28'>28</option><option value='29'>29</option><option value='30'>30</option><option value='31'>31</option></select>
+								<select name="dd" id="birth_days" style='height:25px;line-height:18px;padding:1px 5px 2px 8px;border:1px solid #d5d5d5;margin-right:7px;'><option>일</option><option value='01'>1</option><option value='02'>2</option><option value='03'>3</option><option value='04'>4</option><option value='05'>5</option><option value='06'>6</option><option value='07'>7</option><option value='08'>8</option><option value='09'>9</option><option value='10'>10</option><option value='11'>11</option><option value='12'>12</option><option value='13'>13</option><option value='14'>14</option><option value='15'>15</option><option value='16'>16</option><option value='17'>17</option><option value='18'>18</option><option value='19'>19</option><option value='20'>20</option><option value='21'>21</option><option value='22'>22</option><option value='23'>23</option><option value='24'>24</option><option value='25'>25</option><option value='26'>26</option><option value='27'>27</option><option value='28'>28</option><option value='29'>29</option><option value='30'>30</option><option value='31'>31</option></select>
 							</span>
 							<div class="reg_notice" id="bir_notice" style="color:#929292;font-size:11px;"></div>			
 							
@@ -147,7 +148,7 @@
 					<tr>
 						<th>이메일</th>
 						<td>
-							<input type="text" class="input_email" style="width:150px" name="email" id="email" onblur="emailchk_overlap();">
+							<input type="text" class="input_mem_phone" style="width:150px" name="mem_email" id="email" onblur="emailchk_overlap();">
 							<div class="reg_notice" id="email_notice" style="color:#929292;font-size:11px;"></div>
 						</td>
 					</tr>
@@ -163,7 +164,7 @@
 					</tr>
 					<tr>
 						<th>휴대전화번호</th>
-						<td><input type="text" class="input_name" placeholder="- 없이 입력" name="mobile_auth" id="mobile_auth" style="ime-mode:disabled;" maxlength="11">
+						<td><input type="text" class="input_name" placeholder="- 없이 입력" name="mem_phone" id="mobile_auth" style="ime-mode:disabled;" maxlength="11">
 						<div class="reg_notice" id="mobile_notice" style="color:#929292;font-size:11px;"></div></td>
 					</tr>
 					<tr>
@@ -175,11 +176,11 @@
 		</ul>
 	</form>
 	<script type="text/javascript">
+	var $overlap = $('input[name=overlap]');
 	// 아이디 중복 체크
 	function id_overlap() {
 
-		var $username = $('input[name=username]');
-		var $overlap = $('input[name=overlap]');
+		var $username = $('input[name=mem_id]');
 
 		if($username.val() == '' ) {
 			$username.focus();
@@ -192,34 +193,32 @@
 			$('#notice_id').html('<span style="color:red;">※ 아이디는 영문/숫자 6~20자 입니다.</span>');
 			return false;
 		}
-
-/* 		$.ajax({
-			type: 'post',
-			url: '/auth/ajax_overlap_id',
-			dataType: 'json',
-			data: { username : $username.val() },
-			success: function(d,s) {
-
-				if(d.result == '_ok') {
+		var username = $username.val();
+ 		$.ajax({
+			type: 'get',
+			url: '/rest/idInspection.sf?mem_id='+username,
+			success: function(data) {
+				if(data != '_ok') {
 					$overlap.val(1);
 					$('#notice_id').html('※ 사용가능한 아이디 입니다.');
+					$username.val(username);
 					return true;
 
 				} else {
 
-					$('#notice_id').html('<span style="color:red;">※' + d.message + '</span>');
+					$('#notice_id').html('<span style="color:red;">※사용불가능한 아이디입니다.</span>');
 					$username.focus();
 					$username.val('');
 					return false;
 				}
 			},
 			cache: false
-		}); */
+		});
 	}
 	$(function(){
 
 		//아이디
-		$('input[name=username]').keyup(function(e){
+		$('input[name=mem_id]').keyup(function(e){
 			if (!(e.keyCode >=37 && e.keyCode<=40)) {
 				var v = $(this).val();
 				var v= v.toLowerCase();		//소문자변경
@@ -233,7 +232,7 @@
 			}
 		});
 
-		$('input[name=username]').blur(function(e){
+		$('input[name=mem_id]').blur(function(e){
 			var v = $(this).val();
 			var v= v.toLowerCase();		//소문자변경
 			$(this).val(v.replace(/[^a-z0-9]/gi,''));	//영문숫자
@@ -242,7 +241,7 @@
 
 		$("#password").keyup(function() {
 
-			var $password1 = $('input[name=password]');
+			var $password1 = $('input[name=mem_password]');
 			if (chkPw($password1.val()) === false) {
 				$('#notice_password').html('<div style="color:#fd5c03">※ 6~20글자로 입력해주세요.</div>');
 				$("#pw_chk_img1").attr('src' , '/images/join/lock_2.gif');
@@ -259,7 +258,7 @@
 		});
 
 		$("#password_confirm").keyup(function() {
-			var $password1 = $('input[name=password]');
+			var $password1 = $('input[name=mem_password]');
 			var $password2 = $('input[name=password_confirm]');
 			if (chkPw($password2.val()) === false || $password1.val() != $password2.val()) {
 				$('#notice_confirm_password').html('<div style="color:#fd5c03">※ 비밀번호를 확인해주세요.</div>');
@@ -277,7 +276,7 @@
 		});
 
 		// 이름
-		$("input[name=realname]").keyup(function(e) {
+		$("input[name=mem_name]").keyup(function(e) {
 			var agent = navigator.userAgent.toLowerCase();
 			if ((!(e.keyCode >=37 && e.keyCode<=40)) && !( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1))) {
 				var v = $(this).val();
@@ -287,7 +286,7 @@
 		});
 
 		// 이름
-		$("input[name=realname]").blur(function(e) {
+		$("input[name=mem_name]").blur(function(e) {
 			var v = $(this).val();
 			$(this).val(v.replace(/[^ㄱ-ㅎ|ㅏ-ㅣ|가-힝]/gi,''));	//한글
 			if(chkType(v, 'kor') === false){
@@ -339,13 +338,13 @@
 		});
 
 		//휴대전화입력
-		$('input[name=mobile_auth]').keyup(function(e){
+		$('input[name=mem_phone]').keyup(function(e){
 			var v = $(this).val();
 			$(this).val(v.replace(/[^0-9]/gi,''));	//숫자
 			$('#mobile_notice').html('<div style="color:#fd5c03">※ 휴대폰 번호를 입력하셔야 합니다.</div>');
 		});
 
-		$('input[name=mobile_auth]').blur(function(e){
+		$('input[name=mem_phone]').blur(function(e){
 			var v = $(this).val();
 			$(this).val(v.replace(/[^0-9]/gi,''));	//숫자
 			$('#mobile_notice').html('');
@@ -363,7 +362,9 @@
 			$('#mobile_notice').html('');
 
 			var $username = $('input[name=username]');
-			var $overlap = $('input[name=overlap]');
+			/* var $overlap = $('input[name=overlap]'); */
+			
+			
 			if($username.val() == '') {
 				alert('아이디를 입력하셔야 합니다.');
 				$username.focus();
@@ -374,7 +375,7 @@
 				return false;
 			}
 
-			var $password1 = $('input[name=password]');
+			var $password1 = $('input[name=mem_password]');
 			var $password2 = $('input[name=password_confirm]');
 			if (chkPw($password1.val()) === false) {
 				alert('비밀번호는 영문/숫자 6~20글자로 입력해주세요.');
@@ -387,7 +388,7 @@
 				return false;
 			}
 
-			var $realname = $('input[name=realname]');
+			var $realname = $('input[name=mem_name]');
 			if ($realname.val() == '' ) {
 				alert('회원명을 정확하게 입력하셔야 합니다.');
 				$realname.focus();
@@ -426,7 +427,7 @@
 				return false;
 			}
 
-			var $email = $('input[name=email]');
+			var $email = $('input[name=mem_email]');
 			if($email.val()==''){
 				alert('이메일을 입력하셔야 합니다.');
 				$email.focus();
@@ -439,8 +440,8 @@
 				return false;
 			}
 
-			var $mobile = $('input[name=mobile]');
-			var $mobile_auth = $('input[name=mobile_auth]');
+			var $mobile = $('input[name=mem_phone]');
+			var $mobile_auth = $('input[name=mem_phone]');
 
 			if($mobile.val() == '') {
 				alert('휴대폰 인증을 받으셔야 합니다.');
