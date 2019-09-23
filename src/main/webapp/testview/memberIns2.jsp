@@ -29,7 +29,7 @@
 <!-- 로고,검색창,검색버튼 있는부분 -->
 <ul class="logopart">
 	<!-- 로고있는부분 -->
-	<li class="logopart_left"><a href="#"><img src="/images/logo.png"></a></li>
+	<li class="logopart_left"><a href="/testview/mainView.jsp"><img src="/images/logo.png"></a></li>
 	<!-- 검색창있는부분 -->
 	<li class="logopart_center">
 		<span class="searchbox_form">
