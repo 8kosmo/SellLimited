@@ -32,5 +32,12 @@
 	<button>리스트</button>
 </form>
 
+
+	<button type="button" onclick="sign()">관리자승인</button>
+<script type="text/javascript">
+	function sign() {
+		location.href="product/managerPermission.sf?item_code=OTPN0962&mem_id=ikobean&auct_period=6";
+	}
+</script>
 </body>
 </html>

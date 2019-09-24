@@ -85,15 +85,6 @@ public class ProductController {
 	@PostMapping("/productUpd.sf")
 	public String productUpd(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller| Call productUpd");
-		pMap.put("brand","fender");
-		pMap.put("product_name","재즈마스터");
-		pMap.put("status","A");
-		pMap.put("admin_ok","AA");
-		pMap.put("sub_category","베이스기타");
-		pMap.put("modelname","AA");
-		pMap.put("explanation","AA");
-		pMap.put("attached_file","AA");
-		pMap.put("item_code","YMUW5132");
 		result = productLogic.productUpd(pMap);
 		if(result==1) {
 			path = "정해야함";
@@ -114,6 +105,14 @@ public class ProductController {
 		}
 		return path;
 	}
+	//auct_period를 String 으로 읽고 있음 해결 방법 고안필요
+	@GetMapping("/managerPermission.sf")
+	public String managerPermission(@RequestParam Map<String, Object> pMap) {
+		logger.info("Controller| Call managerPermission");
+		productLogic.managerPermission(pMap);
+		return "redirect:../index.jsp";
+	}
+	
 
 	
 }

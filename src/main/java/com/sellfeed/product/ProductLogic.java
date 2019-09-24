@@ -3,10 +3,14 @@ package com.sellfeed.product;
 import java.util.List;
 import java.util.Map;
 
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductLogic {
@@ -39,5 +43,22 @@ public class ProductLogic {
 		// TODO Auto-generated method stub
 		result = productDao.productDel(pMap);
 		return result;
+	}
+	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
+	@Pointcut(value="excution(* com.sellfeed.product.*Logic.*(..)")
+	public void managerPermission(Map<String, Object> pMap) {
+		logger.info("Logic| Call managerPermission");
+		int step1, step2, step3 = 0;
+		try {
+			step1 = productDao.managerPermission(pMap);//ts step1
+			logger.info("관리자 승인 결과 : "+step1);
+			step2 = productDao.auction_infoIn(pMap);//ts step2
+			logger.info("bid_code : "+pMap.get("item_code"));
+			logger.info("시드관리 INSERT 결과 : "+step2);
+			step3 = productDao.auct_progressIns(pMap);//ts step3
+			logger.info("경매관리 INSERT 결과 : "+step3);
+		} catch (DataAccessException e) {
+			throw e;
+		}
 	}
 }
