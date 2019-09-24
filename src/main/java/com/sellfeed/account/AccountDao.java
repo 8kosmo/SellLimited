@@ -29,6 +29,15 @@ public class AccountDao {
 		rList=sqlSessionTemplate.selectList("accountList",pMap);
 		return rList;
 	}
+	public String accountNowBalance(Map<String, Object> pMap) {
+		//sqlSessionTemplate.selectOne("accountNowBalance",pMap);
+		String acct_balance = sqlSessionTemplate.selectOne("accountNowBalance",pMap);
+		
+		logger.info(pMap.get("mem_id").toString());
+		logger.info(pMap.get("mem_password").toString());
+		logger.info(acct_balance);
+		return acct_balance;
+	}
 	
 	public int accountIns(Map<String, Object> pMap) {
 		logger.info("=================>accountIns 호출 성공");

@@ -7,6 +7,39 @@
 <title>Insert title here</title>
 <%@ include file="/common/cssJs.jsp" %>
 </head>
+<script>
+	function login(){
+		var mem_id = $("#mem_id").val();
+		var mem_password = $("#mem_password").val();
+		$.ajax({
+			 type:'POST'
+			,url:'/rest/login.sf'
+			,data:$("#login_frm").serialize()
+			,success:function(data){
+					//alert(data);
+					var jsonStr = JSON.parse(data);
+					//alert(jsonStr);
+					if(jsonStr.length>0){
+						var result="";
+							if('비밀번호를 잘못 입력하셨습니다.'== jsonStr[0] 
+									|| '아이디가 존재하지 않습니다.'== jsonStr[0]){
+								var result=jsonStr[0];
+								//alert(result);
+								$("#wrong").html(result);
+							}else{
+								var mem_name=jsonStr[0];
+								var nowBalance=jsonStr[1];
+								//alert(mem_name);
+								//alert(nowBalance);
+								location.href="/testview/mainView.jsp";
+							}
+						
+		 		 	}
+			}
+		});
+	}
+
+</script>
 <body>
 <!-- top은 페이지 맨 위에 로그인, 회원가입 등 있는 하얀 부분 , top의 css에 하단에 보라색 줄그어진거 그려져있음.-->
 <div id="top" align="center">
@@ -99,6 +132,9 @@
                         <td>
                         <span style="color:#929292"><!-- ※아이디/이메일 둘다 가능 합니다. --></span>
                                                 </td>
+                     </tr>
+                     <tr>
+                     	<td type="text" id="wrong" name="wrong" style="color:red;"></td>
                      </tr>
                      <tr>
                         <td><input type="checkbox" name="remember" value="1"> 아이디 저장<span class="lti_slash">|</span><a href="/testview/findIdPassword.jsp">아이디/비밀번호 찾기</a></td><!-- !! -->

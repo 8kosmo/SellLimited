@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,7 +50,7 @@ public class MemberController {
 		logger.info("=================>login 호출 성공");
 		memberLogic.login(pMap);
 		mod.addAttribute("mem_name",pMap.get("mem_name"));
-		return "redirect:../index.jsp";
+		return "forward:/testview/commonView.jsp";
 	}
 	
 	@PostMapping(value="memberUpd.sf")
