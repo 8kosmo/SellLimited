@@ -9,17 +9,22 @@
 	</select>
 		
 	<select id="idInspection" parameterType="map" resultType="string">
-		 SELECT NVL((SELECT MEM_ID FROM member WHERE mem_id=#{mem_id}),'-1') FROM DUAL
+		 SELECT DECODE(
+		 			(SELECT MEM_ID FROM member WHERE mem_id=#{mem_id})
+		 			,#{mem_id}
+		 			,'_ok'
+		 			,'false')
+		   FROM DUAL
 	</select>
 	
 	<insert id="memberIns" parameterType="map">
 		INSERT INTO MEMBER
 			(mem_id,mem_name,mem_bdate,mem_gender,mem_jdate
-			,mem_email,mem_address,mem_nickname,mem_pw,mem_ph) 
+			,mem_email,mem_address,mem_nickname,mem_password,mem_phone) 
 		VALUES 
-			(#{mem_id}, #{mem_name}, #{mem_bdate}, #{mem_gender}
+			(#{mem_id}, #{mem_name}, #{yyyy}||'/'||#{mm}||'/'||#{dd}, #{mem_gender}
 			,(SELECT TO_CHAR(SYSDATE, 'YYYY'||'/'||'MM'||'/'||'DD') FROM DUAL)
-			,#{mem_email}, #{mem_address}, #{mem_nickname}, #{mem_pw}, #{mem_ph})
+			,#{mem_email}, #{zipcode}||' '||#{address}||' '||#{address_detail}, #{mem_nickname}, #{mem_password}, #{mem_phone})
 	</insert>
 
 	<update id="memberUpd" parameterType="map">

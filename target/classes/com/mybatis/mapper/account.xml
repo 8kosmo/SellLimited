@@ -3,10 +3,10 @@
 <mapper namespace="com.mybatis.mapper.AccountMapper">
 
 	<insert id="accountMake" parameterType="map">
-		INSERT INTO account(acct_number,r_num,acct_balance,acct_dealdate
-						   ,tr_ammount,tr, tr_detail,tr_target,mem_id)
-					values(#{acct_number},0,0,0
-							,0,0,0,0,#{mem_id})					
+                   INSERT INTO account(acct_number,r_num,acct_balance,acct_dealdate
+                           ,trade_ammount,trade, trade_detail,trade_target,mem_id)
+                    values(#{acct_number},0,0,0
+                            ,0,0,0,0,#{mem_id})				
 	</insert>
 	
 	<insert id="accountIns" parameterType="map">
@@ -14,10 +14,10 @@
 	                    ,r_num
 	                    ,acct_balance
 	                    ,acct_dealdate
-	                    ,tr_ammount
-	                    ,tr
-	                    ,tr_detail
-	                    ,tr_target
+	                    ,trade_ammount
+	                    ,trade
+	                    ,trade_detail
+	                    ,trade_target
 	                    ,mem_id
 	                    ,hidden)
 	             VALUES(#{acct_number}
@@ -26,10 +26,10 @@
 	                       WHERE r_num=(SELECT max(r_num) FROM account)                         
 	                         AND mem_id=#{mem_id})
 	                    ,(SELECT TO_CHAR(SYSDATE, 'YYYY'||'/'||'MM'||'/'||'DD') FROM DUAL)
-	                    ,#{tr_ammount}
-	                    ,#{tr}
-	                    ,#{tr_detail}
-	                    ,#{tr_target}
+	                    ,#{trade_ammount}
+	                    ,#{trade}
+	                    ,#{trade_detail}
+	                    ,#{trade_target}
 	                    ,#{mem_id}
 	                    ,'no'
 	                    )

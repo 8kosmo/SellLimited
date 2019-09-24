@@ -43,7 +43,7 @@ public class MemberController {
 	public String memberIns(@RequestParam Map<String,Object> pMap) {
 		logger.info("=================>memberIns 호출 성공");
 		memberLogic.memberIns(pMap);
-		return "redirect:../index.jsp";
+		return "redirect:/testview/memberIns3.jsp";//수정 예정
 	}
 	
 	@PostMapping(value="login.sf")
