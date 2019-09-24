@@ -31,7 +31,7 @@
 								var nowBalance=jsonStr[1];
 								//alert(mem_name);
 								//alert(nowBalance);
-								location.href="/testview/commonView.jsp";
+								location.href="/testview/mainView.jsp";
 							}
 						
 		 		 	}
