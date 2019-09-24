@@ -1,5 +1,6 @@
 package com.sellfeed.member;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,10 +12,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sellfeed.account.AccountDao;
-import com.sellfeed.account.AccountLogic;
 
 @Service
 public class MemberLogic {
@@ -57,13 +56,23 @@ public class MemberLogic {
     	  }
     	  return result;
    }
-   
-   public String login(Map<String, Object> pMap) {
+   @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
+   @Pointcut(value="execution(* com.sellfeed.member.*Logic.*(..)")
+   public List<String> login(Map<String, Object> pMap) {
       logger.info("=================>login 호출 성공");
       String mem_name="";
-      mem_name = memberDao.login(pMap);
-      logger.info("================"+pMap.get("mem_name"));
-      return mem_name;
+      String acct_balance="";
+      List<String> list = new ArrayList<String>(); 
+      try {
+    	  mem_name = memberDao.login(pMap);
+    	  logger.info(mem_name);
+    	  acct_balance = accountDao.accountNowBalance(pMap);
+    	  list.add(pMap.get("mem_name").toString());
+    	  list.add(acct_balance);
+	} catch (DataAccessException e) {
+		  throw e;
+	  }
+      return list;
    }
 
    public int memberUpd(Map<String, Object> pMap) {

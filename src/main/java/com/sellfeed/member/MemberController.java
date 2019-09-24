@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @RequestMapping(value="/member")
@@ -45,13 +47,13 @@ public class MemberController {
 		memberLogic.memberIns(pMap);
 		return "redirect:../index.jsp";
 	}
-	
+
 	@PostMapping(value="login.sf")
 	public String login(@RequestParam Map<String,Object> pMap,Model mod) {
 		logger.info("=================>login 호출 성공");
 		memberLogic.login(pMap);
 		mod.addAttribute("mem_name",pMap.get("mem_name"));
-		return "redirect:../index.jsp";
+		return "forward:/testview/commonView.jsp";
 	}
 	
 	@PostMapping(value="memberUpd.sf")

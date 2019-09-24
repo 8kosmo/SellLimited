@@ -55,6 +55,39 @@
 	background:url(/images/bg-black.png);
 }
 </style>
+
+<%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
+	String mem_name = null;
+	String nowBalance = null;
+    if (session.getAttribute("mem_name") == null 
+    		||session.getAttribute("nowBalance") == null) {
+    }else{
+    	 mem_name = (String)session.getAttribute("mem_name");
+    	 nowBalance = (String)session.getAttribute("nowBalance");
+    }
+%>
+
+<script>
+	var mem_name = '<%=mem_name%>';
+	var nowBalance = '<%=nowBalance%>';
+	$(document).ready(function(){
+		//로그인 실패시
+		if(mem_name=='null'){
+			$("#logout").hide();
+			$("#login").show();
+		}else{
+			$("#login").hide();
+			$("#logout").show();
+		}
+	})
+		function logout(){
+<%
+			session.removeAttribute("mem_name");
+			session.removeAttribute("nowBalance");
+%>
+			location.href="/testview/commonView.jsp";	
+	}
+</script>
 </head>
 <body>
 <!-- wrap이 뷰 전체에 대한 div -->
@@ -64,8 +97,16 @@
 <!-- head -->
 <ul class="head">
 	<li class="head_txt" style="width: auto; float: right;">
-		<a href="#" onclick="">로그인</a><span>|</span>
-		<a href="#"><strong>회원가입</strong></a><span>|</span>
+		<div id="login" style="display:inline;">
+			<a href="#" onclick="">로그인</a><span>|</span>
+			<a href="#"><strong>회원가입</strong></a><span>|</span>
+		</div>
+		<div id="logout" style="display:inline;">
+		<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+		<a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
+			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
+			<a href="#"><strong>마이페이지</strong></a><span>|</span>
+		</div>
 		<a href="#">이용안내</a><span>|</span>
 		<div class="layer_add2">
 			<a href="#">고객센터</a>

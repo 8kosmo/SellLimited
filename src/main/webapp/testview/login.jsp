@@ -7,6 +7,39 @@
 <title>Insert title here</title>
 <%@ include file="/common/cssJs.jsp" %>
 </head>
+<script>
+	function login(){
+		var mem_id = $("#mem_id").val();
+		var mem_password = $("#mem_password").val();
+		$.ajax({
+			 type:'POST'
+			,url:'/rest/login.sf'
+			,data:$("#login_frm").serialize()
+			,success:function(data){
+					//alert(data);
+					var jsonStr = JSON.parse(data);
+					//alert(jsonStr);
+					if(jsonStr.length>0){
+						var result="";
+							if('비밀번호를 잘못 입력하셨습니다.'== jsonStr[0] 
+									|| '아이디가 존재하지 않습니다.'== jsonStr[0]){
+								var result=jsonStr[0];
+								//alert(result);
+								$("#wrong").html(result);
+							}else{
+								var mem_name=jsonStr[0];
+								var nowBalance=jsonStr[1];
+								//alert(mem_name);
+								//alert(nowBalance);
+								location.href="/testview/commonView.jsp";
+							}
+						
+		 		 	}
+			}
+		});
+	}
+
+</script>
 <body>
 <!-- top은 페이지 맨 위에 로그인, 회원가입 등 있는 하얀 부분 , top의 css에 하단에 보라색 줄그어진거 그려져있음.-->
 <div id="top" align="center">
@@ -57,7 +90,7 @@
 </ul>
 </div><!-- end of div top -->
 <div id="mypage">
-<form action="#" method="post" accept-charset="utf-8" id="login_frm" name="login_frm">
+<form accept-charset="utf-8" id="login_frm" name="login_frm">
 <input type="hidden" name="url" value="/mypage/qna/write">
 
    <ul class="mypage_title">
@@ -89,10 +122,10 @@
                         <td class="lti_title" style="line-height:50px;">회원 로그인</td>
                      </tr>
                      <tr>
-                        <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="login" id="login" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
+                        <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="mem_id" id="mem_id" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
                      </tr>
                      <tr>
-                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="password" id="password" tabindex="2" maxlength="20"></td>
+                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="mem_password" id="mem_password" tabindex="2" maxlength="20"></td>
                      </tr>
                      <tr style="height:5px;"><td></td></tr><tr>
                      </tr><tr>
@@ -101,11 +134,14 @@
                                                 </td>
                      </tr>
                      <tr>
+                     	<td type="text" id="wrong" name="wrong" style="color:red;"></td>
+                     </tr>
+                     <tr>
                         <td><input type="checkbox" name="remember" value="1"> 아이디 저장<span class="lti_slash">|</span><a href="/testview/findIdPassword.jsp">아이디/비밀번호 찾기</a></td><!-- !! -->
                      </tr>
                      <tr>
                         <td>
-                           <button type="submit" class="login_submit_button">로그인</button>
+                           <button type="button" onclick="javascript:login()" class="login_submit_button" >로그인</button>
                         </td>
                      </tr>
                   </tbody></table>

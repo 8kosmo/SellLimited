@@ -47,6 +47,13 @@
            AND hidden='no'
 	</select>
 	
+	<select id="accountNowBalance" parameterType="map" resultType="string" >
+		SELECT acct_balance
+          FROM account
+         WHERE mem_id=#{mem_id}
+         AND r_num = (SELECT MAX(r_num) FROM account WHERE mem_id=#{mem_id})
+	</select>
+		
 	<select id="nowPoint" parameterType="map" resultType="string">
         SELECT acct_balance
           FROM account
