@@ -14,7 +14,8 @@
                   ,#{brand , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{product_name , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{status , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-                  ,#{sub_category , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{auction_period, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{sub_catagory , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{modelname, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{explanation, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{attached_file, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
@@ -22,7 +23,6 @@
                   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
       )}
    </select>
-   
    <update id="productUpd" parameterType="map">
    	UPDATE SALE_ITEM 
    	SET brand		 = #{brand}

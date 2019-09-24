@@ -7,6 +7,13 @@
 <title>상품등록</title>
 <%@ include file="/common/cssJs.jsp" %>
 </head>
+
+<script>
+	function cancel(){
+	var product_name = $("#product_name").val();
+	alert(product_name);
+	}
+</script>
 <body>
 <%@ include file="/common/top.jsp" %>
 <div id="mypage">
@@ -72,7 +79,7 @@
          </table>
       </li>
       <!-- 공통부분 끝 -->
-      <form action="#" accept-charset="utf-8" id="memberUpdForm" name="memberUpdForm" method="post">
+      <form action="/product/productIns.sf" accept-charset="utf-8" id="memberUpdForm" name="memberUpdForm" method="post">
       <li>
       	<table class="mypage_table_head">
       		<caption>
@@ -88,11 +95,11 @@
 			</colgroup>
 			<tr>
 				<th>상품명</th>
-				<td><input type="text" class="input_name" name="product_name" value=""  maxlength="30" required="true"/></td>
+				<td><input type="text" class="input_name" id="product_name" name="product_name"  maxlength="30" required="true"/></td>
 			</tr>
 			<tr>
 				<th>브랜드</th>
-				<td><input type="text" class="input_name" name="brand" value=""  maxlength="30"/></td>
+				<td><input type="text" class="input_name" id="brand" name="brand" maxlength="30"/></td>
 			</tr>
 			<tr>
 				<th>모델명</th>
@@ -130,17 +137,17 @@
 							<td style="border-bottom:none;padding:0" class="select_bank">
 								<div id="select_boxstyle" style="margin:0;">
 									<label for="color"></label>								
-									<select name="sub_catagory_code" id="sub_catagory_code" class="selbox_tr" >
+									<select name="sub_catagory" id="sub_catagory" class="selbox_tr" >
 										<option value="1">선택안함</option>
-										<option value="1">신발</option>
-										<option value="2">모자</option>
-										<option value="3">시계</option>
-										<option value="4">필름카메라</option>
-										<option value="5">DSLR</option>
-										<option value="6">미러리스</option>
-										<option value="7">바이올린</option>
-										<option value="8">피아노</option>
-										<option value="9">일렉기타</option>
+										<option value="0101">신발</option>
+										<option value="0102">모자</option>
+										<option value="0103">시계</option>
+										<option value="0201">필름카메라</option>
+										<option value="0202">DSLR</option>
+										<option value="0203">미러리스</option>
+										<option value="0301">바이올린</option>
+										<option value="0302">피아노</option>
+										<option value="0303">일렉기타</option>
 									</select>
 								</div>
 							</td>
@@ -185,18 +192,20 @@
 			<tr>
 				<th>상품설명</th>
 				<td>
-					<textarea style="width:500px;height:100px" maxlength="100">
+					<!-- <input type="text" id="explanation" name="explanation"  maxlength="100" style="width:500px;height:100px;"/> -->
+					 <textarea style="width:500px;height:100px" maxlength="100" rows="5" id="explanation" name="explanation" >
 					</textarea>
 				</td>
 			</tr>
 			<tr>
 				<th>첨부파일</th>
 				<td>
-					<input type="file" name="attached_file"/>
+					<input type="file" name="attached_file" id="attached_file"/>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="austria"><button type="submit" class="btn_luxemberg" style="cursor:pointer">상품등록</button><button type="button" class="btn_rome" onclick="history.go(-1)" style="cursor:pointer">취소</button></td>
+				<!-- <td colspan="2" class="austria"><button type="submit" class="btn_luxemberg" style="cursor:pointer">상품등록</button><button type="button" class="btn_rome" onclick="history.go(-1)" style="cursor:pointer">취소</button></td> -->
+				<td colspan="2" class="austria"><button type="submit" class="btn_luxemberg" style="cursor:pointer">상품등록</button><button type="button" class="btn_rome" onclick="cancel()" style="cursor:pointer">취소</button></td>
 			</tr>
       	</table>
       </li>
