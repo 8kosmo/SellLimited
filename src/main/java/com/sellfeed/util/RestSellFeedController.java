@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
+import com.sellfeed.member.MemberLogic;
 import com.sun.istack.internal.logging.Logger;
 
 @RestController
@@ -20,6 +21,8 @@ public class RestSellFeedController {
 	public FavoriteLogic favoriteLogic = null;
 	@Autowired
 	public AccountLogic accountLogic = null;
+	@Autowired
+	public MemberLogic memberLogic = null;
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
 		String result="";
@@ -77,5 +80,11 @@ public class RestSellFeedController {
 	      result=accountLogic.nowPoint(pMap);
 	      return result;
 	   }
-	
+	@GetMapping(value="idInspection.sf")
+	public String idInspection(@RequestParam Map<String,Object> pMap) {
+		//logger.info("=================>idInspection 호출 성공");
+		//logger.info("=================>p_id"+p_id);
+		String inspectedId = memberLogic.idInspection(pMap);
+		return inspectedId;
+	}
 }

@@ -31,10 +31,10 @@ public class MemberLogic {
 	   inspectedId = memberDao.idInspection(pMap);
 	   logger.info("=================>inspectedId : "+inspectedId);
 	   //logger.info("=================>u_id : "+u_id);
-	   if(inspectedId.equals("-1")) {
-		   logger.info("==================>아이디 사용 가능.계속진행하세요-종현-");
+	   if(inspectedId.equals("_ok")) {
+		   logger.info("==================>아이디 사용 불가");
 	   }else {
-		   logger.info("==============================>아이디 사용 불가");
+		   logger.info("==============================>아이디 사용 가능");
 	   }
 	   return inspectedId;
 		
