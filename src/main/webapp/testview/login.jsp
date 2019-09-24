@@ -114,7 +114,7 @@
                <td><img src="/images/integ/login_side.png"></td>
             </tr>
             <tr>
-               <td colspan="2" class="caspi">아직 SellLimited 회원이 아니십니까?<p>SellLimited의 회원이 되시면 찾으시던 상품경매 및 다양한 혜택과 서비스를 누리실 수 있습니다.</p><button type="button" class="onduras" onclick="location.href='#'" style="cursor:pointer">회원가입</button></td>
+               <td colspan="2" class="caspi">아직 SellLimited 회원이 아니십니까?<p>SellLimited의 회원이 되시면 찾으시던 상품경매 및 다양한 혜택과 서비스를 누리실 수 있습니다.</p><button type="button" class="onduras" onclick="location.href='/testview/memberIns.jsp'" style="cursor:pointer">회원가입</button></td>
             </tr>
          </tbody></table>
       </li>
