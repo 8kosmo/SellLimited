@@ -45,13 +45,13 @@
 <ul class="head">
 		<li class="head_txt" style="width: auto; float: right;">
 		<div id="login" style="display:inline;">
-			<a href="#" onclick="">로그인</a><span>|</span>
-			<a href="#"><strong>회원가입</strong></a><span>|</span>
+			<a href="/testview/login.jsp" onclick="">로그인</a><span>|</span>
+			<a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
 		</div>
 		<div id="logout" style="display:inline;">
 		<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
 		<a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
-			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
+			<a href="/testview/mainView.jsp" onclick="logout()">로그아웃</a><span>|</span>
 			<a href="#"><strong>마이페이지</strong></a><span>|</span>
 		</div>
 		<a href="/testview/howToUse.jsp">이용안내</a><span>|</span>

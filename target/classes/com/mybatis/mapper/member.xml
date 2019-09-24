@@ -37,13 +37,12 @@
 		WHERE mem_id=#{mem_id}
 	</update>
 	
-	<select id="login" parameterType="map" statementType="CALLABLE">
-		{call proc_login(#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-						,#{mem_pw, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-						,#{mem_name, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
-						,#{r_status, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
-						)}
-	</select> 
+   <select id="login" parameterType="map" statementType="CALLABLE">
+      {call proc_login(#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{mem_password, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{mem_name, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
+                  )}
+   </select> 
 	
 	<select id="memberDel" parameterType="map" statementType="CALLABLE">
       {call proc_memberDel(#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
