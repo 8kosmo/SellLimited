@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공통부분 - Top</title>
+<title>Insert title here</title>
+<%@ include file="/common/cssJs.jsp" %>
 </head>
 <body>
 <!-- top은 페이지 맨 위에 로그인, 회원가입 등 있는 하얀 부분 , top의 css에 하단에 보라색 줄그어진거 그려져있음.-->
@@ -55,50 +56,40 @@
 	</li>
 </ul>
 </div><!-- end of div top -->
-<!-- 소분류 부분 -->
-<div id="main_navi">
-	<ul>
-		<li style="margin-left:10px;">
-			<a href="#">신발</a>
-			<a href="#">모자</a>
-			<a href="#">시계</a>
-		</li>
-		<li>
-			<a href="#">필름카메라</a>
-			<a href="#">DSLR</a>
-			<a href="#">미러리스</a>
-		</li>
-		<li>
-			<a href="#">바이올린</a>
-			<a href="#">피아노</a>
-			<a href="#">일렉 기타</a>
-		</li>
-		<li>
-			<a href="#">피규어</a>
-			<a href="#">프라모델</a>
-			<a href="#">만화책</a>
-		</li>
-		<li>
-			<a href="#">사인물품</a>
-			<a href="#">애장품</a>
-			<a href="#">기타</a>
-		</li>
-		<li>
-			<a href="#">동전</a>
-			<a href="#">우표</a>
-			<a href="#">기타</a>
-		</li>
-		<li>
-			<a href="#">게임기</a>
-			<a href="#">게임팩</a>
-			<a href="#">기타</a>
-		</li>
-		<li>
-			<a href="#">국내</a>
-			<a href="#">해외</a>
-			<a href="#">기타</a>
-		</li>
-	</ul>	
-</div><!-- end of main_navi -->
+<div id="mypage">
+			<ul class="mypage_title">
+			<li>
+				<table class="order_title_table">
+					<colgroup>
+					<col width="110px;" />
+					<col width="" />
+					</colgroup>
+					<tr>
+						<td class="ott_left"><img src="/images/integ/20150930_03.png"></td>
+						<td class="ott_right">회원가입
+							<p>SellLimited의 다양한 혜택과 회원서비스를 누리십시오.<span><img src="/images/integ/20150930_06.png"></span></p>
+						</td>
+					</tr>
+				</table>
+			</li>
+			<li>
+				<table class="welcome_table">
+					<tr>
+						<td class="wt_txt">SellLimited 회원가입이 완료되었습니다!<p>SellLimited 회원만이 누릴 수 있는 다양한 혜택과 서비스로 즐거운 쇼핑 되시길 바랍니다.</p></td>
+					</tr>
+					<tr>
+						<td class="wt_tic">
+						    <div class="disticket">&nbsp;SellLimited 신규가입<p>5,000원 <strong>할인쿠폰</strong></p><!--<button type="submit" class="gameone">쿠폰받기</button> --><span>&nbsp;(유효기간 1개월)</span></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="mem_enter"><button type="button" class="camerun" onclick="location.href='/testview/login.jsp'" style="cursor:pointer">로그인 하기</button></td>
+					</tr>
+				</table>
+				
+			</li>
+		</ul>
+</div>
+<%@ include file="/common/bottom.jsp" %>
 </body>
 </html>

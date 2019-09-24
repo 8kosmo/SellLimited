@@ -1038,7 +1038,7 @@ td,th{padding:0;margin:0;font-family:"NanumBarunGothic", nbg, "나눔고딕", "N
 .welcome_table td.wt_txt p{font-size:14px;letter-spacing:0;color:#777;margin-top:5px;}
 .welcome_table td.mem_enter{padding:40px 0 20px 0;text-align:center;border-bottom:1px solid #fff;}
 .welcome_table td.wt_tic{padding-bottom:40px;border-bottom:1px solid #E5E5E5;}
-.disticket{background:url(/images/integ/20150930_08.png) no-repeat;width:525px;height:135px;margin:0 auto;font-size:14px;letter-spacing:-1px;color:#333;position:relative;text-align:left;padding:25px 0 0 45px;}
+.disticket{background:url(/images/integ/20150930_08.jpg) no-repeat;width:525px;height:135px;margin:0 auto;font-size:14px;letter-spacing:-1px;color:#333;position:relative;text-align:left;padding:25px 0 0 45px;}
 .disticket p{font-size:50px;letter-spacing:-6px;color:#666;line-height:60px;}
 .disticket p strong{color:#4C376B;}
 .disticket span{font-size:11px;letter-spacing:0;color:#777;line-height:15px;margin-top:15px;display:block;}
