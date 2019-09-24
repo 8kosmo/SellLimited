@@ -106,7 +106,7 @@
 							<td style="border-bottom:none;padding:0" class="select_bank">
 								<div id="select_boxstyle" style="margin:0;">
 									<label for="color"></label>								
-									<select name="big_catagory" id="big_catagory" class="selbox_tr" >
+									<select name="main_catagory_name" id="main_catagory_name" class="selbox_tr" >
 										<option value="1">선택안함</option>
 										<option value="2">패션</option>
 										<option value="3">카메라</option>
@@ -130,7 +130,7 @@
 							<td style="border-bottom:none;padding:0" class="select_bank">
 								<div id="select_boxstyle" style="margin:0;">
 									<label for="color"></label>								
-									<select name="small_catagory" id="small_catagory" class="selbox_tr" >
+									<select name="sub_catagory_code" id="sub_catagory_code" class="selbox_tr" >
 										<option value="1">선택안함</option>
 										<option value="1">신발</option>
 										<option value="2">모자</option>
@@ -156,7 +156,7 @@
 			</tr>
 			<tr>
 				<th>즉시구매가격</th>
-				<td><input type="text" class="input_name" name="max_price" value=""  maxlength="30"/></td>
+				<td><input type="text" class="input_name" name="buynow_price" value=""  maxlength="30"/></td>
 			</tr>
 			<tr>
 				<th>경매진행기간</th>
