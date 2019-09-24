@@ -16,7 +16,7 @@
     }
 %>
 
-<script>
+<script type="text/javascript">
 	var mem_name = '<%=mem_name%>';
 	var nowBalance = '<%=nowBalance%>';
 	$(document).ready(function(){
@@ -28,13 +28,9 @@
 			$("#login").hide();
 			$("#logout").show();
 		}
-	})
+	});
 		function logout(){
-<%
-			session.removeAttribute("mem_name");
-			session.removeAttribute("nowBalance");
-%>
-			location.href="/testview/commonView.jsp";	
+			location.href="/common/sessionDel.jsp";	
 	}
 </script>
 </head>
@@ -51,7 +47,7 @@
 		<div id="logout" style="display:inline;">
 		<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
 		<a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
-			<a href="/testview/mainView.jsp" onclick="logout()">로그아웃</a><span>|</span>
+			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
 			<a href="#"><strong>마이페이지</strong></a><span>|</span>
 		</div>
 		<a href="/testview/howToUse.jsp">이용안내</a><span>|</span>

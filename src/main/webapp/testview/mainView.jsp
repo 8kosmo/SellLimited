@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>계좌내역리스트</title>
+<title>메인뷰</title>
 <%@ include file="/common/cssJs.jsp" %>
 </head>
 <body>
