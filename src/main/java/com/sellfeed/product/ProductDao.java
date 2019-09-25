@@ -47,4 +47,24 @@ public class ProductDao {
 		}
 		return result;
 	}
+//관리자 승인 이후 트랜잭션 처리
+	public int managerPermission(Map<String, Object> pMap) {
+		logger.info("ProductDao| Call managerPermission");
+		int result = 0;
+		result = sqlSessionTemplate.update("managerPermission",pMap);
+		return result;
+		
+	}
+	public int auction_infoIn(Map<String, Object> pMap) {
+		logger.info("ProductDao| Call auction_infoIn");
+		int result = 0;
+		result = sqlSessionTemplate.insert("auction_infoIn", pMap);
+		return result;
+	}
+	public int auct_progressIns(Map<String, Object> pMap) {
+		logger.info("ProductDao| Call auction_infoIn");
+		int result = 0;
+		result = sqlSessionTemplate.insert("auct_progressIns", pMap);
+		return result;
+	}
 }

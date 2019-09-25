@@ -6,15 +6,51 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/common/cssJs.jsp" %>
+<%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
+	String mem_name = null;
+	String nowBalance = null;
+    if (session.getAttribute("mem_name") == null 
+    		||session.getAttribute("nowBalance") == null) {
+    }else{
+    	 mem_name = (String)session.getAttribute("mem_name");
+    	 nowBalance = (String)session.getAttribute("nowBalance");
+    }
+%>
+
+<script>
+	var mem_name = '<%=mem_name%>';
+	var nowBalance = '<%=nowBalance%>';
+	$(document).ready(function(){
+		//로그인 실패시
+		if(mem_name=='null'){
+			$("#logout").hide();
+			$("#login").show();
+		}else{
+			$("#login").hide();
+			$("#logout").show();
+		}
+	})
+		function logout(){
+			location.href="/common/sessionDel.jsp";	
+	}
+</script>
 </head>
 <body>
 <!-- top은 페이지 맨 위에 로그인, 회원가입 등 있는 하얀 부분 , top의 css에 하단에 보라색 줄그어진거 그려져있음.-->
 <div id="top" align="center">
 <!-- head -->
 <ul class="head">
-	<li class="head_txt" style="width: auto; float: right;">
-		<a href="/testview/login.jsp">로그인</a><span>|</span>
-		<a href="#"><strong>회원가입</strong></a><span>|</span>
+		<li class="head_txt" style="width: auto; float: right;">
+		<div id="login" style="display:inline;">
+			<a href="/testview/login.jsp" onclick="">로그인</a><span>|</span>
+			<a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
+		</div>
+		<div id="logout" style="display:inline;">
+		<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+		<a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
+			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
+			<a href="#"><strong>마이페이지</strong></a><span>|</span>
+		</div>
 		<a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
 		<div class="layer_add2">
 			<a href="#">고객센터</a>

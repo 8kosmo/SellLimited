@@ -1,13 +1,19 @@
 package com.sellfeed.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
@@ -80,6 +86,26 @@ public class RestSellFeedController {
 	      result=accountLogic.nowPoint(pMap);
 	      return result;
 	   }
+	@PostMapping(value="/login.sf")
+	public String login(@RequestParam Map<String,Object> pMap,HttpSession session) {
+		logger.info("=================>login 호출 성공");
+		logger.info(pMap.get("mem_id").toString());
+		logger.info(pMap.get("mem_password").toString());
+		List<String> list = new ArrayList<String>();
+		list = memberLogic.login(pMap);
+		logger.info("======리스트================="+list.get(0)+","+list.get(1));
+		if("비밀번호를 잘못 입력하셨습니다.".equals(list.get(0))
+				|| "아이디가 존재하지 않습니다.".equals(list.get(0))){
+		}
+		else {
+			session.setAttribute("mem_name",list.get(0));
+			session.setAttribute("nowBalance",list.get(1));
+		}
+		String mem_name = pMap.get("mem_name").toString();
+		Gson g = new Gson();
+		String json = g.toJson(list);
+		return json;
+	}
 	@GetMapping(value="idInspection.sf")
 	public String idInspection(@RequestParam Map<String,Object> pMap) {
 		//logger.info("=================>idInspection 호출 성공");

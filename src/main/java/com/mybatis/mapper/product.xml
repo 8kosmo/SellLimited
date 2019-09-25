@@ -41,4 +41,31 @@
 	 {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
 	 					   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
 	</select>
+<!-- 관리자 승인 이후 트랜잭션 처리 -->
+	<update id="managerPermission" parameterType="map">
+		UPDATE SALE_ITEM 
+   		   SET status = '시드참여중'
+ 		 WHERE item_code = #{item_code}
+   		   AND mem_id = #{mem_id}
+	</update>
+	<!-- AUCTION_INFO 테이블 안에 시드 시작,종료 -->
+ 	<insert id="auction_infoIn" parameterType="map">
+		INSERT INTO AUCTION_INFO
+		VALUES (#{item_code}
+		       ,#{item_code}
+		       ,(SELECT SYSDATE FROM DUAL)
+		       ,(SELECT SYSDATE+ (INTERVAL '3' DAY)
+		       	   FROM DUAL)
+		       )
+	</insert>
+	<!-- AUCT_PROGRESS 테이블 안에 경매 시작,종료 -->
+	<insert id="auct_progressIns" parameterType="map">
+		INSERT INTO AUCT_PROGRESS
+		VALUES (#{item_code}
+		       ,(SELECT SYSDATE+ (INTERVAL '3' DAY)
+		       	   FROM DUAL)
+		       ,(SELECT SYSDATE+ (INTERVAL '3' DAY)+(INTERVAL #{auct_period} HOUR)
+  				   FROM DUAL)
+		       )
+	</insert> 
 </mapper>

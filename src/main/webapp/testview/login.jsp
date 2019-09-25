@@ -6,15 +6,84 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/common/cssJs.jsp" %>
+<%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
+	String mem_name = null;
+	String nowBalance = null;
+    if (session.getAttribute("mem_name") == null 
+    		||session.getAttribute("nowBalance") == null) {
+    }else{
+    	 mem_name = (String)session.getAttribute("mem_name");
+    	 nowBalance = (String)session.getAttribute("nowBalance");
+    }
+%>
+
+<script type="text/javascript">
+	var mem_name = '<%=mem_name%>';
+	var nowBalance = '<%=nowBalance%>';
+	$(document).ready(function(){
+		//로그인 실패시
+		if(mem_name=='null'){
+			$("#logout").hide();
+			$("#login").show();
+		}else{
+			$("#login").hide();
+			$("#logout").show();
+		}
+	});
+		function logout(){
+			location.href="/common/sessionDel.jsp";	
+	}
+</script>
 </head>
+<script>
+   function login(){
+      var mem_id = $("#mem_id").val();
+      var mem_password = $("#mem_password").val();
+      $.ajax({
+          type:'POST'
+         ,url:'/rest/login.sf'
+         ,data:$("#login_frm").serialize()
+         ,success:function(data){
+               //alert(data);
+               var jsonStr = JSON.parse(data);
+               //alert(jsonStr);
+               if(jsonStr.length>0){
+                  var result="";
+                     if('비밀번호를 잘못 입력하셨습니다.'== jsonStr[0] 
+                           || '아이디가 존재하지 않습니다.'== jsonStr[0]){
+                        var result=jsonStr[0];
+                        //alert(result);
+                        $("#wrong").html(result);
+                     }else{
+                        var mem_name=jsonStr[0];
+                        var nowBalance=jsonStr[1];
+                        //alert(mem_name);
+                        //alert(nowBalance);
+                        location.href="/testview/mainView.jsp";
+                     }
+                  
+                 }
+         }
+      });
+   }
+
+</script>
 <body>
 <!-- top은 페이지 맨 위에 로그인, 회원가입 등 있는 하얀 부분 , top의 css에 하단에 보라색 줄그어진거 그려져있음.-->
 <div id="top" align="center">
 <!-- head -->
 <ul class="head">
-	<li class="head_txt" style="width: auto; float: right;">
-		<a href="/testview/login.jsp">로그인</a><span>|</span>
-		<a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
+		<li class="head_txt" style="width: auto; float: right;">
+		<div id="login" style="display:inline;">
+			<a href="/testview/login.jsp" onclick="">로그인</a><span>|</span>
+			<a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
+		</div>
+		<div id="logout" style="display:inline;">
+		<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+		<a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
+			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
+			<a href="#"><strong>마이페이지</strong></a><span>|</span>
+		</div>
 		<a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
 		<div class="layer_add2">
 			<a href="#">고객센터</a>
@@ -28,36 +97,36 @@
 </ul>
 <!-- 로고,검색창,검색버튼 있는부분 -->
 <ul class="logopart">
-	<!-- 로고있는부분 -->
-	<li class="logopart_left"><a href="/testview/mainView.jsp"><img src="/images/logo.png"></a></li>
-	<!-- 검색창있는부분 -->
-	<li class="logopart_center">
-		<span class="searchbox_form">
-		   <!-- 검색창 -->
-		   <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
-		</span>
-		<!-- 검색버튼 -->
-		<span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
-	</li>
-	<!-- 검색창 오른쪽 광고배너 -->
-	<li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>
+   <!-- 로고있는부분 -->
+   <li class="logopart_left"><a href="/testview/mainView.jsp"><img src="/images/logo.png"></a></li>
+   <!-- 검색창있는부분 -->
+   <li class="logopart_center">
+      <span class="searchbox_form">
+         <!-- 검색창 -->
+         <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
+      </span>
+      <!-- 검색버튼 -->
+      <span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
+   </li>
+   <!-- 검색창 오른쪽 광고배너 -->
+   <li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>
 </ul>
 <!-- 대분류  -->
 <ul class="gnb">
-	<li class="gnb_left">
-		<a href="#"><span>패션</span></a>
-		<a href="#"><span>카메라</span></a>
-		<a href="#"><span>악기</span></a>
-		<a href="#"><span>키덜트</span></a>
-		<a href="#"><span>연예인 굿즈</span></a>
-		<a href="#"><span>골동품</span></a>
-		<a href="#"><span>게임</span></a>
-		<a href="#"><span>음반</span></a>
-	</li>
+   <li class="gnb_left">
+      <a href="#"><span>패션</span></a>
+      <a href="#"><span>카메라</span></a>
+      <a href="#"><span>악기</span></a>
+      <a href="#"><span>키덜트</span></a>
+      <a href="#"><span>연예인 굿즈</span></a>
+      <a href="#"><span>골동품</span></a>
+      <a href="#"><span>게임</span></a>
+      <a href="#"><span>음반</span></a>
+   </li>
 </ul>
 </div><!-- end of div top -->
 <div id="mypage">
-<form action="#" method="post" accept-charset="utf-8" id="login_frm" name="login_frm">
+<form accept-charset="utf-8" id="login_frm" name="login_frm">
 <input type="hidden" name="url" value="/mypage/qna/write">
 
    <ul class="mypage_title">
@@ -89,10 +158,10 @@
                         <td class="lti_title" style="line-height:50px;">회원 로그인</td>
                      </tr>
                      <tr>
-                        <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="login" id="login" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
+                        <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="mem_id" id="mem_id" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
                      </tr>
                      <tr>
-                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="password" id="password" tabindex="2" maxlength="20"></td>
+                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="mem_password" id="mem_password" tabindex="2" maxlength="20"></td>
                      </tr>
                      <tr style="height:5px;"><td></td></tr><tr>
                      </tr><tr>
@@ -101,11 +170,14 @@
                                                 </td>
                      </tr>
                      <tr>
+                        <td type="text" id="wrong" name="wrong" style="color:red;"></td>
+                     </tr>
+                     <tr>
                         <td><input type="checkbox" name="remember" value="1"> 아이디 저장<span class="lti_slash">|</span><a href="/testview/findIdPassword.jsp">아이디/비밀번호 찾기</a></td><!-- !! -->
                      </tr>
                      <tr>
                         <td>
-                           <button type="submit" class="login_submit_button">로그인</button>
+                           <button type="button" onclick="javascript:login()" class="login_submit_button" >로그인</button>
                         </td>
                      </tr>
                   </tbody></table>
