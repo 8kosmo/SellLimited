@@ -107,9 +107,12 @@ public class ProductController {
 	}
 	//auct_period를 String 으로 읽고 있음 해결 방법 고안필요
 	@GetMapping("/managerPermission.sf")
-	public String managerPermission(@RequestParam Map<String, Object> pMap) {
+	public String managerPermission
+	(@RequestParam("item_code") String item_code
+			,@RequestParam("mem_id") String mem_id
+			,@RequestParam("auct_period") int auct_period) {
 		logger.info("Controller| Call managerPermission");
-		productLogic.managerPermission(pMap);
+		productLogic.managerPermission(item_code,mem_id,auct_period);
 		return "redirect:../index.jsp";
 	}
 	

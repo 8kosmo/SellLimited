@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
+import com.sellfeed.product.ProductLogic;
 import com.sun.istack.internal.logging.Logger;
 
 @RestController
@@ -24,11 +25,14 @@ import com.sun.istack.internal.logging.Logger;
 public class RestSellFeedController {
 	Logger logger = Logger.getLogger(RestSellFeedController.class);
 	@Autowired
-	public FavoriteLogic favoriteLogic = null;
+	private FavoriteLogic favoriteLogic = null;
 	@Autowired
-	public AccountLogic accountLogic = null;
+	private AccountLogic accountLogic = null;
 	@Autowired
-	public MemberLogic memberLogic = null;
+	private MemberLogic memberLogic = null;
+	@Autowired
+	private ProductLogic productLogic = null;
+	
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
 		String result="";
@@ -112,5 +116,12 @@ public class RestSellFeedController {
 		//logger.info("=================>p_id"+p_id);
 		String inspectedId = memberLogic.idInspection(pMap);
 		return inspectedId;
+	}
+	@GetMapping(value="itemStatusList.sf")
+	public List<Map<String, Object>> itemStatusList(){
+		List<Map<String, Object>> itemStatusList = null;
+		itemStatusList = productLogic.itemStatusList();
+		
+		return itemStatusList;
 	}
 }

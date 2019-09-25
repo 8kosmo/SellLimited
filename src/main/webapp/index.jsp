@@ -36,7 +36,10 @@
 	<button type="button" onclick="sign()">관리자승인</button>
 <script type="text/javascript">
 	function sign() {
-		location.href="product/managerPermission.sf?item_code=OTPN0962&mem_id=ikobean&auct_period=6";
+		location.href="product/managerPermission.sf?item_code=LOAJ7089&mem_id=uh4ng&auct_period=6";
+	}
+	function itemStatusList() {
+		location.href="rest/itemStatusList.sf"
 	}
 </script>
 </body>

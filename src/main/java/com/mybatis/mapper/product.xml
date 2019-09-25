@@ -49,12 +49,13 @@
    		   AND mem_id = #{mem_id}
 	</update>
 	<!-- AUCTION_INFO 테이블 안에 시드 시작,종료 -->
- 	<insert id="auction_infoIn" parameterType="map">
+ 	<insert id="auction_infoIn" parameterType="string">
 		INSERT INTO AUCTION_INFO
 		VALUES (#{item_code}
 		       ,#{item_code}
-		       ,(SELECT SYSDATE FROM DUAL)
-		       ,(SELECT SYSDATE+ (INTERVAL '3' DAY)
+		       ,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd hh24:mi:ss')
+		       	   FROM DUAL)
+		       ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd hh24:mi:ss')
 		       	   FROM DUAL)
 		       )
 	</insert>
@@ -62,10 +63,14 @@
 	<insert id="auct_progressIns" parameterType="map">
 		INSERT INTO AUCT_PROGRESS
 		VALUES (#{item_code}
-		       ,(SELECT SYSDATE+ (INTERVAL '3' DAY)
+		       ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd hh24:mi:ss')
 		       	   FROM DUAL)
-		       ,(SELECT SYSDATE+ (INTERVAL '3' DAY)+(INTERVAL #{auct_period} HOUR)
-  				   FROM DUAL)
+		       ,(SELECT TO_CHAR(SYSDATE + #{auct_period}/24, 'yyyy/mm/dd hh24:mi:ss')
+		       	   FROM DUAL)
 		       )
 	</insert> 
+	<select id="itemStatusList" resultType="map">
+	   SELECT * from sale_item
+		WHERE mem_id = #{mem_id}
+	</select>
 </mapper>
