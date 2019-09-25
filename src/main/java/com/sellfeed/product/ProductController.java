@@ -42,14 +42,14 @@ public class ProductController {
 	}
 	
 	@PostMapping("/productIns.sf")
-	public String productIns(@RequestParam Map<String, Object> pMap1,
+	public String productIns(@RequestParam Map<String, Object> pMap,
 			 				@RequestParam (value="attached_file", required=false) MultipartFile product_file) {
 		logger.info("Controller| Call productIns");
 		String savePath =  "";
 		String filename =  null;
 		String fullPath = null;
 		//첨부파일 존재 확인
-		Map<String,Object> pMap = new HashMap<String,Object>();
+		//Map<String,Object> pMap = new HashMap<String,Object>();
 		if(product_file!=null && !product_file.isEmpty()) {
 			filename =  product_file.getOriginalFilename();
 			fullPath = savePath+"\\"+filename;
@@ -80,7 +80,7 @@ public class ProductController {
 		pMap.put("start_price", "1111")     ;
 		result = productLogic.productIns(pMap);
 		
-		return path;
+		return "redirect:testview/ProductIns.jsp";
 	}
 	@PostMapping("/productUpd.sf")
 	public String productUpd(@RequestParam Map<String,Object> pMap) {
