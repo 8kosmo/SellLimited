@@ -1,12 +1,26 @@
+<%@page import="java.awt.print.Printable"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	List<Map<String,Object>> itemStatusList = (List<Map<String,Object>>)request.getAttribute("itemStatusList");
+	if(itemStatusList != null){
+		out.print(itemStatusList.get(0).get("MEM_ID"));
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script>
-	
+<script type="text/javascript">
+	function sign() {
+		location.href="product/managerPermission.sf?item_code=LOAJ7089&mem_id=uh4ng&auct_period=6";
+	}
+	function itemStatusList() {
+		location.href="product/itemStatusList.sf"
+	}
 </script>
 </head>
 <body>
@@ -34,13 +48,6 @@
 
 
 	<button type="button" onclick="sign()">관리자승인</button>
-<script type="text/javascript">
-	function sign() {
-		location.href="product/managerPermission.sf?item_code=LOAJ7089&mem_id=uh4ng&auct_period=6";
-	}
-	function itemStatusList() {
-		location.href="rest/itemStatusList.sf"
-	}
-</script>
+	<a href="product/itemStatusList.sf">리스트호출</a>
 </body>
 </html>

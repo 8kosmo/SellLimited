@@ -49,13 +49,10 @@ public class ProductDao {
 		return result;
 	}
 //관리자 승인 이후 트랜잭션 처리 (String item_code, String mem_id, int auct_period)
-	public int managerPermission(String item_code, String mem_id) {
+	public int managerPermission(String item_code) {
 		logger.info("ProductDao| Call managerPermission");
 		int result = 0;
-		Map<String, Object> pMap = new HashMap<String, Object>();
-		pMap.put("item_code", item_code);
-		pMap.put("mem_id", mem_id);
-		result = sqlSessionTemplate.update("managerPermission",pMap);
+		result = sqlSessionTemplate.update("managerPermission",item_code);
 		return result;
 		
 	}
@@ -79,5 +76,8 @@ public class ProductDao {
 				new ArrayList<Map<String,Object>>();
 		itemStatusList = sqlSessionTemplate.selectList("itemStatusList");
 		return itemStatusList;
+	}
+	public void managerRefuse(String item_code) {
+		sqlSessionTemplate.delete("managerRefuse", item_code);
 	}
 }

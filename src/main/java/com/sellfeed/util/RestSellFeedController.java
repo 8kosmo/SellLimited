@@ -1,9 +1,14 @@
 package com.sellfeed.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +63,6 @@ public class RestSellFeedController {
 		int Ok = 0; 
 		pMap.put("fav_sellerid", "TestId1");
 		pMap.put("mem_id", "uh4ng");
-		
 		Ok = favoriteLogic.favSellerDel(pMap);
 		if(Ok==0) {
 			
@@ -117,11 +121,5 @@ public class RestSellFeedController {
 		String inspectedId = memberLogic.idInspection(pMap);
 		return inspectedId;
 	}
-	@GetMapping(value="itemStatusList.sf")
-	public List<Map<String, Object>> itemStatusList(){
-		List<Map<String, Object>> itemStatusList = null;
-		itemStatusList = productLogic.itemStatusList();
-		
-		return itemStatusList;
-	}
+	
 }

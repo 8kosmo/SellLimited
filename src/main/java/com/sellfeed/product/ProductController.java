@@ -3,15 +3,22 @@ package com.sellfeed.product;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,17 +112,27 @@ public class ProductController {
 		}
 		return path;
 	}
-	//auct_period를 String 으로 읽고 있음 해결 방법 고안필요
+	//승인대기 -> 시드침여중, 트랜잭션 3step
 	@GetMapping("/managerPermission.sf")
 	public String managerPermission
 	(@RequestParam("item_code") String item_code
-			,@RequestParam("mem_id") String mem_id
 			,@RequestParam("auct_period") int auct_period) {
 		logger.info("Controller| Call managerPermission");
-		productLogic.managerPermission(item_code,mem_id,auct_period);
-		return "redirect:../index.jsp";
+		productLogic.managerPermission(item_code,auct_period);
+		return "redirect:../product/itemStatusList.sf";
 	}
-	
-
-	
+	//관리자 페이지 접속 시 리스트 검색
+	@GetMapping(value="/itemStatusList.sf")
+	public String itemStatusList(ModelMap mod) {
+		List<Map<String, Object>> itemStatusList = null;
+		itemStatusList = productLogic.itemStatusList();
+		mod.addAttribute("itemStatusList", itemStatusList);
+		return "forward:../testview/managerPermission.jsp";
+	}
+	//승인대기 -> 등록거절하기
+	@GetMapping(value="/managerRefuse.sf")
+	public String managerRefuse(@RequestParam("item_code") String item_code) {
+		productLogic.managerRefuse(item_code);
+		return "redirect:../product/itemStatusList.sf";
+	}
 }

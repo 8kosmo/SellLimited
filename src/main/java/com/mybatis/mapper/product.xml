@@ -42,11 +42,10 @@
 	 					   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
 	</select>
 <!-- 관리자 승인 이후 트랜잭션 처리 -->
-	<update id="managerPermission" parameterType="map">
+	<update id="managerPermission" parameterType="string">
 		UPDATE SALE_ITEM 
    		   SET status = '시드참여중'
  		 WHERE item_code = #{item_code}
-   		   AND mem_id = #{mem_id}
 	</update>
 	<!-- AUCTION_INFO 테이블 안에 시드 시작,종료 -->
  	<insert id="auction_infoIn" parameterType="string">
@@ -70,7 +69,14 @@
 		       )
 	</insert> 
 	<select id="itemStatusList" resultType="map">
-	   SELECT * from sale_item
-		WHERE mem_id = #{mem_id}
+		SELECT SALE_ITEM.ITEM_CODE, MEM_ID, SUB_CATEGORY_CODE, PRODUCT_NAME, MODEL_NAME
+		     , BUYNOW_PRICE, START_PRICE, AUCT_PERIOD,PHOTO_NAME
+		  FROM SALE_ITEM, ITEM_PHOTO
+		  WHERE STATUS = '승인대기'
+		    AND SALE_ITEM.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
 	</select>
+	<delete id="managerRefuse" parameterType="string">
+		DELETE FROM SALE_ITEM 
+		 WHERE item_code = #{item_code}
+	</delete>
 </mapper>
