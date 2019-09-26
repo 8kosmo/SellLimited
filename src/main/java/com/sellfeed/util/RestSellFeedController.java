@@ -1,14 +1,9 @@
 package com.sellfeed.util;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +17,6 @@ import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
-import com.sellfeed.product.ProductLogic;
 import com.sun.istack.internal.logging.Logger;
 
 @RestController
@@ -35,8 +29,6 @@ public class RestSellFeedController {
 	private AccountLogic accountLogic = null;
 	@Autowired
 	private MemberLogic memberLogic = null;
-	@Autowired
-	private ProductLogic productLogic = null;
 	
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
@@ -108,6 +100,7 @@ public class RestSellFeedController {
 		else {
 			session.setAttribute("mem_name",list.get(0));
 			session.setAttribute("nowBalance",list.get(1));
+			session.setAttribute("mem_id", pMap.get("mem_id"));
 		}
 		String mem_name = pMap.get("mem_name").toString();
 		Gson g = new Gson();

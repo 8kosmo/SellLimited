@@ -10,19 +10,29 @@
 	
 	<select id="productIns" parameterType="map" statementType="CALLABLE">
       {call proc_AddProd(
-      			   #{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  #{bid_title, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                 ,#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{brand , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{product_name , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{status , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-                  ,#{sub_category , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{sub_catagory , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{modelname, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{explanation, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-                  ,#{attached_file, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{start_price, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{auction_period, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{buynow_price}
                   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
       )}
    </select>
    
+   <update id="fileNameIns" parameterType="list">
+      INSERT ALL
+         <foreach collection="list" item="item" index="index" separator=" ">
+                INTO item_photo(photo_name, item_code) VALUES (#{item.photo_name}, #{item.item_code})
+      </foreach>
+   SELECT * FROM DUAL
+   </update>
+
    <update id="productUpd" parameterType="map">
    	UPDATE SALE_ITEM 
    	SET brand		 = #{brand}

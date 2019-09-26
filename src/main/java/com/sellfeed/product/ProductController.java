@@ -31,6 +31,11 @@ public class ProductController {
 	Logger logger = LoggerFactory.getLogger(ProductController.class);
 	String path;
 	int result;
+	String savePath =  "\\\\192.168.0.187\\itemPhoto";
+   	String photo_name =  null;
+  	String fullPath = null;
+  	List<Map<String,Object>> itemList = null;
+  	Map<String,Object> fileMap = null;
 	@Autowired
 	public ProductLogic productLogic = null;
 	
@@ -40,55 +45,47 @@ public class ProductController {
 		List<Map<String,Object>> productList = null;
 		pMap.put("mem_id","uh4ng");
 		productList=productLogic.productList(pMap);
-		
-//		System.out.println("$$$$$$$$$$$$$$$$$$$셀렉트 단위테스트"+productList.get(0)); 		 ★CLEAR
 		if(productList!=null&&productList.size()>0) {
 			path="";
 		}
 		return path;
 	}
 	
-	@PostMapping("/productIns.sf")
-	public String productIns(@RequestParam Map<String, Object> pMap,
-			 				@RequestParam (value="attached_file", required=false) MultipartFile product_file) {
-		logger.info("Controller| Call productIns");
-		String savePath =  "";
-		String filename =  null;
-		String fullPath = null;
-		//첨부파일 존재 확인
-		//Map<String,Object> pMap = new HashMap<String,Object>();
-		if(product_file!=null && !product_file.isEmpty()) {
-			filename =  product_file.getOriginalFilename();
-			fullPath = savePath+"\\"+filename;
-			try {
-				File file = new File(fullPath);//파일명만 존재하고 내용은 없는
-				byte[] bytes = product_file.getBytes();
-				BufferedOutputStream bos = 
-						new BufferedOutputStream(new FileOutputStream(file));
-				bos.write(bytes);
-				bos.close();
-				//파일크기 초기화
-				long size = file.length();
-				double d_size = Math.floor(size/1024.0);
-				pMap.put("product_file",filename);
-				pMap.put("bs_size",d_size);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
-		pMap.put("mem_id", "uh4ng")          ;
-		pMap.put("brand", "InsertTest")           ;
-		pMap.put("product_name", "InsertTest")    ;
-		pMap.put("status", "InsertTest")          ;
-		pMap.put("sub_category", "일렉 기타")    ;
-		pMap.put("modelname", "InsertTest")       ;
-		pMap.put("explanation", "InsertTest")     ;
-		pMap.put("attached_file", "")   ;
-		pMap.put("start_price", "1111")     ;
-		result = productLogic.productIns(pMap);
-		
-		return "redirect:testview/ProductIns.jsp";
-	}
+   @PostMapping("/productIns.sf")
+   public String productIns(@RequestParam Map<String, Object> pMap
+                      ,@RequestParam (value="attached_file1", required=false) MultipartFile product_file1
+                      ,@RequestParam (value="attached_file2", required=false) MultipartFile product_file2
+                      ,@RequestParam (value="attached_file3", required=false) MultipartFile product_file3) {
+      logger.info("Controller| Call productIns");
+      //첨부파일 존재 확인
+      pMap.put("status", "승인대기");
+      itemList = new ArrayList<>();
+      fileNullCheck(product_file1);
+      fileNullCheck(product_file2);
+      fileNullCheck(product_file3);
+      result = productLogic.productIns(pMap,itemList);
+      return "redirect:/testview/mainView.jsp";
+   }
+   public void fileNullCheck(MultipartFile mFile) {
+      if(mFile!=null && !mFile.isEmpty()) {
+         photo_name =  mFile.getOriginalFilename();
+         logger.info(photo_name);
+         fullPath = savePath+"\\"+photo_name;
+         try {
+            File file = new File(fullPath);//파일명만 존재하고 내용은 없는 경우
+            byte[] bytes = mFile.getBytes();
+            BufferedOutputStream bos = 
+                  new BufferedOutputStream(new FileOutputStream(file));
+            bos.write(bytes);
+            bos.close();
+            fileMap = new HashMap<>();
+            fileMap.put("photo_name",photo_name);
+            itemList.add(fileMap);
+         }catch(Exception e) {
+            e.printStackTrace();
+         }
+      }
+   }
 	@PostMapping("/productUpd.sf")
 	public String productUpd(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller| Call productUpd");

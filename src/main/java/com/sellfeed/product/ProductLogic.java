@@ -26,12 +26,21 @@ public class ProductLogic {
 		return productList;
 	}
 	
-	public int productIns(Map<String, Object> pMap) {
-		logger.info("Logic| Call ProductIns");
-		result = productDao.ProductIns(pMap);
-		
-		return result;
-	}
+   public int productIns(Map<String, Object> pMap, List<Map<String,Object>> itemList) {
+      logger.info("Logic| Call ProductIns");
+      result = productDao.ProductIns(pMap);
+      Map<String,Object> fileMap = null;
+      int count = itemList.size();
+      String item_code = (String)pMap.get("result");
+      if(itemList!=null && itemList.size()>1) {
+    	  for(int i=0;i<count;i++) {
+    		  fileMap = itemList.get(i);
+    		  fileMap.put("item_code",item_code);
+    	  }
+    	  productDao.fileNameIns(itemList);    
+      }
+      return result;
+   }
 
 	public int productUpd(Map<String, Object> pMap) {
 		logger.info("Logic| Call ProductUpd");

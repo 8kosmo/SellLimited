@@ -24,15 +24,18 @@ public class ProductDao {
 		productList = sqlSessionTemplate.selectList("productList",pMap);
 		return productList;
 	}
-//★	Insert
-	public int ProductIns(Map<String, Object> pMap) {
-		logger.info("ProductDao| Call productIns");
-		sqlSessionTemplate.selectOne("productIns",pMap);
-		String a = pMap.get("result").toString();
-		logger.info(a);
-	//	logger.info("@@@@@@@@@@@@@@@@@@@gohome :"+gohome);
-		return result;
-	}
+//★   Insert
+   public int ProductIns(Map<String, Object> pMap) {
+      logger.info("ProductDao| Call productIns");
+      sqlSessionTemplate.selectOne("productIns",pMap);
+      String a = pMap.get("result").toString();
+      logger.info(a);
+      return result;
+   }
+   public void fileNameIns(List<Map<String,Object>> itemList) {
+	   logger.info("ProductDao| Call fileNameIns");
+	   int i = sqlSessionTemplate.update("fileNameIns",itemList);
+   }   
 //★	Update
 	public int productUpd(Map<String, Object> pMap) {
 		result = sqlSessionTemplate.update("productUpd",pMap);
