@@ -15,6 +15,11 @@
 <meta charset="UTF-8"">
 <title>관리자페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
+<script type="text/javascript">
+	function fileDown(fname) {
+		location.href="download.jsp?photo_name="+fname;
+	}
+</script>
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
@@ -150,7 +155,7 @@
                <td><%=itemStatusList.get(i).get("BUYNOW_PRICE") %></td>
                <td><%=itemStatusList.get(i).get("START_PRICE") %></td>
                <td><%=itemStatusList.get(i).get("AUCT_PERIOD") %></td>
-               <td><%=itemStatusList.get(i).get("PHOTO_NAME") %></td>
+               <td><a href="javascript:fileDown('<%=itemStatusList.get(i).get("PHOTO_NAME") %>')" style="text-decoration:none;color:black"><%=itemStatusList.get(i).get("PHOTO_NAME") %></a></td>
                <td><a href="/product/managerPermission.sf?item_code=<%=itemStatusList.get(i).get("ITEM_CODE") %>&auct_period=<%=itemStatusList.get(i).get("AUCT_PERIOD") %>">
                <button type="button">등록하기</button></a></td>
                <td><a href="/product/managerRefuse.sf?item_code=<%=itemStatusList.get(i).get("ITEM_CODE") %>"><button type="button">등록거절</button></a></td>
