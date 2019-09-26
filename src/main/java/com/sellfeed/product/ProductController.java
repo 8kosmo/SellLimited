@@ -3,15 +3,22 @@ package com.sellfeed.product;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,14 +49,14 @@ public class ProductController {
 	}
 	
 	@PostMapping("/productIns.sf")
-	public String productIns(@RequestParam Map<String, Object> pMap1,
+	public String productIns(@RequestParam Map<String, Object> pMap,
 			 				@RequestParam (value="attached_file", required=false) MultipartFile product_file) {
 		logger.info("Controller| Call productIns");
 		String savePath =  "";
 		String filename =  null;
 		String fullPath = null;
 		//첨부파일 존재 확인
-		Map<String,Object> pMap = new HashMap<String,Object>();
+		//Map<String,Object> pMap = new HashMap<String,Object>();
 		if(product_file!=null && !product_file.isEmpty()) {
 			filename =  product_file.getOriginalFilename();
 			fullPath = savePath+"\\"+filename;
@@ -80,20 +87,11 @@ public class ProductController {
 		pMap.put("start_price", "1111")     ;
 		result = productLogic.productIns(pMap);
 		
-		return path;
+		return "redirect:testview/ProductIns.jsp";
 	}
 	@PostMapping("/productUpd.sf")
 	public String productUpd(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller| Call productUpd");
-		pMap.put("brand","fender");
-		pMap.put("product_name","재즈마스터");
-		pMap.put("status","A");
-		pMap.put("admin_ok","AA");
-		pMap.put("sub_category","베이스기타");
-		pMap.put("modelname","AA");
-		pMap.put("explanation","AA");
-		pMap.put("attached_file","AA");
-		pMap.put("item_code","YMUW5132");
 		result = productLogic.productUpd(pMap);
 		if(result==1) {
 			path = "정해야함";
@@ -114,6 +112,27 @@ public class ProductController {
 		}
 		return path;
 	}
-
-	
+	//승인대기 -> 시드침여중, 트랜잭션 3step
+	@GetMapping("/managerPermission.sf")
+	public String managerPermission
+	(@RequestParam("item_code") String item_code
+			,@RequestParam("auct_period") int auct_period) {
+		logger.info("Controller| Call managerPermission");
+		productLogic.managerPermission(item_code,auct_period);
+		return "redirect:../product/itemStatusList.sf";
+	}
+	//관리자 페이지 접속 시 리스트 검색
+	@GetMapping(value="/itemStatusList.sf")
+	public String itemStatusList(ModelMap mod) {
+		List<Map<String, Object>> itemStatusList = null;
+		itemStatusList = productLogic.itemStatusList();
+		mod.addAttribute("itemStatusList", itemStatusList);
+		return "forward:../testview/managerPermission.jsp";
+	}
+	//승인대기 -> 등록거절하기
+	@GetMapping(value="/managerRefuse.sf")
+	public String managerRefuse(@RequestParam("item_code") String item_code) {
+		productLogic.managerRefuse(item_code);
+		return "redirect:../product/itemStatusList.sf";
+	}
 }

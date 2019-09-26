@@ -41,4 +41,42 @@
 	 {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
 	 					   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
 	</select>
+<!-- 관리자 승인 이후 트랜잭션 처리 -->
+	<update id="managerPermission" parameterType="string">
+		UPDATE SALE_ITEM 
+   		   SET status = '시드참여중'
+ 		 WHERE item_code = #{item_code}
+	</update>
+	<!-- AUCTION_INFO 테이블 안에 시드 시작,종료 -->
+ 	<insert id="auction_infoIn" parameterType="string">
+		INSERT INTO AUCTION_INFO
+		VALUES (#{item_code}
+		       ,#{item_code}
+		       ,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd hh24:mi:ss')
+		       	   FROM DUAL)
+		       ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd hh24:mi:ss')
+		       	   FROM DUAL)
+		       )
+	</insert>
+	<!-- AUCT_PROGRESS 테이블 안에 경매 시작,종료 -->
+	<insert id="auct_progressIns" parameterType="map">
+		INSERT INTO AUCT_PROGRESS
+		VALUES (#{item_code}
+		       ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd hh24:mi:ss')
+		       	   FROM DUAL)
+		       ,(SELECT TO_CHAR(SYSDATE + #{auct_period}/24, 'yyyy/mm/dd hh24:mi:ss')
+		       	   FROM DUAL)
+		       )
+	</insert> 
+	<select id="itemStatusList" resultType="map">
+		SELECT SALE_ITEM.ITEM_CODE, MEM_ID, SUB_CATEGORY_CODE, PRODUCT_NAME, MODEL_NAME
+		     , BUYNOW_PRICE, START_PRICE, AUCT_PERIOD,PHOTO_NAME
+		  FROM SALE_ITEM, ITEM_PHOTO
+		  WHERE STATUS = '승인대기'
+		    AND SALE_ITEM.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
+	</select>
+	<delete id="managerRefuse" parameterType="string">
+		DELETE FROM SALE_ITEM 
+		 WHERE item_code = #{item_code}
+	</delete>
 </mapper>

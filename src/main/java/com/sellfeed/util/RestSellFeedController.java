@@ -1,9 +1,14 @@
 package com.sellfeed.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
+import com.sellfeed.product.ProductLogic;
 import com.sun.istack.internal.logging.Logger;
 
 @RestController
@@ -24,11 +30,14 @@ import com.sun.istack.internal.logging.Logger;
 public class RestSellFeedController {
 	Logger logger = Logger.getLogger(RestSellFeedController.class);
 	@Autowired
-	public FavoriteLogic favoriteLogic = null;
+	private FavoriteLogic favoriteLogic = null;
 	@Autowired
-	public AccountLogic accountLogic = null;
+	private AccountLogic accountLogic = null;
 	@Autowired
-	public MemberLogic memberLogic = null;
+	private MemberLogic memberLogic = null;
+	@Autowired
+	private ProductLogic productLogic = null;
+	
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
 		String result="";
@@ -54,7 +63,6 @@ public class RestSellFeedController {
 		int Ok = 0; 
 		pMap.put("fav_sellerid", "TestId1");
 		pMap.put("mem_id", "uh4ng");
-		
 		Ok = favoriteLogic.favSellerDel(pMap);
 		if(Ok==0) {
 			
@@ -113,4 +121,5 @@ public class RestSellFeedController {
 		String inspectedId = memberLogic.idInspection(pMap);
 		return inspectedId;
 	}
+	
 }

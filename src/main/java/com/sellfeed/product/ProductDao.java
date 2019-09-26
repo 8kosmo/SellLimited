@@ -1,6 +1,7 @@
 package com.sellfeed.product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,5 +47,37 @@ public class ProductDao {
 			result =1;
 		}
 		return result;
+	}
+//관리자 승인 이후 트랜잭션 처리 (String item_code, String mem_id, int auct_period)
+	public int managerPermission(String item_code) {
+		logger.info("ProductDao| Call managerPermission");
+		int result = 0;
+		result = sqlSessionTemplate.update("managerPermission",item_code);
+		return result;
+		
+	}
+	public int auction_infoIn(String item_code) {
+		logger.info("ProductDao| Call auction_infoIn");
+		int result = 0;
+		result = sqlSessionTemplate.insert("auction_infoIn", item_code);
+		return result;
+	}
+	public int auct_progressIns(String item_code, int auct_period) {
+		logger.info("ProductDao| Call auction_infoIn");
+		int result = 0;
+		Map<String, Object> pMap = new HashMap<String, Object>();
+		pMap.put("item_code", item_code);
+		pMap.put("auct_period", auct_period);
+		result = sqlSessionTemplate.insert("auct_progressIns", pMap);
+		return result;
+	}
+	public List<Map<String, Object>> itemStatusList() {
+		List<Map<String, Object>> itemStatusList = 
+				new ArrayList<Map<String,Object>>();
+		itemStatusList = sqlSessionTemplate.selectList("itemStatusList");
+		return itemStatusList;
+	}
+	public void managerRefuse(String item_code) {
+		sqlSessionTemplate.delete("managerRefuse", item_code);
 	}
 }
