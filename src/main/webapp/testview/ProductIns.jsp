@@ -79,7 +79,10 @@
          </table>
       </li>
       <!-- 공통부분 끝 -->
-      <form action="/product/productIns.sf" accept-charset="utf-8" id="memberUpdForm" name="memberUpdForm" method="post">
+      <form action="/product/productIns.sf" accept-charset="utf-8" 
+      	id="memberUpdForm" name="memberUpdForm" method="post"
+      	enctype="multipart/form-data">
+      <input type="hidden" name="mem_id" value="<%=mem_id%>"/>
       <li>
       	<table class="mypage_table_head">
       		<caption>
@@ -158,6 +161,10 @@
 				<td colspan="2" style="height:15px;padding:0;"></td>
 			</tr>
 			<tr>
+				<th>경매제목</th>
+				<td><input type="text" class="input_name" id="bid_title" name="bid_title"  maxlength="30" required="true"/></td>
+			</tr>
+			<tr>
 				<th>시작가격</th>
 				<td><input type="text" class="input_name" name="start_price" value=""  maxlength="30" required="true"/></td>
 			</tr>
@@ -200,7 +207,9 @@
 			<tr>
 				<th>첨부파일</th>
 				<td>
-					<input type="file" name="attached_file" id="attached_file"/>
+					<input type="file" name="attached_file1" id="attached_file1"/>
+					<input type="file" name="attached_file2" id="attached_file2"/>
+					<input type="file" name="attached_file3" id="attached_file3"/>
 				</td>
 			</tr>
 			<tr>

@@ -100,6 +100,7 @@ public class RestSellFeedController {
 		else {
 			session.setAttribute("mem_name",list.get(0));
 			session.setAttribute("nowBalance",list.get(1));
+			session.setAttribute("mem_id", pMap.get("mem_id"));
 		}
 		String mem_name = pMap.get("mem_name").toString();
 		Gson g = new Gson();

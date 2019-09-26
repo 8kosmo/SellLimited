@@ -1,44 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.ProductMapper">
-	
-	<select id="productList" parameterType="map" resultType="map">
-		SELECT * from sale_item
-		WHERE mem_id = #{mem_id}
-		
-	</select>
-	
-	<select id="productIns" parameterType="map" statementType="CALLABLE">
+   
+   <select id="productList" parameterType="map" resultType="map">
+      SELECT * from sale_item
+      WHERE mem_id = #{mem_id}
+      
+   </select>
+   
+   <select id="productIns" parameterType="map" statementType="CALLABLE">
       {call proc_AddProd(
-      			   #{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  #{bid_title, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                 ,#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{brand , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{product_name , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{status , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-                  ,#{auction_period, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{sub_catagory , mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{modelname, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{explanation, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-                  ,#{attached_file, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                   ,#{start_price, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{auction_period, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                  ,#{buynow_price}
                   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String}
       )}
    </select>
+   
+   <update id="fileNameIns" parameterType="list">
+      INSERT ALL
+         <foreach collection="list" item="item" index="index" separator=" ">
+                INTO item_photo(photo_name, item_code) VALUES (#{item.photo_name}, #{item.item_code})
+      </foreach>
+   SELECT * FROM DUAL
+   </update>
+
    <update id="productUpd" parameterType="map">
-   	UPDATE SALE_ITEM 
-   	SET brand		 = #{brand}
-   	   ,product_name = #{product_name}
-   	   ,status		 = #{status}
-   	   ,admin_ok	 = #{admin_ok}
-   	   ,sub_category_code =(SELECT sub_category_code FROM sub_category WHERE sub_category = #{sub_category}) 
-   	   ,modelname 	 = #{modelname}
-   	   ,explanation	 = #{explanation}
-   	   ,attached_file= #{attached_file}
-   		WHERE item_code = #{item_code}
+      UPDATE SALE_ITEM 
+      SET brand       = #{brand}
+         ,product_name = #{product_name}
+         ,status       = #{status}
+         ,admin_ok    = #{admin_ok}
+         ,sub_category_code =(SELECT sub_category_code FROM sub_category WHERE sub_category = #{sub_category}) 
+         ,modelname     = #{modelname}
+         ,explanation    = #{explanation}
+         ,attached_file= #{attached_file}
+         WHERE item_code = #{item_code}
    </update>
    
    
-	<select id="productDel" parameterType="map" statementType="CALLABLE">
-	 {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-	 					   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
-	</select>
+   <select id="productDel" parameterType="map" statementType="CALLABLE">
+    {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                      ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
+   </select>
 </mapper>

@@ -44,21 +44,16 @@
          ,url:'/rest/login.sf'
          ,data:$("#login_frm").serialize()
          ,success:function(data){
-               //alert(data);
                var jsonStr = JSON.parse(data);
-               //alert(jsonStr);
                if(jsonStr.length>0){
                   var result="";
                      if('비밀번호를 잘못 입력하셨습니다.'== jsonStr[0] 
                            || '아이디가 존재하지 않습니다.'== jsonStr[0]){
                         var result=jsonStr[0];
-                        //alert(result);
                         $("#wrong").html(result);
                      }else{
                         var mem_name=jsonStr[0];
                         var nowBalance=jsonStr[1];
-                        //alert(mem_name);
-                        //alert(nowBalance);
                         location.href="/testview/mainView.jsp";
                      }
                   
