@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +19,11 @@ import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
-import com.sun.istack.internal.logging.Logger;
 
 @RestController
 @RequestMapping(value="/rest",produces="text/plain;charset=UTF-8")
 public class RestSellFeedController {
-	Logger logger = Logger.getLogger(RestSellFeedController.class);
+	Logger logger = LoggerFactory.getLogger(RestSellFeedController.class);
 	@Autowired
 	private FavoriteLogic favoriteLogic = null;
 	@Autowired

@@ -1,13 +1,20 @@
 <%@page import="java.awt.print.Printable"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
+<%@page import="com.sellfeed.util.PageBar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	List<Map<String,Object>> itemStatusList = (List<Map<String,Object>>)request.getAttribute("itemStatusList");
-/* 	if(itemStatusList != null){
-		out.print(itemStatusList.get(0).get("MEM_ID"));
-	} */
+   List<Map<String,Object>> itemStatusList = 
+         (List<Map<String,Object>>)request.getAttribute("itemStatusList");
+   int size = 0;
+   int nowPage = 0;
+   if(itemStatusList != null && itemStatusList.size()>0){
+      size = itemStatusList.size();
+   }
+/*    if(itemStatusList != null){
+      out.print(itemStatusList.get(0).get("MEM_ID"));
+   } */
 %>
 <!DOCTYPE html>
 <html>
@@ -16,9 +23,9 @@
 <title>관리자페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <script type="text/javascript">
-	function fileDown(fname) {
-		location.href="download.jsp?photo_name="+fname;
-	}
+   function fileDown(fname) {
+      location.href="/testview/download.jsp?photo_name="+fname;
+   }
 </script>
 </head>
 <body>
@@ -35,7 +42,7 @@
             <tbody><tr>
                <td class="mtt_left"><img src="/images/integ/20150918_01.png"></td>
                <td class="mtt_center">관리자 페이지
-                  <p>아이디 : <span class="mttid">ds0110818</span></p>
+                  <p>닉네임 : <span class="mttid"><%=mem_name %></span></p>
                </td>
             </tr></tbody>
          </table>
@@ -84,7 +91,7 @@
         <li>
       <table class="mypage_table_head">
          <caption>승인 대기 상품 목록 <img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong>0</strong> 건의 자료가 조회되었습니다.</span>
+            <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
             <span class="mth_right">
                <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
                   <div id="select_boxview">
@@ -127,58 +134,64 @@
             </tr>
       </table>
 <%
-	if(itemStatusList.size() != 0){
+   if(size > 0){
+      
 %>
        <table class="mypage_table">
          <colgroup>
-            <col width="100px;">
-            <col width="100px;">
-            <col width="100px;">
+            <col width="80px;">
+            <col width="80px;">
+            <col width="80px;">
+            <col width="80px;">
             <col width="">
-            <col width="120px;">
             <col width="80px;">
             <col width="80px;">
+            <col width="60px;">
             <col width="80px;">
-            <col width="100px;">
             <col width="80px;">
             <col width="80px;">
          </colgroup>
 <%
-		for(int i=0;i<itemStatusList.size();i++){
+      for(int i=0;i<size;i++){
+         Map<String,Object> rMap = itemStatusList.get(i);
 %>
             <tr>
-               <td><%=itemStatusList.get(i).get("ITEM_CODE") %></td>
-               <td><%=itemStatusList.get(i).get("MEM_ID") %></td>
-               <td><%=itemStatusList.get(i).get("SUB_CATEGORY_CODE") %></td>
-               <td><%=itemStatusList.get(i).get("PRODUCT_NAME") %></td>
-               <td><%=itemStatusList.get(i).get("MODEL_NAME") %></td>
-               <td><%=itemStatusList.get(i).get("BUYNOW_PRICE") %></td>
-               <td><%=itemStatusList.get(i).get("START_PRICE") %></td>
-               <td><%=itemStatusList.get(i).get("AUCT_PERIOD") %></td>
-               <td><a href="javascript:fileDown('<%=itemStatusList.get(i).get("PHOTO_NAME") %>')" style="text-decoration:none;color:black"><%=itemStatusList.get(i).get("PHOTO_NAME") %></a></td>
-               <td><a href="/product/managerPermission.sf?item_code=<%=itemStatusList.get(i).get("ITEM_CODE") %>&auct_period=<%=itemStatusList.get(i).get("AUCT_PERIOD") %>">
+               <td><%=rMap.get("ITEM_CODE") %></td>
+               <td><%=rMap.get("MEM_ID") %></td>
+               <td><%=rMap.get("SUB_CATEGORY_CODE") %></td>
+               <td><%=rMap.get("PRODUCT_NAME") %></td>
+               <td><%=rMap.get("MODEL_NAME") %></td>
+               <td><%=rMap.get("BUYNOW_PRICE") %></td>
+               <td><%=rMap.get("START_PRICE") %></td>
+               <td><%=rMap.get("AUCT_PERIOD") %></td>
+               <td>
+               
+               <a href="javascript:fileDown('<%=rMap.get("PHOTO_NAME") %>')" style="text-decoration:none;color:black"><%=rMap.get("PHOTO_NAME") %></a>
+               
+               </td>
+               <td><a href="/product/managerPermission.sf?item_code=<%=rMap.get("ITEM_CODE") %>&auct_period=<%=rMap.get("AUCT_PERIOD") %>">
                <button type="button">등록하기</button></a></td>
-               <td><a href="/product/managerRefuse.sf?item_code=<%=itemStatusList.get(i).get("ITEM_CODE") %>"><button type="button">등록거절</button></a></td>
+               <td><a href="/product/managerRefuse.sf?item_code=<%=rMap.get("ITEM_CODE") %>"><button type="button">등록거절</button></a></td>
             </tr>
 <%
-		}
+      }
 %>
          </tbody>
       </table>
 <%
-	} else{
+   } else{
 %>
        <table class="mypage_table">
          <colgroup>
-            <col width="100px;">
-            <col width="100px;">
-            <col width="100px;">
+            <col width="80px;">
+            <col width="80px;">
+            <col width="80px;">
+            <col width="80px;">
             <col width="">
-            <col width="120px;">
             <col width="80px;">
             <col width="80px;">
+            <col width="60px;">
             <col width="80px;">
-            <col width="100px;">
             <col width="80px;">
             <col width="80px;">
          </colgroup>
@@ -190,20 +203,20 @@
       </table>
    </li>
 <%
-	}
+   }
 %>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td>
+<%
+					   String pagePath = "#";
+					   PageBar pb = new PageBar(10,size,nowPage,pagePath);
+					   String pagination = pb.getPageBar();
+					   out.print(pagination);
+%>
             </tr>
          </tbody>
       </table>

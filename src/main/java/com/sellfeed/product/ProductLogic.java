@@ -32,7 +32,7 @@ public class ProductLogic {
       Map<String,Object> fileMap = null;
       int count = itemList.size();
       String item_code = (String)pMap.get("result");
-      if(itemList!=null && itemList.size()>1) {
+      if(itemList!=null && itemList.size()>=1) {
     	  for(int i=0;i<count;i++) {
     		  fileMap = itemList.get(i);
     		  fileMap.put("item_code",item_code);
