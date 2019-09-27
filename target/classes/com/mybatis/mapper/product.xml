@@ -78,6 +78,7 @@
 		                    ) ITEM_PHOTO
 		 WHERE STATUS = '승인대기'
 		   AND SALE_ITEM.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
+		 ORDER BY SALE_ITEM.REGISTERTIME DESC
 	</select>
 	<delete id="managerRefuse" parameterType="string">
 		DELETE FROM SALE_ITEM 
