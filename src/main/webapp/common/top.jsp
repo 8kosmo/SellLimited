@@ -62,7 +62,7 @@
          <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
          <a href="#" style="margin-right:500px">&nbsp</a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
-         <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
+         <a href="/product/itemStatusList.sf?nowPage=0"><strong>관리페이지</strong></a><span>|</span>
       </div>
       <a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
       <div class="layer_add2">

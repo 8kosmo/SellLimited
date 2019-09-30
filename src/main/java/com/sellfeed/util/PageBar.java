@@ -37,7 +37,7 @@ public class PageBar {
    private int nowBlock;
    //적용할 페이지 이름
    private String pagePath;
-   //
+   //Stringbuffer생성
    private String pagination;
    
    //페이지 네비게이션 초기화
@@ -54,7 +54,7 @@ public class PageBar {
 	   }
 	   this.totalPage = (int)Math.ceil((double)this.totalRecord/this.numPerPage);
 	   this.totalBlock = (int)Math.ceil((double)this.totalPage/this.pagePerBlock);
-	   this.nowBlock = this.nowPage/this.pagePerBlock;
+	   this.nowBlock = (int)((double)this.nowPage/this.pagePerBlock);
    }
    //setter메소드 선언
    public void setPageBar() {

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +60,7 @@ public class ProductController {
       fileNullCheck(product_file2);
       fileNullCheck(product_file3);
       result = productLogic.productIns(pMap,itemList);
-      return "redirect:/testview/mainView.jsp";
+      return "redirect:/testview/ProductIns.jsp";
    }
    public void fileNullCheck(MultipartFile mFile) {
       if(mFile!=null && !mFile.isEmpty()) {
@@ -116,9 +116,16 @@ public class ProductController {
 	}
 	//관리자 페이지 접속 시 리스트 검색
 	@GetMapping(value="/itemStatusList.sf")
-	public String itemStatusList(ModelMap mod) {
+	public String itemStatusList(Model mod) {
 		List<Map<String, Object>> itemStatusList = null;
-		itemStatusList = productLogic.itemStatusList();
+		int pageNumber = 1;
+		int pageSize = 1;
+		logger.info("pageNumber :"+pageNumber);
+		logger.info("pageSize :"+pageSize);
+		Map<String, Object> pMap = new HashMap<>();
+		pMap.put("pageNumber",pageNumber);
+		pMap.put("pageSize",pageSize);
+		itemStatusList = productLogic.itemStatusList(pMap);
 		mod.addAttribute("itemStatusList", itemStatusList);
 		return "forward:../testview/managerPermission.jsp";
 	}

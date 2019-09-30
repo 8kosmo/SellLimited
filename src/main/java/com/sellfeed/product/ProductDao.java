@@ -74,13 +74,18 @@ public class ProductDao {
 		result = sqlSessionTemplate.insert("auct_progressIns", pMap);
 		return result;
 	}
-	public List<Map<String, Object>> itemStatusList() {
+	public List<Map<String, Object>> itemStatusList(Map<String, Object> pMap) {
 		List<Map<String, Object>> itemStatusList = 
 				new ArrayList<Map<String,Object>>();
-		itemStatusList = sqlSessionTemplate.selectList("itemStatusList");
+		itemStatusList = sqlSessionTemplate.selectList("itemStatusList",pMap);
 		return itemStatusList;
 	}
 	public void managerRefuse(String item_code) {
 		sqlSessionTemplate.delete("managerRefuse", item_code);
+	}
+	public int getPermissionTotal() {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getPermissionTotal");
+		return total;
 	}
 }

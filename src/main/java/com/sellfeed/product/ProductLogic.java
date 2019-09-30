@@ -71,9 +71,30 @@ public class ProductLogic {
 		}
 	}
 
-	public List<Map<String, Object>> itemStatusList() {
+	public List<Map<String, Object>> itemStatusList(Map<String, Object> pMap) {
 		List<Map<String, Object>> itemStatusList = null;
-		itemStatusList = productDao.itemStatusList();
+		int pageNumber = 0;
+		int pageSize = 0;
+		int start = 0;
+		int end = 0;
+		int total = productDao.getPermissionTotal();
+		if(Integer.parseInt(pMap.get("pageNumber").toString())>0) {
+			pageNumber = Integer.parseInt(pMap.get("pageNumber").toString());
+		}
+		if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+		}
+		if(pageNumber>0) {
+			start = ((pageNumber-1)*pageSize)+1;
+			end = pageNumber*pageSize;
+			pMap.put("start", start);
+			if(end>=total) {
+				pMap.put("end", end);
+			} else {
+				pMap.put("end", total);
+			}
+		}
+		itemStatusList = productDao.itemStatusList(pMap);
 		return itemStatusList;
 	}
 
