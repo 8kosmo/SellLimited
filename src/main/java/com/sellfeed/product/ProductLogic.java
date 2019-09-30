@@ -26,12 +26,21 @@ public class ProductLogic {
 		return productList;
 	}
 	
-	public int productIns(Map<String, Object> pMap) {
-		logger.info("Logic| Call ProductIns");
-		result = productDao.ProductIns(pMap);
-		
-		return result;
-	}
+   public int productIns(Map<String, Object> pMap, List<Map<String,Object>> itemList) {
+      logger.info("Logic| Call ProductIns");
+      result = productDao.ProductIns(pMap);
+      Map<String,Object> fileMap = null;
+      int count = itemList.size();
+      String item_code = (String)pMap.get("result");
+      if(itemList!=null && itemList.size()>=1) {
+    	  for(int i=0;i<count;i++) {
+    		  fileMap = itemList.get(i);
+    		  fileMap.put("item_code",item_code);
+    	  }
+    	  productDao.fileNameIns(itemList);    
+      }
+      return result;
+   }
 
 	public int productUpd(Map<String, Object> pMap) {
 		logger.info("Logic| Call ProductUpd");
@@ -62,9 +71,30 @@ public class ProductLogic {
 		}
 	}
 
-	public List<Map<String, Object>> itemStatusList() {
+	public List<Map<String, Object>> itemStatusList(Map<String, Object> pMap) {
 		List<Map<String, Object>> itemStatusList = null;
-		itemStatusList = productDao.itemStatusList();
+		int pageNumber = 0;
+		int pageSize = 0;
+		int start = 0;
+		int end = 0;
+		int total = productDao.getPermissionTotal();
+		if(Integer.parseInt(pMap.get("pageNumber").toString())>0) {
+			pageNumber = Integer.parseInt(pMap.get("pageNumber").toString());
+		}
+		if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+		}
+		if(pageNumber>0) {
+			start = ((pageNumber-1)*pageSize)+1;
+			end = pageNumber*pageSize;
+			pMap.put("start", start);
+			if(end>=total) {
+				pMap.put("end", end);
+			} else {
+				pMap.put("end", total);
+			}
+		}
+		itemStatusList = productDao.itemStatusList(pMap);
 		return itemStatusList;
 	}
 

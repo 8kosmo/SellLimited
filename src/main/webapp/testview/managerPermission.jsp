@@ -1,18 +1,22 @@
 <%@page import="java.awt.print.Printable"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
+<%@page import="com.sellfeed.util.PageBar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	List<Map<String,Object>> itemStatusList = 
-			(List<Map<String,Object>>)request.getAttribute("itemStatusList");
-	int size = 0;
-	if(itemStatusList != null && itemStatusList.size()>0){
-		size = itemStatusList.size();
-	}
-/* 	if(itemStatusList != null){
-		out.print(itemStatusList.get(0).get("MEM_ID"));
-	} */
+   List<Map<String,Object>> itemStatusList = 
+         (List<Map<String,Object>>)request.getAttribute("itemStatusList");
+   int size = 0;
+   if(itemStatusList != null && itemStatusList.size()>0){
+      size = itemStatusList.size();
+   }
+   /* 페이지네이션 추가 */
+   int numPerPage = 10;
+   int nowPage = 0;
+   if(request.getParameter("nowPage")!=null){
+	   nowPage = Integer.parseInt(request.getParameter("nowPage"));
+   }
 %>
 <!DOCTYPE html>
 <html>
@@ -21,9 +25,9 @@
 <title>관리자페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <script type="text/javascript">
-	function fileDown(fname) {
-		location.href="/testview/download.jsp?photo_name="+fname;
-	}
+   function fileDown(fname) {
+      location.href="/testview/download.jsp?photo_name="+fname;
+   }
 </script>
 </head>
 <body>
@@ -108,7 +112,7 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
+            <col width="200px">
             <col width="80px;">
             <col width="80px;">
             <col width="60px;">
@@ -133,7 +137,7 @@
       </table>
 <%
 	if(size > 0){
-		
+      
 %>
        <table class="mypage_table">
          <colgroup>
@@ -141,7 +145,7 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
+            <col width="200px">
             <col width="80px;">
             <col width="80px;">
             <col width="60px;">
@@ -150,7 +154,8 @@
             <col width="80px;">
          </colgroup>
 <%
-		for(int i=0;i<size;i++){
+		for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+			if(size==i) break;
 			Map<String,Object> rMap = itemStatusList.get(i);
 %>
             <tr>
@@ -172,12 +177,12 @@
                <td><a href="/product/managerRefuse.sf?item_code=<%=rMap.get("ITEM_CODE") %>"><button type="button">등록거절</button></a></td>
             </tr>
 <%
-		}
+      }
 %>
          </tbody>
       </table>
 <%
-	} else{
+   } else{
 %>
        <table class="mypage_table">
          <colgroup>
@@ -185,7 +190,7 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
+            <col width="200px">
             <col width="80px;">
             <col width="80px;">
             <col width="60px;">
@@ -201,20 +206,20 @@
       </table>
    </li>
 <%
-	}
+   }
 %>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td>
+<%
+					   String pagePath = "/product/itemStatusList.sf?";
+					   PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
+					   String pagination = pb.getPageBar();
+					   out.print(pagination);
+%>
             </tr>
          </tbody>
       </table>

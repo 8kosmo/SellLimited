@@ -24,15 +24,18 @@ public class ProductDao {
 		productList = sqlSessionTemplate.selectList("productList",pMap);
 		return productList;
 	}
-//★	Insert
-	public int ProductIns(Map<String, Object> pMap) {
-		logger.info("ProductDao| Call productIns");
-		sqlSessionTemplate.selectOne("productIns",pMap);
-		String a = pMap.get("result").toString();
-		logger.info(a);
-	//	logger.info("@@@@@@@@@@@@@@@@@@@gohome :"+gohome);
-		return result;
-	}
+//★   Insert
+   public int ProductIns(Map<String, Object> pMap) {
+      logger.info("ProductDao| Call productIns");
+      sqlSessionTemplate.selectOne("productIns",pMap);
+      String a = pMap.get("result").toString();
+      logger.info(a);
+      return result;
+   }
+   public void fileNameIns(List<Map<String,Object>> itemList) {
+	   logger.info("ProductDao| Call fileNameIns");
+	   int i = sqlSessionTemplate.update("fileNameIns",itemList);
+   }   
 //★	Update
 	public int productUpd(Map<String, Object> pMap) {
 		result = sqlSessionTemplate.update("productUpd",pMap);
@@ -71,13 +74,18 @@ public class ProductDao {
 		result = sqlSessionTemplate.insert("auct_progressIns", pMap);
 		return result;
 	}
-	public List<Map<String, Object>> itemStatusList() {
+	public List<Map<String, Object>> itemStatusList(Map<String, Object> pMap) {
 		List<Map<String, Object>> itemStatusList = 
 				new ArrayList<Map<String,Object>>();
-		itemStatusList = sqlSessionTemplate.selectList("itemStatusList");
+		itemStatusList = sqlSessionTemplate.selectList("itemStatusList",pMap);
 		return itemStatusList;
 	}
 	public void managerRefuse(String item_code) {
 		sqlSessionTemplate.delete("managerRefuse", item_code);
+	}
+	public int getPermissionTotal() {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getPermissionTotal");
+		return total;
 	}
 }
