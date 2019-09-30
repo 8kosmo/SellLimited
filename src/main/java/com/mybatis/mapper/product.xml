@@ -62,9 +62,9 @@
       INSERT INTO AUCTION_INFO
       VALUES (#{item_code}
              ,#{item_code}
-             ,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd hh24:mi:ss')
+             ,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd/hh24/mi/ss')
                    FROM DUAL)
-             ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd hh24:mi:ss')
+             ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd/hh24/mi/ss')
                    FROM DUAL)
              )
    </insert>
@@ -72,9 +72,9 @@
    <insert id="auct_progressIns" parameterType="map">
       INSERT INTO AUCT_PROGRESS
       VALUES (#{item_code}
-             ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd hh24:mi:ss')
+             ,(SELECT TO_CHAR(SYSDATE + 3, 'yyyy/mm/dd/hh24/mi/ss')
                    FROM DUAL)
-             ,(SELECT TO_CHAR(SYSDATE + #{auct_period}/24, 'yyyy/mm/dd hh24:mi:ss')
+             ,(SELECT TO_CHAR(SYSDATE + #{auct_period}/24, 'yyyy/mm/dd/hh24/mi/ss')
                    FROM DUAL)
              )
    </insert> 
