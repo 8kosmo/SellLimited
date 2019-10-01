@@ -16,10 +16,10 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="/product/productDetail.sf?bid_code=TDCC7139&status=auction&item_code=TDCC7139"><button>경매중 테스트</button></a></td>
+<td><a href="/product/productDetail.sf?bid_code=YXNY9724&status=auction&item_code=YXNY9724"><button>경매중 테스트</button></a></td>
 </tr>
 <tr>
-<td><a href="/product/productDetail.sf?bid_code=TDCC7139&status=seed&item_code=TDCC7139"><button>시드발급중 테스트</button></a></td>
+<td><a href="/product/productDetail.sf?bid_code=YXNY9724&status=seed&item_code=YXNY9724"><button>시드발급중 테스트</button></a></td>
 </tr>
 </tbody>
 </table>

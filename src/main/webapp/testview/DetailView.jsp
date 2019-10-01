@@ -9,20 +9,22 @@
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
-   String mem_name = null;
-   String nowBalance = null;
-    if (session.getAttribute("mem_name") == null 
-          ||session.getAttribute("nowBalance") == null) {
-    }else{
-        mem_name = (String)session.getAttribute("mem_name");
-        nowBalance = (String)session.getAttribute("nowBalance");
-    }
+	String mem_name = null;
+	String nowBalance = null;
+	String mem_id = null;
+	 if (session.getAttribute("mem_name") == null 
+	       ||session.getAttribute("nowBalance") == null) {
+	 }else{
+	     mem_name = (String)session.getAttribute("mem_name");
+	     nowBalance = (String)session.getAttribute("nowBalance");
+	     mem_id = (String)session.getAttribute("mem_id");
+	 }
     
    int size = 0;
    Map<String,Object> rMap = 
          (Map<String,Object>)request.getAttribute("rMap");
    List<String> photoNameList = (List<String>)rMap.get("PHOTO_NAME");
-   
+   request.setAttribute("photoList", photoNameList);
 
    //_______________________________________________타임
    String T_EndTime = "2019/10/05/21/44/32";
@@ -34,22 +36,30 @@
    String HH = st.nextToken();
    String MI = st.nextToken();
    String SS = st.nextToken();
+   out.print(photoNameList);
+   
+   String photoName  = "";
+   String onclickSub = "";
+   String img_id     ="";
 %>
-
 <script>
-function photoList(){
-	var photoNameList = <%=photoNameList%>;
-	if(photoNameList!=null){
-	for(var i=0; i<photoNameList.size();i++){
-		if(i=0){
-			document.getElementById("d_big_img").innerHTML = "<img id='big_img' src='/itemPhoto/<%=photoNameList.get(i)%>' >"
-		}else{
+$(document).ready(function(){
+<%	for(int i=0; i<photoNameList.size();i++){
+	photoName = photoNameList.get(i).toString();
+	onclickSub = "clickSub"+i+"()";
+	img_id = "sub_img"+i;
+		if(i==0){	
+%>
+		document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
+<%		}else{
+%>
 			document.getElementById("d_small_img").innerHTML =
-				"<span><a onclick='javascript:clickSub'+i+'()'><img id='sub_img'+i src='/itemPhoto/<%=photoNameList.get(i)%>'> </a></span>"
-			}
-		}
-	}
-}
+				"<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
+<%	}		
+}%>	//__________________________________________________________________end of for
+
+});//_______________________________________________________________________end of ready
+
 //_________________________________________타임
 function getTime() {
    now = new Date();
@@ -107,6 +117,28 @@ function getTime() {
       big_img.src=sub_img2_src;
       sub_img2.src=big_img_src;
    }
+   /*______________________________________________________________________________________________관심회원, 상품 */
+   function addFavSeller(){
+		$.ajax({
+			 method:'GET'
+			,url:'/rest/favSellerAdd.sf?fav_sellerid=<%=rMap.get("MEM_ID")%>&mem_id=<%=mem_id%>'
+			,data:'data'
+			,success:function(data){
+				alert(data);
+			}		
+		});
+	   };
+   function addFavProduct(){
+		$.ajax({
+			 method:'GET'
+			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
+			,data:'data'
+			,success:function(data){
+				alert(data);
+			}		
+		});
+	   };
+   /*______________________________________________________________________________________________관심회원, 상품 */
 </script>
 </head>
 <body>
@@ -204,9 +236,9 @@ function getTime() {
                                     <!-- 제품상세설명 간단히 적는부분 -->
                                     <span class="ctntxt" style="margin-top:0px">
                                        <strong>제품상세설명</strong>
-                                       <%=rMap.get("PRODUCT_DETAIL")%>
                                        <br>
-                                        <br>위 고양이는 현영누나의 구여운 고양이로 보고서 심장이 멎을수 있는 위험이 있으니 조심해서 보시기 바랍니다.
+                                       <%=rMap.get("PRODUCT_DETAIL")%>
+										<br>
                                      </span>
                                      <!-- 빨간글씨로 주의사항 적은부분 -->
                                      <span class="endtxt" style="font-weight:bold;color:red">
@@ -276,7 +308,7 @@ function getTime() {
                                     <a onfocus="blur();" id="auction_send" title="바로입찰">
                                        <button type="button" class="btn_algerie">입찰하기</button>
                                     </a>
-                                    <button type="button" class="btn_nigeria" onclick="">관심등록</button>
+                                    <button onclick="javascript:addFavProduct()" type="button" class="btn_nigeria" onclick="">관심등록</button>
                                  </td>
                               </tr>
                            </table>
@@ -319,7 +351,7 @@ function getTime() {
                               </colgroup>
                               <tr>
                                  <th>
-                                     수량<br> 반품가능 여부
+                                    	 수량<br> 반품가능 여부 <br>
                                  </th>
                                  <td>
                                      1<br>
@@ -335,7 +367,7 @@ function getTime() {
                                              <span class="corona_id"><%=rMap.get("MEM_ID")%></span>
                                            </a>
                                     </span>&nbsp;&nbsp;
-                                    <a href="#">
+                                    <a href="javascript:addFavSeller()">
                                        <img src="/images/seller_icon.png" alt="관심등록">
                                     </a>
                                  </td>

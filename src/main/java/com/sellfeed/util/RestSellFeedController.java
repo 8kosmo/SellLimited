@@ -35,19 +35,25 @@ public class RestSellFeedController {
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
 		String result="";
 		int Ok = 0;
-		pMap.put("fav_sellerid", "TestId1");
-		pMap.put("mem_id", "uh4ng");
-		Ok = favoriteLogic.favSellerAdd(pMap);
-		logger.info("Ok :"+Ok);
+			Ok = favoriteLogic.favSellerAdd(pMap);
+			logger.info("Ok :"+Ok);
+			if(Ok==1) {
+				result = pMap.get("fav_sellerid")+"님이 관심판매자 목록에 등록되었습니다";
+			}else if(Ok==0){
+				result = pMap.get("fav_sellerid")+"님은 이미 관심판매자 목록에 등록되있습니다";
+			}
 		return result;
 	}
 	@GetMapping("/favProductAdd.sf")
 	public String favProductAdd(@RequestParam Map<String,Object> pMap) {
 		String result="";
 		int Ok = 0;
-		pMap.put("mem_id", "TestId1");
-		pMap.put("prod_code", "PWUL1903");
-		Ok = favoriteLogic.favProductAdd(pMap);
+			Ok = favoriteLogic.favProductAdd(pMap);
+			if(Ok==1) {
+				result ="이 상품이 관심상품 목록에 등록되었습니다";
+			}else if(Ok==0){
+				result = "이 상품은 이미 관심상품 목록에 등록되있습니다";
+			}
 		return result;
 	}
 	@GetMapping("/favSellerDel.sf")

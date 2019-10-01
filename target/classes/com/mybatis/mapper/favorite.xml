@@ -13,18 +13,24 @@
 		AND fav_sellerid = #{fav_sellerid}
 	</delete>
 	
+	<select id="favSellerCheck" parameterType="map" resultType="int">
+		SELECT NVL((SELECT 0 FROM fav_seller
+		WHERE fav_sellerid = #{fav_sellerid}
+		AND mem_id = #{mem_id}),1) FROM dual
+	</select>
+
 	<select id="favProductList" parameterType="string" resultType="map">
 	<!-- 즉시구매가격 없음 테이블 수정 필요 -->
 		SELECT attached_file,product_name, mem_id ,start_price 
 		FROM sale_item,auct_progress
-		WHERE sale_item.item_code = (SELECT prod_code FROM fav_item WHERE  mem_id = #{mem_id})
-	
+		WHERE sale_item.item_code = (SELECT fav_bidcode FROM fav_item WHERE  mem_id = #{mem_id})
 	</select>
+	
 	
 	<delete id="favProductDel">
 		DELETE fav_item
 		WHERE mem_id = #{mem_id}
-		AND prod_code = #{prod_code}
+		AND fav_bidcode = #{fav_bidcode}
 	</delete>
 	
 	<insert id="favSellerIns">
@@ -33,8 +39,13 @@
 	</insert>
 	
 	<insert id="favProductIns">
-		INSERT INTO FAV_ITEM (prod_code,mem_id)
-		VALUES(#{prod_code},#{mem_id})
+		INSERT INTO FAV_ITEM (fav_bidcode,mem_id)
+		VALUES(#{fav_bidcode},#{mem_id})
 	</insert>
 	
+	<select id="favProductCheck" parameterType="map" resultType="int">
+		SELECT NVL((SELECT 0 FROM fav_item
+		WHERE fav_bidcode = #{fav_bidcode}
+		AND mem_id = #{mem_id}),1) FROM dual
+	</select>
 </mapper>

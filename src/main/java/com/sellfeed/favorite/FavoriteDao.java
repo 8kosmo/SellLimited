@@ -47,4 +47,13 @@ public class FavoriteDao {
 		Ok = sqlSessionTemplate.update("favProductIns",pMap);
 		return Ok;
 	}
+	public int favSellerCheck(Map pMap) {
+		logger.info("pMap체크 : "+pMap);
+		Ok = sqlSessionTemplate.selectOne("favSellerCheck",pMap);
+		return Ok;
+	}
+	public int favProductCheck(Map pMap) {
+		Ok = sqlSessionTemplate.selectOne("favProductCheck",pMap);
+		return Ok;
+	}
 }
