@@ -47,6 +47,19 @@
 <%@ include file="/common/cssJs.jsp" %>
 </head>
 <body>
+	<script type="text/javascript">
+		function itemStatusSeedList() {
+			$.ajax({ 
+				type: "GET",
+				url: "/product/itemStatusSeedList.sf?nowPage=<%=nowPage %>",
+				success: function(data) {
+					$("#mypage")
+				}
+					
+			});
+
+		}
+	</script>
 <%@ include file="/common/top.jsp" %>
 <!-- 경매물품리스트 나오는 전체 폼테이블 -->
 <div id="mypage">
@@ -402,7 +415,7 @@
 <%
 								   pagePath = "/product/itemStatusSeedList.sf?";
 								   pb = new PageBar(numPerPage,totalsize2,nowPage,pagePath);
-								   pagination = pb.getPageBar2();
+								   pagination = pb.getPageBar();
 								   out.print(pagination);
 %>
 			            </tr>

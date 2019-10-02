@@ -19,29 +19,6 @@
 %>
 
 <script type="text/javascript">
-<<<<<<< HEAD
-	var mem_name = '<%=mem_name%>';
-	var nowBalance = '<%=nowBalance%>';
-	$(document).ready(function(){
-		//로그인 실패시
-		if(mem_name=='null'){
-			$("#login").show();
-			$("#logout").hide();
-			$("#managerLogout").hide();
-		}else if(mem_name=='관리자'){
-			$("#login").hide();
-			$("#logout").hide();
-			$("#managerLogout").show();
-		}else {
-			$("#login").hide();
-			$("#logout").show();
-			$("#managerLogout").hide();
-		}
-	});
-		function logout(){
-			location.href="/common/sessionDel.jsp";	
-	}
-=======
    var mem_name = '<%=mem_name%>';
    var nowBalance = '<%=nowBalance%>';
    $(document).ready(function(){
@@ -63,7 +40,6 @@
       function logout(){
          location.href="/common/sessionDel.jsp";   
    }
->>>>>>> refs/heads/2019-09-30
 </script>
 </head>
 <body>
@@ -71,35 +47,6 @@
 <div id="top" align="center">
 <!-- head -->
 <ul class="head">
-<<<<<<< HEAD
-	<li class="head_txt" style="width: auto; float: right;">
-		<div id="login" style="display:inline;">
-			<a href="/testview/login.jsp" onclick="">로그인</a><span>|</span>
-			<a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
-		</div>
-		<div id="logout" style="display:inline;">
-			<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-			<a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
-			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
-			<a href="#"><strong>마이페이지</strong></a><span>|</span>
-		</div>
-		<div id="managerLogout" style="display:inline;">
-			<a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-			<a href="#" style="margin-right:500px">&nbsp</a>
-			<a href="#" onclick="logout()">로그아웃</a><span>|</span>
-			<a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
-		</div>
-		<a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
-		<div class="layer_add2">
-			<a href="#">고객센터</a>
-			<ul class="list_layer2">
-					<li><a href="#">공지사항</a></li>
-					<li><a href="#">1:1문의</a></li>
-					<li><a href="#">FAQ</a></li>
-			</ul>
-			</div>
-	</li>  
-=======
    <li class="head_txt" style="width: auto; float: right;">
       <div id="login" style="display:inline;">
          <a href="/testview/login.jsp" onclick="">로그인</a><span>|</span>
@@ -115,7 +62,7 @@
          <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
          <a href="#" style="margin-right:500px">&nbsp</a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
-         <a href="/product/itemStatusList.sf?nowPage=0"><strong>관리페이지</strong></a><span>|</span>
+         <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
       <a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
       <div class="layer_add2">
@@ -127,7 +74,6 @@
          </ul>
          </div>
    </li>  
->>>>>>> refs/heads/2019-09-30
 </ul>
 <!-- 로고,검색창,검색버튼 있는부분 -->
 <ul class="logopart">

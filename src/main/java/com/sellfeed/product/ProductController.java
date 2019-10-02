@@ -3,15 +3,21 @@ package com.sellfeed.product;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -116,10 +122,16 @@ public class ProductController {
 	}
 	//관리자 페이지 접속 시 리스트 검색
 	@GetMapping(value="/itemStatusList.sf")
-	public String itemStatusList(Model mod) {
+	public String itemStatusList(Model mod, HttpServletRequest req) {
 		List<Map<String, Object>> itemStatusList = null;
-		int pageNumber = 1;
-		int pageSize = 1;
+		int pageNumber = 0;
+		int pageSize = 0;
+		 if(req.getParameter("pageNumber")!=null) {
+             pageNumber = Integer.parseInt(req.getParameter("pageNumber"));
+         }
+         if(req.getParameter("pageSize")!=null) {
+             pageSize =  Integer.parseInt(req.getParameter("pageSize"));
+         }
 		logger.info("pageNumber :"+pageNumber);
 		logger.info("pageSize :"+pageSize);
 		Map<String, Object> pMap = new HashMap<>();
@@ -134,5 +146,44 @@ public class ProductController {
 	public String managerRefuse(@RequestParam("item_code") String item_code) {
 		productLogic.managerRefuse(item_code);
 		return "redirect:../product/itemStatusList.sf";
+	}
+	//시드참여중 리스트 검색
+	@GetMapping(value="/itemStatusSeedList.sf")
+	public String itemStatusSeedList(Model mod, HttpServletRequest req) {
+		/*시드참여중 리스트*/
+		List<Map<String, Object>> itemStatusSeedList = null;
+		int pageNumber = 0;
+		int pageSize = 0;
+		 if(req.getParameter("pageNumber")!=null) {
+             pageNumber = Integer.parseInt(req.getParameter("pageNumber"));
+         }
+         if(req.getParameter("pageSize")!=null) {
+             pageSize =  Integer.parseInt(req.getParameter("pageSize"));
+         }
+		logger.info("pageNumber :"+pageNumber);
+		logger.info("pageSize :"+pageSize);
+		Map<String, Object> pMap = new HashMap<>();
+		pMap.put("pageNumber",pageNumber);
+		pMap.put("pageSize",pageSize);
+		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
+		mod.addAttribute("itemStatusSeedList", itemStatusSeedList);
+		/*경매진행중 리스트*/
+		List<Map<String, Object>> itemStatusAuctionList = null;
+		int pageNumber1 = 0;
+		int pageSize1 = 0;
+		 if(req.getParameter("pageNumber1")!=null) {
+             pageNumber1 = Integer.parseInt(req.getParameter("pageNumber1"));
+         }
+         if(req.getParameter("pageSize1")!=null) {
+             pageSize1 =  Integer.parseInt(req.getParameter("pageSize1"));
+         }
+		logger.info("pageNumber1 :"+pageNumber1);
+		logger.info("pageSize1 :"+pageSize1);
+		Map<String, Object> pMap2 = new HashMap<>();
+		pMap2.put("pageNumber1",pageNumber1);
+		pMap2.put("pageSize1",pageSize1);
+		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap2);
+		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
+		return "forward:../testview/productListView.jsp";
 	}
 }

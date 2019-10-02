@@ -88,4 +88,26 @@ public class ProductDao {
 		total = sqlSessionTemplate.selectOne("getPermissionTotal");
 		return total;
 	}
+	public List<Map<String, Object>> itemStatusSeedList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusSeedList = 
+				new ArrayList<Map<String,Object>>();
+		itemStatusSeedList = sqlSessionTemplate.selectList("itemStatusSeedList",pMap);
+		return itemStatusSeedList;
+	}
+	public int getSeedListTotal() {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getSeedListTotal");
+		return total;
+	}
+	public List<Map<String, Object>> itemStatusAuctionList(Map<String, Object> pMap2) {
+		List<Map<String, Object>> itemStatusAuctionList = 
+				new ArrayList<Map<String,Object>>();
+		itemStatusAuctionList = sqlSessionTemplate.selectList("itemStatusAuctionList",pMap2);
+		return itemStatusAuctionList;
+	}
+	public int getAuctionListTotal() {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getAuctionListTotal");
+		return total;
+	}
 }
