@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.HandlerChain;
+import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
+import com.sellfeed.seed.SeedLogic;
 
 @RestController
 @RequestMapping(value="/rest",produces="text/plain;charset=UTF-8")
@@ -30,6 +34,8 @@ public class RestSellFeedController {
 	private AccountLogic accountLogic = null;
 	@Autowired
 	private MemberLogic memberLogic = null;
+	@Autowired
+	private SeedLogic seedLogic = null;
 	
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
@@ -105,8 +111,10 @@ public class RestSellFeedController {
 				|| "아이디가 존재하지 않습니다.".equals(list.get(0))){
 		}
 		else {
+			int nowBalance = Integer.parseInt(list.get(1));
+			logger.info("잔액ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"+nowBalance);
 			session.setAttribute("mem_name",list.get(0));
-			session.setAttribute("nowBalance",list.get(1));
+			session.setAttribute("nowBalance",nowBalance);
 			session.setAttribute("mem_id", pMap.get("mem_id"));
 		}
 		String mem_name = pMap.get("mem_name").toString();
@@ -121,5 +129,50 @@ public class RestSellFeedController {
 		String inspectedId = memberLogic.idInspection(pMap);
 		return inspectedId;
 	}
+	 @GetMapping("/seedOverlapCheck.sf")
+	   public String seedOverlapCheck(@RequestParam Map<String,Object> pMap) {
+	      logger.info("============>seedOverlapCheck 호출 성공");
+	      String result = null;
+	      result=String.valueOf(seedLogic.seedOverlapCheck(pMap));
+	      return result;
+	   }
 	
+	@GetMapping(value="/accountBalance.sf")
+	public String accountNowBalance(@RequestParam String mem_id){
+		logger.info("==========>accountBalance 호출 성공");
+		int account_balance = accountLogic.accountNowBalance(mem_id);
+		logger.info("RestController"+account_balance+"원");
+		
+		logger.info("RestController"+account_balance+"원");
+		String result = Integer.toString(account_balance);
+		return result;
+	}
+	@GetMapping(value="/seedIns.sf") //pMap에는 mem_id 
+	public String seedIns(@RequestParam Map<String,Object> pMap, HttpSession session) { 
+		String result ="";
+		pMap.put("trade","출금"); 
+		pMap.put("trade_detail", "시드발급");
+		pMap.put("trade_ammount",10000);
+		pMap.put("trade_target", "SELLFEED"); 
+//		int insResult = accountLogic.accountIns(pMap); 
+		Map<String,Object> rMap = accountLogic.accountIns(pMap);
+		int insResult = (int)rMap.get("result");
+		int acct_balance = (int)rMap.get("acct_balance");
+		if(insResult==1) { 
+			try {
+				logger.info("####################"+pMap);
+				int seedInsResult = seedLogic.seedIns(pMap);
+				if(seedInsResult==1) {
+					result ="시드발급 성공"; 
+				}else {
+					result ="시드발급 실패"; 
+				}
+			} catch (Exception e) {
+				result = "시드발급 실패";
+			}
+		} 
+		session.setAttribute("nowBalance" ,acct_balance);
+		return result; 
+	}
+ 
 }

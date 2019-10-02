@@ -64,14 +64,17 @@ public class MemberLogic {
    public List<String> login(Map<String, Object> pMap) {
       logger.info("=================>login 호출 성공");
       String mem_name="";
-      String acct_balance="";
+      int acct_balance=0;
+      String mem_id = "";
       List<String> list = new ArrayList<String>(); 
       try {
     	  mem_name = memberDao.login(pMap);
     	  logger.info(mem_name);
-    	  acct_balance = accountDao.accountNowBalance(pMap);
+    	  mem_id = pMap.get("mem_id").toString();
+    	  acct_balance = accountDao.accountNowBalance(mem_id);
+    	  logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
     	  list.add(pMap.get("mem_name").toString());
-    	  list.add(acct_balance);
+    	  list.add(""+acct_balance);
 	} catch (DataAccessException e) {
 		  throw e;
 	  }

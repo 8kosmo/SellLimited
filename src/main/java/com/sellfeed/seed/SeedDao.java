@@ -44,4 +44,10 @@ public class SeedDao {
 		result = sqlSessionTemplate.update("bidLose",pMap);
 		return result;
 	}
+
+	public String seedOverlapCheck(Map<String, Object> pMap) {
+		String mem_id="";
+		mem_id= sqlSessionTemplate.selectOne("seedOverlapCheck",pMap);
+		return mem_id;
+		   }
 }

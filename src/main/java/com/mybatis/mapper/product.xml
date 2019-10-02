@@ -25,19 +25,19 @@
    </select>
      
     
-   <select id="seedDetail" parameterType="map" resultType="map">
-      SELECT bid_title ,start_price ,buynow_price, mem_id ,product_detail ,sale_item.item_code 
-           ,cur_seed, auction_info.bid_code
-           ,photo_name 
-           ,start_seed,end_seed
-       FROM sale_item
-          ,(select decode(nvl(count(bidders_id),0),0,0) cur_seed from seed) seed 
-          ,item_photo
-          ,auction_info         
-     WHERE sale_item.item_code=auction_info.item_code
-       AND sale_item.item_code=item_photo.item_code
-       AND item_photo.item_code=auction_info.item_code
-       AND auction_info.bid_code=#{bid_code}
+	<select id="seedDetail" parameterType="map" resultType="map">
+   	SELECT bid_title ,start_price ,buynow_price, mem_id ,product_detail ,sale_item.item_code,brand,model_name  
+            ,cur_seed, auction_info.bid_code
+            ,photo_name 
+            ,start_seed,end_seed
+        FROM sale_item
+           ,(select nvl((select count(bidders_id) from seed),0) cur_seed from dual)
+           ,item_photo
+           ,auction_info         
+      WHERE sale_item.item_code=auction_info.item_code
+        AND sale_item.item_code=item_photo.item_code
+        AND item_photo.item_code=auction_info.item_code
+        AND auction_info.bid_code=#{bid_code}
    </select>
    
    <!--  <select id="seedDetail" parameterType="map" resultType="map">

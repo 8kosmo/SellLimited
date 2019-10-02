@@ -28,4 +28,10 @@
 		 WHERE bid_code=#{bid_code}			
 	</insert>
 	
+	<select id="seedOverlapCheck" parameterType="map" resultType="string">
+  		SELECT nvl((SELECT bidders_id from seed 
+			WHERE bid_code=#{bid_code}
+			AND bidders_id=#{bidders_id}),0) FROM dual 
+   </select>
+   
 </mapper>

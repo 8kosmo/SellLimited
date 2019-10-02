@@ -62,34 +62,40 @@ public class ProductController {
 
    	 }
 
-   	 @GetMapping("/productDetail.sf")
-      public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
-         List<Map<String,Object>> productDetailList = new ArrayList<>();
-         logger.info("))))))))))))))))))))))))))))"+pMap);
-         if(pMap.get("status").equals("auction")) {
-            productDetailList = productLogic.auctionDetail(pMap);
-         }
-         else if(pMap.get("status").equals("seed")) {
-            productDetailList = productLogic.seedDetail(pMap);
-         }
-         Map<String,Object> rMap = new HashMap<>();
-         List<String> photoNameList = new ArrayList<>();
-         logger.info("_________________________________"+productDetailList);
-         for(int i=0; i<productDetailList.size();i++) {
-            rMap = productDetailList.get(i);
-            rMap.get("PHOTO_NAME");
-            photoNameList.add(rMap.get("PHOTO_NAME").toString());
-            logger.info(")1111)))))))))))))))))))))))))))))"+photoNameList);
-         }
-         rMap.put("PHOTO_NAME",photoNameList);
-         if(photoNameList.size()>1) {
-        	 logger.info(")2222)))))))))))))))))))))))))))))"+rMap);
-        	 List<String> testL = (List)rMap.get("PHOTO_NAME");
-        	 logger.info(")))333333)))))))"+testL);
-         }
-         mod.addAttribute("rMap",rMap);
-         return "forward:/testview/DetailView.jsp";
-      }
+     @GetMapping("/productDetail.sf")
+    public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
+       List<Map<String,Object>> productDetailList = new ArrayList<>();
+       logger.info("))))))))))))))))))))))))))))"+pMap);
+       if(pMap.get("status").equals("auction")) {
+          productDetailList = productLogic.auctionDetail(pMap);
+       }
+       else if(pMap.get("status").equals("seed")) {
+          productDetailList = productLogic.seedDetail(pMap);
+       }
+       Map<String,Object> rMap = new HashMap<>();
+       List<String> photoNameList = new ArrayList<>();
+       logger.info("_________________________________"+productDetailList);
+       for(int i=0; i<productDetailList.size();i++) {
+          rMap = productDetailList.get(i);
+          rMap.get("PHOTO_NAME");
+          photoNameList.add(rMap.get("PHOTO_NAME").toString());
+          logger.info(")1111)))))))))))))))))))))))))))))"+photoNameList);
+       }
+       rMap.put("PHOTO_NAME",photoNameList);
+       if(photoNameList.size()>1) {
+          logger.info(")2222)))))))))))))))))))))))))))))"+rMap);
+          List<String> testL = (List)rMap.get("PHOTO_NAME");
+          logger.info(")))333333)))))))"+testL);
+       }
+       mod.addAttribute("rMap",rMap);
+       
+       if(pMap.get("status").equals("auction")) {
+          return "forward:/testview/AuctionDetailView.jsp";
+       }else {
+          return "forward:/testview/SeedDetailView.jsp";
+       }
+    }
+  
 
 //      @GetMapping("/productDetail.sf")
 //      public String gproductList(@RequestParam Map<String,Object> pMap

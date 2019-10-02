@@ -20,12 +20,11 @@
 	                    ,trade_target
 	                    ,mem_id
 	                    ,hidden)
-	             VALUES(#{acct_number}
+	             VALUES((SELECT max(acct_number) FROM account
+						 WHERE mem_id = #{mem_id})
 	                    ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
-	                    ,(SELECT acct_balance+#{tr_ammount} FROM account 
-	                       WHERE r_num=(SELECT max(r_num) FROM account)                         
-	                         AND mem_id=#{mem_id})
-	                    ,(SELECT TO_CHAR(SYSDATE, 'YYYY'||'/'||'MM'||'/'||'DD') FROM DUAL)
+	                    ,#{acct_balance}
+	                    ,(SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD/HH/MI/SS') FROM DUAL)
 	                    ,#{trade_ammount}
 	                    ,#{trade}
 	                    ,#{trade_detail}
@@ -47,11 +46,12 @@
            AND hidden='no'
 	</select>
 	
-	<select id="accountNowBalance" parameterType="map" resultType="string" >
-		SELECT acct_balance
-          FROM account
-         WHERE mem_id=#{mem_id}
-         AND r_num = (SELECT MAX(r_num) FROM account WHERE mem_id=#{mem_id})
+	<select id="accountNowBalance" parameterType="string" resultType="int" >
+		SELECT acct_balance FROM account d,
+		(SELECT mem_id, MAX(r_num) r_num FROM account GROUP BY mem_id) c
+		WHERE d.mem_id = #{mem_id}
+		AND d.mem_id = c.mem_id
+		AND d.r_num = c.r_num		
 	</select>
 		
 	<select id="nowPoint" parameterType="map" resultType="string">

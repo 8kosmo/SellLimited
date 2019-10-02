@@ -23,11 +23,25 @@ public class SeedLogic {
 	}
 	
 	public int seedIns(Map<String, Object> pMap) {
-		logger.info("============>seedIns 호출 성공");
-		int result=0;
-		result = seedDao.seedIns(pMap);
-		return result;
-	}
+	      logger.info("============>seedIns 호출 성공");
+	      int result=0;
+	         result = seedDao.seedIns(pMap);
+	      return result;
+	   }
+	
+	public int seedOverlapCheck(Map<String, Object> pMap) {
+	      logger.info("============>seedOverlapCheck 호출 성공");
+	      int result=0;
+	      //이미 참여한 경우
+	      String bidders_id = seedDao.seedOverlapCheck(pMap).toString();
+	      if(pMap.get("bidders_id").equals(bidders_id)) {
+	         logger.info("bidders_id============>"+bidders_id);
+	         result=0;
+	      }else{
+	         result = 1;
+	      }
+	      return result;
+	   }
 	
 	public int bidWin(Map<String, Object> pMap) {
 		logger.info("============>bidWin 호출 성공");

@@ -9,16 +9,16 @@
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
-	String mem_name = null;
-	String nowBalance = null;
-	String mem_id = null;
-	 if (session.getAttribute("mem_name") == null 
-	       ||session.getAttribute("nowBalance") == null) {
-	 }else{
-	     mem_name = (String)session.getAttribute("mem_name");
-	     nowBalance = (String)session.getAttribute("nowBalance");
-	     mem_id = (String)session.getAttribute("mem_id");
-	 }
+   String mem_name = null;
+   int nowBalance = 0;
+   String mem_id = null;
+    if (session.getAttribute("mem_name") == null 
+          ||session.getAttribute("nowBalance") == null) {
+    }else{
+        mem_name = (String)session.getAttribute("mem_name");
+        nowBalance = (int)session.getAttribute("nowBalance");
+        mem_id = (String)session.getAttribute("mem_id");
+    }
     
    int size = 0;
    Map<String,Object> rMap = 
@@ -27,7 +27,7 @@
    request.setAttribute("photoList", photoNameList);
 
    //_______________________________________________타임
-   String T_EndTime = "2019/10/05/21/44/32";
+   String T_EndTime = rMap.get("END_SEED").toString();
 
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
@@ -36,28 +36,38 @@
    String HH = st.nextToken();
    String MI = st.nextToken();
    String SS = st.nextToken();
-   out.print(photoNameList);
    
    String photoName  = "";
    String onclickSub = "";
    String img_id     ="";
+
 %>
 <script>
-$(document).ready(function(){
-<%	for(int i=0; i<photoNameList.size();i++){
-	photoName = photoNameList.get(i).toString();
-	onclickSub = "clickSub"+i+"()";
-	img_id = "sub_img"+i;
-		if(i==0){	
-%>
-		document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
-<%		}else{
-%>
-			document.getElementById("d_small_img").innerHTML =
-				"<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
-<%	}		
-}%>	//__________________________________________________________________end of for
+   $(document).ready(function(){
+   <%   for(int i=0; i<photoNameList.size();i++){
+      photoName = photoNameList.get(i).toString();
+      onclickSub = "clickSub"+i+"()";
+      img_id = "sub_img"+i;
+         if(i==0){   
+   %>
+         document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
+   <%      }else{
+   %>
+            document.getElementById("d_small_img").innerHTML =
+               "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
+   <%   }      
+   }%>   //__________________________________________________________________end of for
 
+
+   //로그인 실패시
+   if(mem_name=='null'){
+      $("#logout").hide();
+      $("#login").show();
+   }else{
+      $("#login").hide();
+      $("#logout").show();
+   }
+   
 });//_______________________________________________________________________end of ready
 
 //_________________________________________타임
@@ -73,7 +83,6 @@ function getTime() {
    seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
    secondsRound = Math.round(seconds);
 
-
    document.getElementById("counter0").innerHTML = daysRound;
    document.getElementById("counter1").innerHTML = hoursRound;
    document.getElementById("counter2").innerHTML = minutesRound;
@@ -83,18 +92,9 @@ function getTime() {
    }
    var mem_name = '<%=mem_name%>';
    var nowBalance = '<%=nowBalance%>';
-   $(document).ready(function(){
-      //로그인 실패시
-      if(mem_name=='null'){
-         $("#logout").hide();
-         $("#login").show();
-      }else{
-         $("#login").hide();
-         $("#logout").show();
-      }
-   })
-      function logout(){
-         location.href="/common/sessionDel.jsp";   
+
+   function logout(){
+        location.href="/common/sessionDel.jsp";   
    }
    
    function clickSub1(){
@@ -107,6 +107,7 @@ function getTime() {
       big_img.src=sub_img1_src;
       sub_img1.src=big_img_src;
    }
+   
    function clickSub2(){
       var big_img = document.getElementById("big_img");
       var sub_img2 = document.getElementById("sub_img2");
@@ -117,18 +118,62 @@ function getTime() {
       big_img.src=sub_img2_src;
       sub_img2.src=big_img_src;
    }
-   /*______________________________________________________________________________________________관심회원, 상품 */
+  
+   function seedIns(){
+	   loginSessionCheck();
+       $.ajax({
+             method:'GET'
+            ,url:'/rest/seedOverlapCheck.sf?bidders_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>'
+            ,data:'data'
+            ,success:function(result){
+               if(result=='0'){
+                  alert("이미 시드를 발급받은 상품입니다");
+               }else if(result=='1'){
+                  alert("1단계 성공.");
+                  $.ajax({
+                      method:'GET'
+                     ,url:'/rest/accountBalance.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
+                     ,data:'data'
+                     ,success:function(data){
+                        alert(data);
+                        if(data>=10000){
+                           if(confirm("잔액 : "+data+"원\n시드발급시 잔액에서 1만원 차감됩니다")){
+                        	   alert("결제");
+                        	   $.ajax({
+                        		   method:'GET'
+                        		  ,url:'/rest/seedIns.sf?mem_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>&bidders_id=<%=mem_id%>'
+                        		  ,data:'result'
+                        		  ,success:function(data){
+                        			  alert(data);
+                  location.reload();
+                        		  }
+                        	   });
+                           }else{
+                              alert("시드발급 취소");
+                           }
+                        }else{
+                           payOk = confirm("잔액이 부족합니다 충전하겠습니까?")
+                        }
+                    }
+                  });
+               }
+            }      
+         });
+   } 
+
    function addFavSeller(){
-		$.ajax({
-			 method:'GET'
-			,url:'/rest/favSellerAdd.sf?fav_sellerid=<%=rMap.get("MEM_ID")%>&mem_id=<%=mem_id%>'
-			,data:'data'
-			,success:function(data){
-				alert(data);
-			}		
-		});
-	   };
+	  loginSessionCheck();
+      $.ajax({
+          method:'GET'
+         ,url:'/rest/favSellerAdd.sf?fav_sellerid=<%=rMap.get("MEM_ID")%>&mem_id=<%=mem_id%>'
+         ,data:'data'
+         ,success:function(data){
+            alert(data);
+         }      
+      });
+   };
    function addFavProduct(){
+	   loginSessionCheck();
 		$.ajax({
 			 method:'GET'
 			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
@@ -138,7 +183,13 @@ function getTime() {
 			}		
 		});
 	   };
-   /*______________________________________________________________________________________________관심회원, 상품 */
+   function loginSessionCheck(){
+	   <%		if(mem_id==null){	
+	   %>
+	   			alert("로그인이 필요합니다");
+	   			location.href="/testview/login.jsp";
+	   <%}%>
+	      }
 </script>
 </head>
 <body>
@@ -200,16 +251,16 @@ function getTime() {
 </div><!-- end of div top -->
 <!-- 디테일뷰 시작 전체폼-->
 <div id="mypage">
-   <form action="#" id="detail_frm" method="post" accept-charset="utf-8">
+   <form action="#" id="detail_frm" method="post" accept-charset="utf-8" >
       <div id="dv">
          <ul class="dv_title" style="margin-top:20px;">
             <!-- 경매 등록 타이틀 -->
             <li class="dv_title_left" id="trans_after_subject">
-               <%=rMap.get("BID_TITLE")%>
+               <p style="font-size:25px"> <%=rMap.get("BID_TITLE")%> </p>
             </li>
             <!-- 경매상품ID : ITEM_CODE -->
-            <li class="dv_title_right" style="height:50px;">
-               <p>경매상품ID : <%=rMap.get("ITEM_CODE")%></p>
+            <li class="dv_title_right" style="height:40px;">
+               <p>경매상품 : <%=rMap.get("ITEM_CODE")%></p>
             </li>
          </ul>
          <ul>
@@ -238,7 +289,7 @@ function getTime() {
                                        <strong>제품상세설명</strong>
                                        <br>
                                        <%=rMap.get("PRODUCT_DETAIL")%>
-										<br>
+                              <br>
                                      </span>
                                      <!-- 빨간글씨로 주의사항 적은부분 -->
                                      <span class="endtxt" style="font-weight:bold;color:red">
@@ -251,7 +302,7 @@ function getTime() {
                      </td>
                      <!-- 상세페이지 네모안에 오른쪽부분전체 -->
                      <td class="dot_right">
-                        <!-- 입찰건수, 남은시간 나오는 부분 -->
+                        <!-- 시드참여자수, 남은시간 나오는 부분 -->
                         <span>
                            <table class="dr_step1">
                               <colgroup>
@@ -259,13 +310,13 @@ function getTime() {
                                  <col width="50%;" />
                               </colgroup>
                               <tr>
-                                 <td style="border-right:1px solid #E7E7E7;">입찰건수
-                                    <!-- 입찰건수 -->
-                                    <p><%=rMap.get("CUR_SEED")%></p>
+                                 <td style="border-right:1px solid #E7E7E7;">시드참여자수
+                                    <!-- 현재시드수 -->
+                                    <p style="font-size:20px; margin-top:5px;" id="cur_seed"><%=rMap.get("CUR_SEED")%></p>
                                  </td>
                                  <td>남은시간
-				 <p style="font-size:25px">
-              	 <SPAN id=counter0></SPAN>일+
+             <p style="font-size:20px; margin-top:5px; ">
+                  <SPAN id=counter0></SPAN>일+
                   <SPAN id=counter1></SPAN>:<SPAN id=counter2></SPAN>:<SPAN id=counter3></SPAN></p>
                                  </td>
                               </tr>
@@ -275,18 +326,20 @@ function getTime() {
                         <span>
                            <table class="dr_step2">
                               <colgroup>
-                                 <col width="95px;" />
+                                 <col width="150px;" />
                                  <col width="" />
                               </colgroup>
                               <tr>
-                                 <th>시작가격<br> 시작시간<br> 종료일
+                                 <th>시작가격<br> 즉시구매가<br> 시드모집 시작일<br> 시드모집 종료일
                                  </th>
                                  <!-- 시작가격 -->
                                  <td><%=rMap.get("START_PRICE")%>원<br> 
+                                 <!-- 시작가격 -->
+                                 <%=rMap.get("BUYNOW_PRICE")%>원<br> 
                                  <!-- 시작시간 -->    
-                                     <%=rMap.get("START_SEED")%><br>
+                               <%=rMap.get("START_SEED")%><br>
                                  <!-- 종료일 -->
-                                     <%=rMap.get("END_SEED")%><br>
+                                 <%=rMap.get("END_SEED")%><br>
                                  </td>
                               </tr>
                            </table>
@@ -305,10 +358,8 @@ function getTime() {
                               </tr>
                               <tr>
                                  <td colspan="2" class="buttonsarray">
-                                    <a onfocus="blur();" id="auction_send" title="바로입찰">
-                                       <button type="button" class="btn_algerie">입찰하기</button>
-                                    </a>
-                                    <button onclick="javascript:addFavProduct()" type="button" class="btn_nigeria" onclick="">관심등록</button>
+                                    <button type="button" class="btn_algerie" onClick="seedIns()">시드참여</button>
+                                    <button type="button" class="btn_nigeria" onclick="javascript:addFavProduct()">관심등록</button>
                                  </td>
                               </tr>
                            </table>
@@ -344,23 +395,25 @@ function getTime() {
                         </span>
                         <!-- 수량,반품가능여부,출품자정보 부분 -->
                         <span class="dotbot_all">
-                           <table class="corona" style="margin-top:20px">
+                           <table class="corona" style="margin-top:5px">
                               <colgroup>
-                                 <col width="85px;" />
-                                 <col width="" />
+                                 <col width="105px;"/>
+                                 <col width=""/>
                               </colgroup>
                               <tr>
                                  <th>
-                                    	 수량<br> 반품가능 여부 <br>
+                                       브랜드<br> 모델명<br>  수량<br> 반품가능 여부 <br>
                                  </th>
                                  <td>
+                                    <span id="brand" name="brand"><%=rMap.get("BRAND")%></span><br>
+                                    <span id="model_name" name="model_name"><%=rMap.get("MODEL_NAME")%></span> <br>
                                      1<br>
-                                    <span id="trans_after_return_info">반품불가</span>
+                                    <span id="trans_after_return_info">반품불가</span><br>
                                  </td>
                               </tr>
                               <tr>
                                  <td colspan="2" style="padding-left: 0;" >
-                                    <br>
+                                   <br>
                                     <strong>출품자정보</strong><br>
                                     <span style="height: 25px; line-height: 25px;">
                                        ID : <a href="#" style="text-decoration: none;">
@@ -386,5 +439,3 @@ function getTime() {
    <script>getTime()</script>
 </body>
 </html>
-
-
