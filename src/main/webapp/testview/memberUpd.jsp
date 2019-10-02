@@ -21,8 +21,8 @@
             <tbody><tr>
                <td class="mtt_left"><img src="/images/integ/20150918_01.png"></td>
                <td class="mtt_center">마이페이지
-                  <p>아이디 : <span class="mttid">ds0110818</span><br>
-                     보유캐시 : <span class="mttcash"><a href="/mypage/cash_list">0 원</a></span>
+                 <p>아이디 : <span class="mttid"><%=mem_id%></span><br>
+                     보유캐시 : <span class="mttcash"><a href="/mypage/cash_list"><%=nowBalance%> 원</a></span>
                   </p>
                </td>
                <td class="mtt_right" align="center">
@@ -113,11 +113,11 @@
 			</tr>
 			<tr>
 				<th>이름</th>
-				<td><input type="text" class="input_name" name="realname" value="최종현"  maxlength="30">&nbsp;<span id="notice_name"></span></td>
+				<td><input type="text" class="input_name" name="realname" value="<%=mem_name%>"  maxlength="30">&nbsp;<span id="notice_name"></span></td>
 			</tr>
 			<tr>
 				<th>닉네임</th>
-				<td><input type="text" class="input_name" name="nickname" value="반장님"  maxlength="30"></td>
+				<td><input type="text" class="input_name" name="nickname" value=""  maxlength="30"></td>
 			</tr>
 			<tr>
 				<th>성별</th>

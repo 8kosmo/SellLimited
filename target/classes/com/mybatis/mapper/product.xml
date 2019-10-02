@@ -13,7 +13,8 @@
       WHERE ITEM_CODE = #{item_code}
    </select>
      <select id="auctionDetail" parameterType="map" resultType="map">
-         SELECT BID_TITLE, photo_name, start_price, auct_startdate, auct_enddate, cntBid, fPrice, mem_id, product_detail, buynow_price
+         SELECT BID_TITLE, auction_info.bid_code, photo_name, start_price, auct_startdate, auct_enddate, cntBid, fPrice, mem_id, product_detail, buynow_price
+      ,sale_item.item_code,brand,model_name
       FROM sale_item, item_photo, auct_progress, auction_info,
          (SELECT bid_code, COUNT(r_num) cntBid, MAX(final_price) fPrice FROM bid_log
          GROUP BY bid_code) bid_log
@@ -39,18 +40,6 @@
         AND item_photo.item_code=auction_info.item_code
         AND auction_info.bid_code=#{bid_code}
    </select>
-   
-   <!--  <select id="seedDetail" parameterType="map" resultType="map">
-   SELECT bid_title ,start_price ,buynow_price, mem_id ,product_detail ,sale_item.item_code 
-            ,cur_seed, auction_info.bid_code
-            ,start_seed,end_seed
-        FROM sale_item
-           ,(select decode(nvl(count(bidders_id),0),0,0) cur_seed from seed) seed 
-           ,auction_info         
-      WHERE sale_item.item_code=auction_info.item_code
-        AND auction_info.bid_code=#{bid_code}
-   </select>   -->
-   
    
    <select id="productIns" parameterType="map" statementType="CALLABLE">
       {call proc_AddProd(

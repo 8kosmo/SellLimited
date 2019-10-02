@@ -50,6 +50,7 @@ public class RestSellFeedController {
 			}
 		return result;
 	}
+	
 	@GetMapping("/favProductAdd.sf")
 	public String favProductAdd(@RequestParam Map<String,Object> pMap) {
 		String result="";
@@ -85,11 +86,8 @@ public class RestSellFeedController {
 		pMap.put("prod_code", "YMUW5132");
 		Ok = favoriteLogic.favProductDel(pMap);
 		if(Ok==0) {
-			
 		}else {
-			
 		}
-		
 		return result;
 		
 	}
@@ -112,7 +110,6 @@ public class RestSellFeedController {
 		}
 		else {
 			int nowBalance = Integer.parseInt(list.get(1));
-			logger.info("잔액ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"+nowBalance);
 			session.setAttribute("mem_name",list.get(0));
 			session.setAttribute("nowBalance",nowBalance);
 			session.setAttribute("mem_id", pMap.get("mem_id"));
@@ -133,6 +130,7 @@ public class RestSellFeedController {
 	   public String seedOverlapCheck(@RequestParam Map<String,Object> pMap) {
 	      logger.info("============>seedOverlapCheck 호출 성공");
 	      String result = null;
+	      logger.info("컨트롤러 피맵ㅂㅂㅂㅂㅂㅂㅂ=========="+pMap);
 	      result=String.valueOf(seedLogic.seedOverlapCheck(pMap));
 	      return result;
 	   }
@@ -160,7 +158,6 @@ public class RestSellFeedController {
 		int acct_balance = (int)rMap.get("acct_balance");
 		if(insResult==1) { 
 			try {
-				logger.info("####################"+pMap);
 				int seedInsResult = seedLogic.seedIns(pMap);
 				if(seedInsResult==1) {
 					result ="시드발급 성공"; 

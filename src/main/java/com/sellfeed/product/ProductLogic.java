@@ -26,7 +26,6 @@ public class ProductLogic {
          productList = productDao.productList(pMap);
          return productList;
       }
-
    
    public int productIns(Map<String, Object> pMap, List<Map<String,Object>> itemList) {
       logger.info("Logic| Call ProductIns");
@@ -55,6 +54,7 @@ public class ProductLogic {
       result = productDao.productDel(pMap);
       return result;
    }
+   
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="excution(* com.sellfeed.product.*Logic.*(..)")
    public void managerPermission
@@ -72,24 +72,21 @@ public class ProductLogic {
          throw e;
       }
    }
+   
    public List<Map<String, Object>> auctionDetail(Map<String, Object> pMap) {
        logger.info("))))))))))))))))))))))))))))"+pMap);
        List<Map<String, Object>> productList = new ArrayList<>();
-//       List<Map<String, Object>> photoList = new ArrayList<>();
-//       photoList=productDao.photoList(pMap);
        productList = productDao.auctionDetail(pMap);
       return productList;
-      }
+   }
+   
    public List<Map<String, Object>> seedDetail(Map<String, Object> pMap) {
       logger.info("))))))))))))))))))))))))))))"+pMap);
       List<Map<String, Object>> productList = new ArrayList<>();
-//      List<Map<String, Object>> photoList = new ArrayList<>();
-//      photoList=productDao.photoList(pMap);
-//      pMap.put("photoList",photoList);
       productList = productDao.seedDetail(pMap);
-      
       return productList;
    }
+   
    public List<Map<String, Object>> itemStatusList() {
       List<Map<String, Object>> itemStatusList = null;
       itemStatusList = productDao.itemStatusList();

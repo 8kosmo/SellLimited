@@ -35,7 +35,6 @@ public class SeedLogic {
 	      //이미 참여한 경우
 	      String bidders_id = seedDao.seedOverlapCheck(pMap).toString();
 	      if(pMap.get("bidders_id").equals(bidders_id)) {
-	         logger.info("bidders_id============>"+bidders_id);
 	         result=0;
 	      }else{
 	         result = 1;

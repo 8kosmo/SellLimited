@@ -27,7 +27,7 @@
    request.setAttribute("photoList", photoNameList);
 
    //_______________________________________________타임
-   String T_EndTime = rMap.get("END_SEED").toString();
+   String T_EndTime = rMap.get("AUCT_ENDDATE").toString();
 
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
@@ -40,34 +40,30 @@
    String photoName  = "";
    String onclickSub = "";
    String img_id     ="";
-
 %>
 <script>
-   $(document).ready(function(){
-   <%   for(int i=0; i<photoNameList.size();i++){
-      photoName = photoNameList.get(i).toString();
-      onclickSub = "clickSub"+i+"()";
-      img_id = "sub_img"+i;
-         if(i==0){   
-   %>
-         document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
-   <%      }else{
-   %>
-            document.getElementById("d_small_img").innerHTML =
-               "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
-   <%   }      
-   }%>   //__________________________________________________________________end of for
+$(document).ready(function(){
+<%   for(int i=0; i<photoNameList.size();i++){
+   photoName = photoNameList.get(i).toString();
+   onclickSub = "clickSub"+i+"()";
+   img_id = "sub_img"+i;
+      if(i==0){   
+%>
+      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
+<%      }else{
+%>
+         document.getElementById("d_small_img").innerHTML =
+            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
+<%   }      
+}%>   //__________________________________________________________________end of for
 
-
-   //로그인 실패시
-   if(mem_name=='null'){
-      $("#logout").hide();
-      $("#login").show();
-   }else{
-      $("#login").hide();
-      $("#logout").show();
-   }
-   
+	//로그인 실패시
+	if(mem_name=='null'){
+	   $("#logout").hide();
+	   $("#login").show();
+	}else{
+	   $("#login").hide();
+	   $("#logout").show();
 });//_______________________________________________________________________end of ready
 
 //_________________________________________타임
@@ -83,6 +79,7 @@ function getTime() {
    seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
    secondsRound = Math.round(seconds);
 
+
    document.getElementById("counter0").innerHTML = daysRound;
    document.getElementById("counter1").innerHTML = hoursRound;
    document.getElementById("counter2").innerHTML = minutesRound;
@@ -93,8 +90,8 @@ function getTime() {
    var mem_name = '<%=mem_name%>';
    var nowBalance = '<%=nowBalance%>';
 
-   function logout(){
-        location.href="/common/sessionDel.jsp";   
+      function logout(){
+         location.href="/common/sessionDel.jsp";   
    }
    
    function clickSub1(){
@@ -107,7 +104,6 @@ function getTime() {
       big_img.src=sub_img1_src;
       sub_img1.src=big_img_src;
    }
-   
    function clickSub2(){
       var big_img = document.getElementById("big_img");
       var sub_img2 = document.getElementById("sub_img2");
@@ -118,49 +114,7 @@ function getTime() {
       big_img.src=sub_img2_src;
       sub_img2.src=big_img_src;
    }
-  
-   function seedIns(){
-	   loginSessionCheck();
-       $.ajax({
-             method:'GET'
-            ,url:'/rest/seedOverlapCheck.sf?bidders_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>'
-            ,data:'data'
-            ,success:function(result){
-               if(result=='0'){
-                  alert("이미 시드를 발급받은 상품입니다");
-               }else if(result=='1'){
-                  $.ajax({
-                      method:'GET'
-                     ,url:'/rest/accountBalance.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
-                     ,data:'data'
-                     ,success:function(data){
-                        if(data>=10000){
-                           if(confirm("잔액 : "+data+"원\n시드발급시 잔액에서 1만원 차감됩니다")){
-                        	   $.ajax({
-                        		   method:'GET'
-                        		  ,url:'/rest/seedIns.sf?mem_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>&bidders_id=<%=mem_id%>'
-                        		  ,data:'result'
-                        		  ,success:function(data){
-                  					location.reload();
-                        		  }
-                        	   });
-                           }else{
-                              alert("시드발급 취소");
-                           }
-                        }else{
-                           if(confirm("잔액이 부족합니다 충전하겠습니까?")){
-                        	   location.href="/testview/cashCharge.jsp"
-                           }
-                        }
-                    }
-                  });
-               }
-            }      
-         });
-   } 
-
    function addFavSeller(){
-	  loginSessionCheck();
       $.ajax({
           method:'GET'
          ,url:'/rest/favSellerAdd.sf?fav_sellerid=<%=rMap.get("MEM_ID")%>&mem_id=<%=mem_id%>'
@@ -169,28 +123,43 @@ function getTime() {
             alert(data);
          }      
       });
-   };
-   
-   function addFavProduct(){
-	   loginSessionCheck();
-		$.ajax({
-			 method:'GET'
-			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
-			,data:'data'
-			,success:function(data){
-				alert(data);
-			}		
-		});
-	};
-	
-   function loginSessionCheck(){
-	   <%		if(mem_id==null){	
-	   %>
-	   			alert("로그인이 필요합니다");
-	   			location.href="/testview/login.jsp";
-	   <%}
-	   %>
-	      }
+      };
+    function addFavProduct(){
+ 	   loginSessionCheck();
+ 		$.ajax({
+ 			 method:'GET'
+ 			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
+ 			,data:'data'
+ 			,success:function(data){s
+ 				alert(data);
+ 			}		
+ 		});
+ 	   };
+    function loginSessionCheck(){
+ 	   <%		if(mem_id==null){	
+ 	   %>
+ 	   			alert("로그인이 필요합니다");
+ 	   			location.href="/testview/login.jsp";
+ 	   <%}%>
+ 	      }
+    
+    function auctionStart(){
+    
+ 	   loginSessionCheck();
+        $.ajax({
+              method:'GET'
+             ,url:'/rest/seedOverlapCheck.sf?bidders_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>'
+             ,data:'data'
+             ,success:function(result){
+                if(result=='0'){
+                   alert("경매 가즈아");
+                }else if(result=='1'){
+                   alert("시드를 발급받지 않은 상품입니다");
+                }
+             }      
+          });
+    } 
+
 </script>
 </head>
 <body>
@@ -252,7 +221,7 @@ function getTime() {
 </div><!-- end of div top -->
 <!-- 디테일뷰 시작 전체폼-->
 <div id="mypage">
-   <form action="#" id="detail_frm" method="post" accept-charset="utf-8" >
+   <form action="#" id="detail_frm" method="post" accept-charset="utf-8">
       <div id="dv">
          <ul class="dv_title" style="margin-top:20px;">
             <!-- 경매 등록 타이틀 -->
@@ -261,7 +230,7 @@ function getTime() {
             </li>
             <!-- 경매상품ID : ITEM_CODE -->
             <li class="dv_title_right" style="height:40px;">
-               <p>경매상품 : <%=rMap.get("ITEM_CODE")%></p>
+               <p>경매상품ID : <%=rMap.get("ITEM_CODE")%></p>
             </li>
          </ul>
          <ul>
@@ -303,7 +272,7 @@ function getTime() {
                      </td>
                      <!-- 상세페이지 네모안에 오른쪽부분전체 -->
                      <td class="dot_right">
-                        <!-- 시드참여자수, 남은시간 나오는 부분 -->
+                        <!-- 입찰건수, 남은시간 나오는 부분 -->
                         <span>
                            <table class="dr_step1">
                               <colgroup>
@@ -311,9 +280,9 @@ function getTime() {
                                  <col width="50%;" />
                               </colgroup>
                               <tr>
-                                 <td style="border-right:1px solid #E7E7E7;">시드참여자수
-                                    <!-- 현재시드수 -->
-                                    <p style="font-size:20px; margin-top:5px;" id="cur_seed"><%=rMap.get("CUR_SEED")%></p>
+                                 <td style="border-right:1px solid #E7E7E7;">입찰건수
+                                    <!-- 입찰건수 -->
+                                    <p style="font-size:20px; margin-top:5px;"><%=rMap.get("CNTBID")%></p>
                                  </td>
                                  <td>남은시간
              <p style="font-size:20px; margin-top:5px; ">
@@ -327,20 +296,20 @@ function getTime() {
                         <span>
                            <table class="dr_step2">
                               <colgroup>
-                                 <col width="150px;" />
+                                 <col width="105px;" />
                                  <col width="" />
                               </colgroup>
                               <tr>
-                                 <th>시작가격<br> 즉시구매가<br> 시드모집 시작일<br> 시드모집 종료일
+                                 <th>시작가격<br> 즉시구매가<br> 시작시간<br> 종료일
                                  </th>
                                  <!-- 시작가격 -->
                                  <td><%=rMap.get("START_PRICE")%>원<br> 
                                  <!-- 시작가격 -->
                                  <%=rMap.get("BUYNOW_PRICE")%>원<br> 
                                  <!-- 시작시간 -->    
-                               <%=rMap.get("START_SEED")%><br>
+                                     <%=rMap.get("AUCT_STARTDATE")%><br>
                                  <!-- 종료일 -->
-                                 <%=rMap.get("END_SEED")%><br>
+                                     <%=rMap.get("AUCT_ENDDATE")%><br>
                                  </td>
                               </tr>
                            </table>
@@ -359,8 +328,8 @@ function getTime() {
                               </tr>
                               <tr>
                                  <td colspan="2" class="buttonsarray">
-                                    <button type="button" class="btn_algerie" onClick="seedIns()">시드참여</button>
-                                    <button type="button" class="btn_nigeria" onclick="javascript:addFavProduct()">관심등록</button>
+                                    <button type="button" class="btn_algerie" onclick="auctionStart()">입찰하기</button>
+                                    <button type="button" class="btn_nigeria" onclick="addFavProduct()">관심등록</button>
                                  </td>
                               </tr>
                            </table>

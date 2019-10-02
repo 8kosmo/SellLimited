@@ -48,8 +48,8 @@ public class ProductController {
          logger.info("잘 못 가져옴"+"----------productList---------------" +productList);
          return "redirect:/testview/DetailView";
       }
-   //승기코드
-   	 @GetMapping("/productTest.sf")
+
+   @GetMapping("/productTest.sf")
    	 public String produdctTest(Model mod) {
    		 Map<String,Object> tMap = new HashMap<>();
    		 tMap.put("이름","유승기");
@@ -59,11 +59,10 @@ public class ProductController {
    		 tMap.put("정보",tList);
    		 mod.addAttribute("tMap",tMap);
          return "forward:/testview/collection.jsp";
-
    	 }
-
+   
      @GetMapping("/productDetail.sf")
-    public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
+     public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
        List<Map<String,Object>> productDetailList = new ArrayList<>();
        logger.info("))))))))))))))))))))))))))))"+pMap);
        if(pMap.get("status").equals("auction")) {
@@ -87,8 +86,8 @@ public class ProductController {
           List<String> testL = (List)rMap.get("PHOTO_NAME");
           logger.info(")))333333)))))))"+testL);
        }
+       logger.info("rMap!!!!!!!!!!!!!!!!!!!!!!!!!!!!: "+rMap);
        mod.addAttribute("rMap",rMap);
-       
        if(pMap.get("status").equals("auction")) {
           return "forward:/testview/AuctionDetailView.jsp";
        }else {
@@ -96,35 +95,6 @@ public class ProductController {
        }
     }
   
-
-//      @GetMapping("/productDetail.sf")
-//      public String gproductList(@RequestParam Map<String,Object> pMap
-//                            ,Model mod) {
-//         List<Map<String,Object>> productDetailList = new ArrayList<>();
-//         logger.info("))))))))))))))))))))))))))))"+pMap);
-//         //경매중
-//         if(pMap.get("status").equals("auction")) {
-//            productDetailList = productLogic.auctionDetail(pMap);
-//         }
-//         //시드참여중
-//         else if(pMap.get("status").equals("seed")) {
-//            productDetailList = productLogic.seedDetail(pMap);
-//         }
-//         
-//         Map<String,Object> rMap = new HashMap<>();
-//         logger.info("_________________________________"+productDetailList);
-//         rMap = productDetailList.get(0);
-//       
-//         List<Map<String,Object>> photoList =  (List<Map<String, Object>>) pMap.get("photoList");
-//         //사진 여러개가 있을 때를 위해서.
-//         if(photoList!=null && photoList.size()>0) {
-//            rMap.put("photoList",photoList);
-//         }
-//         mod.addAttribute("rMap",rMap);
-//         logger.info("=======================rMap===============>"+rMap);    
-//         return "forward:/testview/DetailView.jsp";
-//      }
-    
    
    @PostMapping("/productIns.sf")
    public String productIns(@RequestParam Map<String, Object> pMap
@@ -172,6 +142,7 @@ public class ProductController {
       }
       return path;
    }
+   
    @GetMapping("/productDel.sf")
    public String productDel(@RequestParam Map<String,Object> pMap) {
       logger.info("Controller| Call productDel");
@@ -184,6 +155,7 @@ public class ProductController {
       }
       return path;
    }
+   
    //승인대기 -> 시드침여중, 트랜잭션 3step
    @GetMapping("/managerPermission.sf")
    public String managerPermission
@@ -193,6 +165,7 @@ public class ProductController {
       productLogic.managerPermission(item_code,auct_period);
       return "redirect:../product/itemStatusList.sf";
    }
+   
    //관리자 페이지 접속 시 리스트 검색
    @GetMapping(value="/itemStatusList.sf")
    public String itemStatusList(ModelMap mod) {

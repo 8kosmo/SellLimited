@@ -51,6 +51,7 @@ public class ProductDao {
       }
       return result;
    }
+   
 //관리자 승인 이후 트랜잭션 처리 (String item_code, String mem_id, int auct_period)
    public int managerPermission(String item_code) {
       logger.info("ProductDao| Call managerPermission");
@@ -65,6 +66,7 @@ public class ProductDao {
       result = sqlSessionTemplate.insert("auction_infoIn", item_code);
       return result;
    }
+   
    public int auct_progressIns(String item_code, int auct_period) {
       logger.info("ProductDao| Call auction_infoIn");
       int result = 0;
@@ -74,15 +76,18 @@ public class ProductDao {
       result = sqlSessionTemplate.insert("auct_progressIns", pMap);
       return result;
    }
+   
    public List<Map<String, Object>> itemStatusList() {
       List<Map<String, Object>> itemStatusList = 
             new ArrayList<Map<String,Object>>();
       itemStatusList = sqlSessionTemplate.selectList("itemStatusList");
       return itemStatusList;
    }
+   
    public void managerRefuse(String item_code) {
       sqlSessionTemplate.delete("managerRefuse", item_code);
    }
+   
    public List<Map<String, Object>> auctionDetail(Map<String, Object> pMap) {
          List<Map<String,Object>> prodDetailList = new ArrayList<>();
             logger.info("))))))))))))))))))))))))))))"+pMap);
@@ -96,6 +101,7 @@ public class ProductDao {
       prodDetailList = sqlSessionTemplate.selectList("seedDetail",pMap);
       return prodDetailList;
    }
+   
    public List<Map<String,Object>> photoList(Map<String, Object> pMap){
       List<Map<String,Object>> photoList = new ArrayList<>();
       logger.info("photoList"+photoList);

@@ -46,8 +46,9 @@ public class SeedDao {
 	}
 
 	public String seedOverlapCheck(Map<String, Object> pMap) {
-		String mem_id="";
+		logger.info("============>seedOverlapCheck 호출 성공");
+		String mem_id="";		
 		mem_id= sqlSessionTemplate.selectOne("seedOverlapCheck",pMap);
 		return mem_id;
-		   }
+	}
 }
