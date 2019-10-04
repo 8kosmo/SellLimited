@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,29 +24,78 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping(value="/product")
 public class ProductController {
-	Logger logger = LoggerFactory.getLogger(ProductController.class);
-	String path;
-	int result;
-	String savePath =  "\\\\192.168.0.187\\itemPhoto";
-   	String photo_name =  null;
-  	String fullPath = null;
-  	List<Map<String,Object>> itemList = null;
-  	Map<String,Object> fileMap = null;
-	@Autowired
-	public ProductLogic productLogic = null;
-	
-	@GetMapping("/productList.sf")
-	public String productList(@RequestParam (required=false) Map<String, Object> pMap) {
-		logger.info("Controller| Call productList");
-		List<Map<String,Object>> productList = null;
-		pMap.put("mem_id","uh4ng");
-		productList=productLogic.productList(pMap);
-		if(productList!=null&&productList.size()>0) {
-			path="";
-		}
-		return path;
-	}
-	
+   Logger logger = LoggerFactory.getLogger(ProductController.class);
+   String path;
+   int result;
+   String savePath =  "\\\\192.168.0.187\\itemPhoto";
+      String photo_name =  null;
+     String fullPath = null;
+     List<Map<String,Object>> itemList = null;
+     Map<String,Object> fileMap = null;
+   @Autowired
+   public ProductLogic productLogic = null;
+   
+   @GetMapping("/productList.sf")
+      public String productList(@RequestParam (required=false) Map<String, Object> pMap) {
+         logger.info("Controller| Call productList");
+         List<Map<String,Object>> productList = null;
+         logger.info("아이디 : "+ pMap.get("mem_id"));
+         productList =productLogic.productList(pMap);
+         if(productList!=null&&productList.size()>0) {
+            return "testview/DetailView";
+         }
+         logger.info("잘 못 가져옴"+"----------pMap---------------" +pMap);
+         logger.info("잘 못 가져옴"+"----------productList---------------" +productList);
+         return "redirect:/testview/DetailView";
+      }
+
+   @GetMapping("/productTest.sf")
+   	 public String produdctTest(Model mod) {
+   		 Map<String,Object> tMap = new HashMap<>();
+   		 tMap.put("이름","유승기");
+   		 List<String> tList = new ArrayList<>();
+   		 tList.add("남자");
+   		 tList.add("20세");
+   		 tMap.put("정보",tList);
+   		 mod.addAttribute("tMap",tMap);
+         return "forward:/testview/collection.jsp";
+   	 }
+   
+     @GetMapping("/productDetail.sf")
+     public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
+       List<Map<String,Object>> productDetailList = new ArrayList<>();
+       logger.info("))))))))))))))))))))))))))))"+pMap);
+       if(pMap.get("status").equals("auction")) {
+          productDetailList = productLogic.auctionDetail(pMap);
+       }
+       else if(pMap.get("status").equals("seed")) {
+          productDetailList = productLogic.seedDetail(pMap);
+       }
+       Map<String,Object> rMap = new HashMap<>();
+       List<String> photoNameList = new ArrayList<>();
+       logger.info("_________________________________"+productDetailList);
+       for(int i=0; i<productDetailList.size();i++) {
+          rMap = productDetailList.get(i);
+          rMap.get("PHOTO_NAME");
+          photoNameList.add(rMap.get("PHOTO_NAME").toString());
+          logger.info(")1111)))))))))))))))))))))))))))))"+photoNameList);
+       }
+       rMap.put("PHOTO_NAME",photoNameList);
+       if(photoNameList.size()>1) {
+          logger.info(")2222)))))))))))))))))))))))))))))"+rMap);
+          List<String> testL = (List)rMap.get("PHOTO_NAME");
+          logger.info(")))333333)))))))"+testL);
+       }
+       logger.info("rMap!!!!!!!!!!!!!!!!!!!!!!!!!!!!: "+rMap);
+       mod.addAttribute("rMap",rMap);
+       if(pMap.get("status").equals("auction")) {
+          return "forward:/testview/AuctionDetailView.jsp";
+       }else {
+          return "forward:/testview/SeedDetailView.jsp";
+       }
+    }
+  
+   
    @PostMapping("/productIns.sf")
    public String productIns(@RequestParam Map<String, Object> pMap
                       ,@RequestParam (value="attached_file1", required=false) MultipartFile product_file1
@@ -82,50 +131,53 @@ public class ProductController {
          }
       }
    }
-	@PostMapping("/productUpd.sf")
-	public String productUpd(@RequestParam Map<String,Object> pMap) {
-		logger.info("Controller| Call productUpd");
-		result = productLogic.productUpd(pMap);
-		if(result==1) {
-			path = "정해야함";
-		}else {
-			path = "";			
-		}
-		return path;
-	}
-	@GetMapping("/productDel.sf")
-	public String productDel(@RequestParam Map<String,Object> pMap) {
-		logger.info("Controller| Call productDel");
-		pMap.put("item_code","TUXV7614");
-		result = productLogic.productDel(pMap);
-		if(result==1) {
-			path = "정해야함";
-		}else {
-			path = "";			
-		}
-		return path;
-	}
-	//승인대기 -> 시드침여중, 트랜잭션 3step
-	@GetMapping("/managerPermission.sf")
-	public String managerPermission
-	(@RequestParam("item_code") String item_code
-			,@RequestParam("auct_period") int auct_period) {
-		logger.info("Controller| Call managerPermission");
-		productLogic.managerPermission(item_code,auct_period);
-		return "redirect:../product/itemStatusList.sf";
-	}
-	//관리자 페이지 접속 시 리스트 검색
-	@GetMapping(value="/itemStatusList.sf")
-	public String itemStatusList(ModelMap mod) {
-		List<Map<String, Object>> itemStatusList = null;
-		itemStatusList = productLogic.itemStatusList();
-		mod.addAttribute("itemStatusList", itemStatusList);
-		return "forward:../testview/managerPermission.jsp";
-	}
-	//승인대기 -> 등록거절하기
-	@GetMapping(value="/managerRefuse.sf")
-	public String managerRefuse(@RequestParam("item_code") String item_code) {
-		productLogic.managerRefuse(item_code);
-		return "redirect:../product/itemStatusList.sf";
-	}
+   @PostMapping("/productUpd.sf")
+   public String productUpd(@RequestParam Map<String,Object> pMap) {
+      logger.info("Controller| Call productUpd");
+      result = productLogic.productUpd(pMap);
+      if(result==1) {
+         path = "정해야함";
+      }else {
+         path = "";         
+      }
+      return path;
+   }
+   
+   @GetMapping("/productDel.sf")
+   public String productDel(@RequestParam Map<String,Object> pMap) {
+      logger.info("Controller| Call productDel");
+      pMap.put("item_code","TUXV7614");
+      result = productLogic.productDel(pMap);
+      if(result==1) {
+         path = "정해야함";
+      }else {
+         path = "";         
+      }
+      return path;
+   }
+   
+   //승인대기 -> 시드침여중, 트랜잭션 3step
+   @GetMapping("/managerPermission.sf")
+   public String managerPermission
+   (@RequestParam("item_code") String item_code
+         ,@RequestParam("auct_period") int auct_period) {
+      logger.info("Controller| Call managerPermission");
+      productLogic.managerPermission(item_code,auct_period);
+      return "redirect:../product/itemStatusList.sf";
+   }
+   
+   //관리자 페이지 접속 시 리스트 검색
+   @GetMapping(value="/itemStatusList.sf")
+   public String itemStatusList(ModelMap mod) {
+      List<Map<String, Object>> itemStatusList = null;
+      itemStatusList = productLogic.itemStatusList();
+      mod.addAttribute("itemStatusList", itemStatusList);
+      return "forward:../testview/managerPermission.jsp";
+   }
+   //승인대기 -> 등록거절하기
+   @GetMapping(value="/managerRefuse.sf")
+   public String managerRefuse(@RequestParam("item_code") String item_code) {
+      productLogic.managerRefuse(item_code);
+      return "redirect:../product/itemStatusList.sf";
+   }
 }

@@ -28,8 +28,8 @@
             <tbody><tr>
                <td class="mtt_left"><img src="/images/integ/20150918_01.png"></td>
                <td class="mtt_center">마이페이지
-                  <p>아이디 : <span class="mttid">ds0110818</span><br>
-                     보유캐시 : <span class="mttcash"><a href="/mypage/cash_list">0 원</a></span>
+               <p>아이디 : <span class="mttid"><%=mem_id%></span><br>
+                     보유캐시 : <span class="mttcash"><a href="/mypage/cash_list"><%=nowBalance%> 원</a></span>
                   </p>
                </td>
                <td class="mtt_right" align="center">

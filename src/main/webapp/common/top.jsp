@@ -7,13 +7,13 @@
 <title>공통부분 - Top</title>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
    String mem_name = null;
-   String nowBalance = null;
+   int nowBalance = 0;
    String mem_id = null;
     if (session.getAttribute("mem_name") == null 
           ||session.getAttribute("nowBalance") == null) {
     }else{
         mem_name = (String)session.getAttribute("mem_name");
-        nowBalance = (String)session.getAttribute("nowBalance");
+        nowBalance = (int)session.getAttribute("nowBalance");
         mem_id = (String)session.getAttribute("mem_id");
     }
 %>
@@ -54,7 +54,7 @@
       </div>
       <div id="logout" style="display:inline;">
          <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-         <a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
+         <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="#"><strong>마이페이지</strong></a><span>|</span>
       </div>

@@ -1,5 +1,6 @@
 package com.sellfeed.product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,18 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductLogic {
-	Logger logger = LoggerFactory.getLogger(ProductLogic.class);
-	int result = 0;
-	@Autowired
-	public ProductDao productDao = null;	
+   Logger logger = LoggerFactory.getLogger(ProductLogic.class);
+   int result = 0;
+   @Autowired
+   public ProductDao productDao = null;   
 
-	public List<Map<String, Object>> productList(Map<String, Object> pMap) {
-		logger.info("Logic| Call ProductList");
-		List<Map<String,Object>> productList = null;
-		productList = productDao.productList(pMap);
-		return productList;
-	}
-	
+     public List<Map<String, Object>> productList(Map<String, Object> pMap) {
+         logger.info("Logic| Call ProductList");
+         List<Map<String,Object>> productList = null;
+         productList = productDao.productList(pMap);
+         return productList;
+      }
+   
    public int productIns(Map<String, Object> pMap, List<Map<String,Object>> itemList) {
       logger.info("Logic| Call ProductIns");
       result = productDao.ProductIns(pMap);
@@ -33,51 +34,66 @@ public class ProductLogic {
       int count = itemList.size();
       String item_code = (String)pMap.get("result");
       if(itemList!=null && itemList.size()>=1) {
-    	  for(int i=0;i<count;i++) {
-    		  fileMap = itemList.get(i);
-    		  fileMap.put("item_code",item_code);
-    	  }
-    	  productDao.fileNameIns(itemList);    
+         for(int i=0;i<count;i++) {
+            fileMap = itemList.get(i);
+            fileMap.put("item_code",item_code);
+         }
+         productDao.fileNameIns(itemList);    
       }
       return result;
    }
 
-	public int productUpd(Map<String, Object> pMap) {
-		logger.info("Logic| Call ProductUpd");
-		result = productDao.productUpd(pMap);
-		return result;
-	}
+   public int productUpd(Map<String, Object> pMap) {
+      logger.info("Logic| Call ProductUpd");
+      result = productDao.productUpd(pMap);
+      return result;
+   }
 
-	public int productDel(Map<String, Object> pMap) {
-		// TODO Auto-generated method stub
-		result = productDao.productDel(pMap);
-		return result;
-	}
-	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
-	@Pointcut(value="excution(* com.sellfeed.product.*Logic.*(..)")
-	public void managerPermission
-	(String item_code, int auct_period) {
-		logger.info("Logic| Call managerPermission");
-		int step1, step2, step3 = 0;
-		try {
-			step1 = productDao.managerPermission(item_code);//ts step1
-			logger.info("관리자 승인 결과 : "+step1);
-			step2 = productDao.auction_infoIn(item_code);//ts step2
-			logger.info("시드관리 INSERT 결과 : "+step2);
-			step3 = productDao.auct_progressIns(item_code,auct_period);//ts step3
-			logger.info("경매관리 INSERT 결과 : "+step3);
-		} catch (DataAccessException e) {
-			throw e;
-		}
-	}
+   public int productDel(Map<String, Object> pMap) {
+      // TODO Auto-generated method stub
+      result = productDao.productDel(pMap);
+      return result;
+   }
+   
+   @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
+   @Pointcut(value="excution(* com.sellfeed.product.*Logic.*(..)")
+   public void managerPermission
+   (String item_code, int auct_period) {
+      logger.info("Logic| Call managerPermission");
+      int step1, step2, step3 = 0;
+      try {
+         step1 = productDao.managerPermission(item_code);//ts step1
+         logger.info("관리자 승인 결과 : "+step1);
+         step2 = productDao.auction_infoIn(item_code);//ts step2
+         logger.info("시드관리 INSERT 결과 : "+step2);
+         step3 = productDao.auct_progressIns(item_code,auct_period);//ts step3
+         logger.info("경매관리 INSERT 결과 : "+step3);
+      } catch (DataAccessException e) {
+         throw e;
+      }
+   }
+   
+   public List<Map<String, Object>> auctionDetail(Map<String, Object> pMap) {
+       logger.info("))))))))))))))))))))))))))))"+pMap);
+       List<Map<String, Object>> productList = new ArrayList<>();
+       productList = productDao.auctionDetail(pMap);
+      return productList;
+   }
+   
+   public List<Map<String, Object>> seedDetail(Map<String, Object> pMap) {
+      logger.info("))))))))))))))))))))))))))))"+pMap);
+      List<Map<String, Object>> productList = new ArrayList<>();
+      productList = productDao.seedDetail(pMap);
+      return productList;
+   }
+   
+   public List<Map<String, Object>> itemStatusList() {
+      List<Map<String, Object>> itemStatusList = null;
+      itemStatusList = productDao.itemStatusList();
+      return itemStatusList;
+   }
 
-	public List<Map<String, Object>> itemStatusList() {
-		List<Map<String, Object>> itemStatusList = null;
-		itemStatusList = productDao.itemStatusList();
-		return itemStatusList;
-	}
-
-	public void managerRefuse(String item_code) {
-		productDao.managerRefuse(item_code);
-	}
+   public void managerRefuse(String item_code) {
+      productDao.managerRefuse(item_code);
+   }
 }

@@ -42,4 +42,6 @@ public class AccountController {
 		accountLogic.accountHidden(pMap);
 		return "redirect:../index.jsp";
 	}
+	
+	
 }

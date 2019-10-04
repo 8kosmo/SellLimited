@@ -38,12 +38,18 @@ public class FavoriteLogic {
 	}
 	public int favSellerAdd(Map pMap) {
 		logger.info("Logic| favSellerAdd 호출성공");
-		Ok = favoriteDao.favSellerAdd(pMap);
+		Ok = favoriteDao.favSellerCheck(pMap);
+		if(Ok==1) {
+			Ok = favoriteDao.favSellerAdd(pMap);
+		}
 		return Ok;
 	}
 	public int favProductAdd(Map pMap) {
 		logger.info("Logic| favProductAdd 호출성공");
-		Ok = favoriteDao.favProdAdd(pMap);
+		Ok = favoriteDao.favProductCheck(pMap);
+		if(Ok==1) {
+			Ok = favoriteDao.favProdAdd(pMap);
+		}
 		return Ok;
 	}
 }

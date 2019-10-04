@@ -1,5 +1,6 @@
 package com.sellfeed.account;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountLogic {
 	
 	Logger logger = LoggerFactory.getLogger(AccountLogic.class);
-	
+	int acct_balance = 0;
 	@Autowired
 	public AccountDao accountDao = null;
 	
@@ -42,11 +43,25 @@ public class AccountLogic {
 		return rList;
 	}
 	
-	public int accountIns(Map<String,Object> pMap) {
+	public Map<String, Object> accountIns(Map<String,Object> pMap) {
 		int result=0;
 		logger.info("=================>accountIns 호출 성공");
+		String trade = pMap.get("trade").toString();									// 입금 or 출금
+		int acct_balance = accountDao.accountNowBalance(pMap.get("mem_id").toString()); // 현재 잔액
+		int trade_ammount = Integer.parseInt(pMap.get("trade_ammount").toString());		// 거래할 금액
+//		거래 종류에 따라  조회한 잔액(line:50)을 조작하여 pMap에 다시 넣어줌.=> SQL문으로 잔액을 계산할 필요가 없어짐(기존 방법으로는 차감도 불가능했음)
+		if(trade.equals("입금")) {
+				acct_balance = acct_balance+trade_ammount;
+			} 
+			else if(trade.equals("출금")) {
+				acct_balance = acct_balance-trade_ammount;
+			}
+			pMap.put("acct_balance",acct_balance);
 		result=accountDao.accountIns(pMap);
-		return result;
+		Map<String,Object> rMap = new HashMap<>();
+		rMap.put("result", result);
+		rMap.put("acct_balance", acct_balance);
+		return rMap;
 	}
 	
 	public int accountHidden(Map<String, Object> pMap) {
@@ -60,5 +75,12 @@ public class AccountLogic {
 	    logger.info("=================>nowPoint 호출 성공");
         String result = accountDao.nowPoint(pMap);
         return result;
+	}
+
+	public int accountNowBalance(String mem_id) {
+		int acct_balance = 0;
+		acct_balance = accountDao.accountNowBalance(mem_id);
+		logger.info("잔액"+acct_balance);
+		return acct_balance;
 	}
 }

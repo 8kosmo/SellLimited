@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.ProductMapper">
-	
-	<select id="productList" parameterType="map" resultType="map">
-		SELECT * from sale_item
-		WHERE mem_id = #{mem_id}
-		
-	</select>
-	
-	<select id="productIns" parameterType="map" statementType="CALLABLE">
+   
+   <select id="productList" parameterType="map" resultType="map">
+      SELECT * from sale_item
+      WHERE mem_id = #{mem_id}
+      
+   </select>
+   <select id="photoList" parameterType="map" resultType="map">
+      SELECT photo_name 
+        FROM ITEM_PHOTO
+      WHERE ITEM_CODE = #{item_code}
+   </select>
+     <select id="auctionDetail" parameterType="map" resultType="map">
+         SELECT BID_TITLE, auction_info.bid_code, photo_name, start_price, auct_startdate, auct_enddate, cntBid, fPrice, mem_id, product_detail, buynow_price
+      ,sale_item.item_code,brand,model_name
+      FROM sale_item, item_photo, auct_progress, auction_info,
+         (SELECT bid_code, COUNT(r_num) cntBid, MAX(final_price) fPrice FROM bid_log
+         GROUP BY bid_code) bid_log
+      WHERE sale_item.item_code = item_photo.item_code
+      AND auction_info.bid_code = auct_progress.bid_code
+      AND auct_progress.bid_code = bid_log.bid_code
+      AND AUCTION_INFO.ITEM_CODE = sale_item.item_code
+      AND auct_progress.bid_code = #{bid_code}
+   </select>
+     
+    
+	<select id="seedDetail" parameterType="map" resultType="map">
+   	SELECT bid_title ,start_price ,buynow_price, mem_id ,product_detail ,sale_item.item_code,brand,model_name  
+            ,cur_seed, auction_info.bid_code
+            ,photo_name 
+            ,start_seed,end_seed
+        FROM sale_item
+           ,(select nvl((select count(bidders_id) from seed),0) cur_seed from dual)
+           ,item_photo
+           ,auction_info         
+      WHERE sale_item.item_code=auction_info.item_code
+        AND sale_item.item_code=item_photo.item_code
+        AND item_photo.item_code=auction_info.item_code
+        AND auction_info.bid_code=#{bid_code}
+   </select>
+   
+   <select id="productIns" parameterType="map" statementType="CALLABLE">
       {call proc_AddProd(
                   #{bid_title, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
                  ,#{mem_id, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
@@ -47,10 +80,10 @@
    </update>
    
    
-	<select id="productDel" parameterType="map" statementType="CALLABLE">
-	 {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
-	 					   ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
-	</select>
+   <select id="productDel" parameterType="map" statementType="CALLABLE">
+    {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}
+                      ,#{result, mode=OUT, jdbcType=VARCHAR, javaType=java.lang.String})}
+   </select>
 <!-- 관리자 승인 이후 트랜잭션 처리 -->
    <update id="managerPermission" parameterType="string">
       UPDATE SALE_ITEM 

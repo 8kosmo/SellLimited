@@ -29,19 +29,17 @@ public class AccountDao {
 		rList=sqlSessionTemplate.selectList("accountList",pMap);
 		return rList;
 	}
-	public String accountNowBalance(Map<String, Object> pMap) {
-		//sqlSessionTemplate.selectOne("accountNowBalance",pMap);
-		String acct_balance = sqlSessionTemplate.selectOne("accountNowBalance",pMap);
-		
-		logger.info(pMap.get("mem_id").toString());
-		logger.info(pMap.get("mem_password").toString());
-		logger.info(acct_balance);
+	public int accountNowBalance(String mem_id) {
+		logger.info(mem_id);
+		int acct_balance = sqlSessionTemplate.selectOne("accountNowBalance",mem_id);
+		logger.info("잔액:::::::::::::::" +acct_balance);
 		return acct_balance;
 	}
 	
 	public int accountIns(Map<String, Object> pMap) {
 		logger.info("=================>accountIns 호출 성공");
 		int result=0;
+		logger.info(""+pMap);
 		result = sqlSessionTemplate.update("accountIns",pMap);
 		return result;
 	}
@@ -66,5 +64,5 @@ public class AccountDao {
        result = sqlSessionTemplate.selectOne("nowPoint",pMap);
        return result;
 	}
-	
+
 }
