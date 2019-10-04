@@ -41,18 +41,6 @@ public class ProductController {
 	@Autowired
 	public ProductLogic productLogic = null;
 	
-	@GetMapping("/productList.sf")
-	public String productList(@RequestParam (required=false) Map<String, Object> pMap) {
-		logger.info("Controller| Call productList");
-		List<Map<String,Object>> productList = null;
-		pMap.put("mem_id","uh4ng");
-		productList=productLogic.productList(pMap);
-		if(productList!=null&&productList.size()>0) {
-			path="";
-		}
-		return path;
-	}
-	
    @PostMapping("/productIns.sf")
    public String productIns(@RequestParam Map<String, Object> pMap
                       ,@RequestParam (value="attached_file1", required=false) MultipartFile product_file1
@@ -124,18 +112,18 @@ public class ProductController {
 	@GetMapping(value="/itemStatusList.sf")
 	public String itemStatusList(Model mod, HttpServletRequest req) {
 		List<Map<String, Object>> itemStatusList = null;
-		int pageNumber = 0;
+		int nowPage = 0;
 		int pageSize = 0;
-		 if(req.getParameter("pageNumber")!=null) {
-             pageNumber = Integer.parseInt(req.getParameter("pageNumber"));
+		 if(req.getParameter("nowPage")!=null) {
+			 nowPage = Integer.parseInt(req.getParameter("nowPage"));
          }
          if(req.getParameter("pageSize")!=null) {
              pageSize =  Integer.parseInt(req.getParameter("pageSize"));
          }
-		logger.info("pageNumber :"+pageNumber);
+		logger.info("nowPage :"+nowPage);
 		logger.info("pageSize :"+pageSize);
 		Map<String, Object> pMap = new HashMap<>();
-		pMap.put("pageNumber",pageNumber);
+		pMap.put("nowPage",nowPage);
 		pMap.put("pageSize",pageSize);
 		itemStatusList = productLogic.itemStatusList(pMap);
 		mod.addAttribute("itemStatusList", itemStatusList);
@@ -148,42 +136,82 @@ public class ProductController {
 		return "redirect:../product/itemStatusList.sf";
 	}
 	//시드참여중 리스트 검색
-	@GetMapping(value="/itemStatusSeedList.sf")
-	public String itemStatusSeedList(Model mod, HttpServletRequest req) {
+	@GetMapping(value="/productList.sf")
+	public String productList(Model mod, @RequestParam Map<String, Object>pMap) {
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
-		int pageNumber = 0;
-		int pageSize = 0;
-		 if(req.getParameter("pageNumber")!=null) {
-             pageNumber = Integer.parseInt(req.getParameter("pageNumber"));
+		int nowPage = 0;
+		int pageSize = 15;
+		 if(pMap.get("nowPage")!=null) {
+             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
          }
-         if(req.getParameter("pageSize")!=null) {
-             pageSize =  Integer.parseInt(req.getParameter("pageSize"));
+         if(pMap.get("pageSize")!=null) {
+        	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
          }
-		logger.info("pageNumber :"+pageNumber);
+		logger.info("nowPage :"+nowPage);
 		logger.info("pageSize :"+pageSize);
-		Map<String, Object> pMap = new HashMap<>();
-		pMap.put("pageNumber",pageNumber);
+		pMap.put("nowPage",nowPage);
 		pMap.put("pageSize",pageSize);
 		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
 		mod.addAttribute("itemStatusSeedList", itemStatusSeedList);
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
-		int pageNumber1 = 0;
-		int pageSize1 = 0;
-		 if(req.getParameter("pageNumber1")!=null) {
-             pageNumber1 = Integer.parseInt(req.getParameter("pageNumber1"));
+		int nowPage1 = 0;
+		int pageSize1 = 15;
+		 if(pMap.get("nowPage1")!=null) {
+             nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
          }
-         if(req.getParameter("pageSize1")!=null) {
-             pageSize1 =  Integer.parseInt(req.getParameter("pageSize1"));
+         if(pMap.get("pageSize1")!=null) {
+        	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
          }
-		logger.info("pageNumber1 :"+pageNumber1);
+		logger.info("nowPage1 :"+nowPage1);
 		logger.info("pageSize1 :"+pageSize1);
-		Map<String, Object> pMap2 = new HashMap<>();
-		pMap2.put("pageNumber1",pageNumber1);
-		pMap2.put("pageSize1",pageSize1);
-		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap2);
+		pMap.put("nowPage1",nowPage1);
+		pMap.put("pageSize1",pageSize1);
+		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
 		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
 		return "forward:../testview/productListView.jsp";
+	}
+	//ajax 시드참여중
+	@GetMapping(value="/itemStatusSeedList.sf")
+	public String itemStatusSeedList(Model mod, @RequestParam Map<String, Object> pMap) {
+		/*시드참여중 리스트*/
+		List<Map<String, Object>> itemStatusSeedList = null;
+		int nowPage = 0;
+		int pageSize = 15;
+		 if(pMap.get("nowPage")!=null) {
+             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+         }
+         if(pMap.get("pageSize")!=null) {
+        	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+         }
+		logger.info("nowPage :"+nowPage);
+		logger.info("pageSize :"+pageSize);
+		pMap.put("nowPage",nowPage);
+		pMap.put("pageSize",pageSize);
+		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
+		mod.addAttribute("itemStatusSeedList", itemStatusSeedList);
+		return "forward:../testview/itemStatusSeedList.jsp";
+	}
+	//ajax 경매진행중
+	@GetMapping(value="/itemStatusAuctionList.sf")
+	public String itemStatusAuctionList(Model mod, @RequestParam Map<String, Object> pMap) {
+		/*경매진행중 리스트*/
+		List<Map<String, Object>> itemStatusAuctionList = null;
+		int nowPage1 = 0;
+		int pageSize1 = 15;
+		 if(pMap.get("nowPage1")!=null) {
+             nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
+         }
+         if(pMap.get("pageSize1")!=null) {
+        	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
+         }
+		logger.info("nowPage1 :"+nowPage1);
+		logger.info("pageSize1 :"+pageSize1);
+		pMap.put("nowPage1",nowPage1);
+		pMap.put("pageSize1",pageSize1);
+		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
+		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
+		return "forward:../testview/itemStatusAuctionList.jsp";
 	}
 }
