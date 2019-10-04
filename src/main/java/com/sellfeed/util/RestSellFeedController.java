@@ -104,15 +104,17 @@ public class RestSellFeedController {
 		logger.info(pMap.get("mem_password").toString());
 		List<String> list = new ArrayList<String>();
 		list = memberLogic.login(pMap);
-		logger.info("======리스트================="+list.get(0)+","+list.get(1));
+		logger.info("======리스트================="+list.get(0)+","+list.get(1)+","+list.get(2));
 		if("비밀번호를 잘못 입력하셨습니다.".equals(list.get(0))
 				|| "아이디가 존재하지 않습니다.".equals(list.get(0))){
 		}
 		else {
 			int nowBalance = Integer.parseInt(list.get(1));
+			String acct_number = list.get(2);
 			session.setAttribute("mem_name",list.get(0));
 			session.setAttribute("nowBalance",nowBalance);
 			session.setAttribute("mem_id", pMap.get("mem_id"));
+			session.setAttribute("acct_number", acct_number);
 		}
 		String mem_name = pMap.get("mem_name").toString();
 		Gson g = new Gson();
@@ -171,5 +173,6 @@ public class RestSellFeedController {
 		session.setAttribute("nowBalance" ,acct_balance);
 		return result; 
 	}
- 
+	
+
 }

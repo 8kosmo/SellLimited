@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/common/cssJs.jsp" %>
+
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
@@ -26,7 +27,7 @@
                   </p>
                </td>
                <td class="mtt_right" align="center">
-                  <a href="/testview/cashCharge.jsp"><button type="button" class="juliet"><img src="/images/integ/20150918_03.png">캐시충전</button></a>
+                  <a href="/testview/cashCharge.jsp"><button type="button" class="juliet" ><img src="/images/integ/20150918_03.png">캐시충전</button></a>
                </td>
             </tr></tbody>
          </table>
@@ -72,7 +73,9 @@
          </table>
       </li>
    	  <li style="margin-bottom:20px">
-      	<form action="#" name="order_frm" id="order_frm" method="post" accept-charset="utf-8">
+      	<form action="/account/accountCharge.sf" name="order_frm" id="order_frm" method="post" accept-charset="utf-8">
+      	 <input type="hidden" name="mem_id" value="<%=mem_id%>"/>
+      	 <input type="hidden" name="acct_number" value="<%=acct_number%>"/>
       		<table class="mypage_table_head">
       			<caption>
 					캐시충전 <img src="/images/integ/20150918_10.png"> <span class="mth_left">무통장 또는 신용카드를 이용하여 결제하실 수 있습니다.</span><span class="mth_right"></span>
@@ -108,7 +111,7 @@
 										<td style="border-bottom:none;padding:0" class="select_bank">
 											<div id="select_boxstyle" style="margin:0;">
 												<label for="color"></label>								
-													<select name="LGD_BANKCODE" id="LGD_BANKCODE" class="selbox_tr" >
+													<select name="user_bank" id="user_bank" class="selbox_tr" >
 														<option value="011">농협은행</option>
 														<option value="088">신한은행</option>
 														<option value="004">국민은행</option>
@@ -222,7 +225,8 @@
 					</td>
 					<td style="vertical-align:middle;">
 						<span id="credit_ok">
-							<button type="submit" class="ireland" style="cursor:pointer"><img src="/images/integ/20150923_03.png">결제하기</button>
+							<button class="ireland" style="cursor:pointer" onclick="document.getElementById('order_frm').submit()">
+							<img src="/images/integ/20150923_03.png">결제하기</button>
 						</span>
 					</td>
 				</tr>
