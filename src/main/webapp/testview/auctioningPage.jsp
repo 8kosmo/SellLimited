@@ -143,8 +143,8 @@
 											</th>
 											<td>
 												<br>1 개<br> 
-												반품불가<br><br><br>
-												kyeong<br><br><br><br>
+												반품불가<br><br><br><br>
+												kyeong<br><br><br>
 												200,000
 											</td>
 										</tr>
