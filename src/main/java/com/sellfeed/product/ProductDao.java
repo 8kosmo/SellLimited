@@ -17,13 +17,7 @@ public class ProductDao {
    int result =0;
    @Autowired
    public SqlSessionTemplate sqlSessionTemplate = null;
-//★   Select
-   public List<Map<String, Object>> productList(Map<String, Object> pMap) {
-      logger.info("ProductDao| Call productList");
-      List<Map<String,Object>> productList = null;
-      productList = sqlSessionTemplate.selectList("productList",pMap);
-      return productList;
-   }
+   
 //★   Insert
    public int ProductIns(Map<String, Object> pMap) {
       logger.info("ProductDao| Call productIns");

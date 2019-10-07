@@ -36,20 +36,6 @@ public class ProductController {
    @Autowired
    public ProductLogic productLogic = null;
    
-   @GetMapping("/productList.sf")
-      public String productList(@RequestParam (required=false) Map<String, Object> pMap) {
-         logger.info("Controller| Call productList");
-         List<Map<String,Object>> productList = null;
-         logger.info("아이디 : "+ pMap.get("mem_id"));
-         productList =productLogic.productList(pMap);
-         if(productList!=null&&productList.size()>0) {
-            return "testview/DetailView";
-         }
-         logger.info("잘 못 가져옴"+"----------pMap---------------" +pMap);
-         logger.info("잘 못 가져옴"+"----------productList---------------" +productList);
-         return "redirect:/testview/DetailView";
-      }
-
    @GetMapping("/productTest.sf")
    	 public String produdctTest(Model mod) {
    		 Map<String,Object> tMap = new HashMap<>();

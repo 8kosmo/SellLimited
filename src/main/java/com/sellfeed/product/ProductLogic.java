@@ -19,13 +19,6 @@ public class ProductLogic {
    int result = 0;
    @Autowired
    public ProductDao productDao = null;   
-
-     public List<Map<String, Object>> productList(Map<String, Object> pMap) {
-         logger.info("Logic| Call ProductList");
-         List<Map<String,Object>> productList = null;
-         productList = productDao.productList(pMap);
-         return productList;
-      }
    
    public int productIns(Map<String, Object> pMap, List<Map<String,Object>> itemList) {
       logger.info("Logic| Call ProductIns");
