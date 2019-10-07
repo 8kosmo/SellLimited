@@ -138,6 +138,10 @@ public class ProductController {
 	//시드참여중 리스트 검색
 	@GetMapping(value="/productList.sf")
 	public String productList(Model mod, @RequestParam Map<String, Object>pMap) {
+		if(pMap.get("sub_category_code")!=null) {
+			String sub_category_code =  pMap.get("sub_category_code").toString();
+			pMap.put("sub_category_code",sub_category_code);
+		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
 		int nowPage = 0;

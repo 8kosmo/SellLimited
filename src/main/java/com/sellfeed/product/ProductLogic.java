@@ -103,7 +103,7 @@ public class ProductLogic {
 		int pageSize = 0;
 		int start = 0;
 		int end = 0;
-		int total = productDao.getSeedListTotal();
+		int total = productDao.getSeedListTotal(pMap);
 		 if(Integer.parseInt(pMap.get("nowPage").toString())!=0) {
              nowPage = Integer.parseInt(pMap.get("nowPage").toString());
          }
@@ -132,7 +132,7 @@ public class ProductLogic {
 		int pageSize1 = 0;
 		int start1 = 0;
 		int end1 = 0;
-		int total = productDao.getAuctionListTotal();
+		int total = productDao.getAuctionListTotal(pMap);
 		 if(Integer.parseInt(pMap.get("nowPage1").toString())!=0) {
              nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
          }

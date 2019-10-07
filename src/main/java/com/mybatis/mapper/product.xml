@@ -111,7 +111,7 @@
 	                       TO_DATE(SUBSTR(AUCTION_INFO.END_SEED,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' END_SEED,
 	                       NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  NVL(BID_LOG.FINAL_PRICE,'0') FINAL_PRICE
 	                  FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
-	                       (SELECT ITEM_CODE, PRODUCT_DETAIL, BUYNOW_PRICE,  MEM_ID, STATUS FROM SALE_ITEM) SALE_ITEM,
+	                       (SELECT ITEM_CODE, SUB_CATEGORY_CODE, PRODUCT_DETAIL, BUYNOW_PRICE,  MEM_ID, STATUS FROM SALE_ITEM) SALE_ITEM,
 	                       (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
 	                       (SELECT BID_CODE, AUCT_STARTDATE, AUCT_ENDDATE  FROM AUCT_PROGRESS) AUCT_PROGRESS,
 	                       (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
@@ -121,6 +121,33 @@
 	                   AND AUCTION_INFO.BID_CODE = AUCT_PROGRESS.BID_CODE
 	                   AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
 	                   AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+				  <if test="sub_category_code != null and sub_category_code.length()>0">
+				   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+				  </if>
+				  <if test="keyword!=null and keyword.equals('패션')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
+				  </if>
+  				  <if test="keyword!=null and keyword.equals('카메라')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('악기')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('키덜트')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('연예인굿즈')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('골동품')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('게임')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('음반')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
+  				  </if>
 	                   AND SALE_ITEM.STATUS = '시드참여중'
 	                   ORDER BY AUCTION_INFO.END_SEED
 	               )
@@ -129,11 +156,38 @@
 		  <![CDATA[WHERE RNO BETWEEN #{start} AND #{end}]]>
        </if>
    </select>
-   <select id="getSeedListTotal" resultType="int">
+   <select id="getSeedListTotal" parameterType="map" resultType="int">
         SELECT COUNT(SALE_ITEM.item_code)
           FROM SALE_ITEM,
               (SELECT item_code, MAX(photo_name) FROM ITEM_PHOTO GROUP BY item_code) ITEM_PHOTO
          WHERE SALE_ITEM.item_code = ITEM_PHOTO.item_code(+)
+	  <if test="sub_category_code != null and sub_category_code.length()>0">
+	   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+	  </if>
+	  <if test="keyword!=null and keyword.equals('패션')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
+	  </if>
+			  <if test="keyword!=null and keyword.equals('카메라')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('악기')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('키덜트')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('연예인굿즈')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('골동품')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('게임')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('음반')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
+			  </if>
             AND STATUS = '시드참여중'
    </select>
    <select id="itemStatusAuctionList" parameterType="map" resultType="map">
@@ -149,7 +203,7 @@
 	                       TO_DATE(SUBSTR(AUCT_PROGRESS.AUCT_ENDDATE,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' AUCT_ENDDATE,
 	                       NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  BID_LOG.FINAL_PRICE
 	                  FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
-	                       (SELECT ITEM_CODE, PRODUCT_DETAIL, BUYNOW_PRICE,  MEM_ID, STATUS FROM SALE_ITEM) SALE_ITEM,
+	                       (SELECT ITEM_CODE, SUB_CATEGORY_CODE, PRODUCT_DETAIL, BUYNOW_PRICE,  MEM_ID, STATUS FROM SALE_ITEM) SALE_ITEM,
 	                       (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
 	                       (SELECT BID_CODE, AUCT_STARTDATE, AUCT_ENDDATE  FROM AUCT_PROGRESS) AUCT_PROGRESS,
 	                       (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
@@ -159,6 +213,33 @@
 	                   AND AUCTION_INFO.BID_CODE = AUCT_PROGRESS.BID_CODE
 	                   AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
 	                   AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+				  <if test="sub_category_code != null and sub_category_code.length()>0">
+				   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+				  </if>
+				  <if test="keyword!=null and keyword.equals('패션')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
+				  </if>
+  				  <if test="keyword!=null and keyword.equals('카메라')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('악기')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('키덜트')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('연예인굿즈')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('골동품')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('게임')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
+  				  </if>
+  				  <if test="keyword!=null and keyword.equals('음반')">
+					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
+  				  </if>
 	                   AND SALE_ITEM.STATUS = '경매진행중'
 	                ORDER BY AUCT_PROGRESS.AUCT_ENDDATE
 	            )
@@ -167,11 +248,38 @@
 		 <![CDATA[WHERE RNO BETWEEN #{start} AND #{end}]]>
        </if>
    </select>
-   <select id="getAuctionListTotal" resultType="int">
+   <select id="getAuctionListTotal" parameterType="map" resultType="int">
         SELECT COUNT(SALE_ITEM.item_code)
           FROM SALE_ITEM,
               (SELECT item_code, MAX(photo_name) FROM ITEM_PHOTO GROUP BY item_code) ITEM_PHOTO
          WHERE SALE_ITEM.item_code = ITEM_PHOTO.item_code(+)
             AND STATUS = '경매진행중'
+	  <if test="sub_category_code != null and sub_category_code.length()>0">
+	   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+	  </if>
+	  <if test="keyword!=null and keyword.equals('패션')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
+	  </if>
+			  <if test="keyword!=null and keyword.equals('카메라')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('악기')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('키덜트')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('연예인굿즈')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('골동품')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('게임')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
+			  </if>
+			  <if test="keyword!=null and keyword.equals('음반')">
+		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
+			  </if>
    </select>
 </mapper>

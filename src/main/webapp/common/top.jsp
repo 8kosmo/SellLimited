@@ -94,14 +94,14 @@
 <!-- 대분류  -->
 <ul class="gnb">
    <li class="gnb_left">
-      <a href="#"><span>패션</span></a>
-      <a href="#"><span>카메라</span></a>
-      <a href="#"><span>악기</span></a>
-      <a href="#"><span>키덜트</span></a>
-      <a href="#"><span>연예인 굿즈</span></a>
-      <a href="#"><span>골동품</span></a>
-      <a href="#"><span>게임</span></a>
-      <a href="#"><span>음반</span></a>
+      <a href="/product/productList.sf?keyword=패션"><span>패션</span></a>
+      <a href="/product/productList.sf?keyword=카메라"><span>카메라</span></a>
+      <a href="/product/productList.sf?keyword=악기"><span>악기</span></a>
+      <a href="/product/productList.sf?keyword=키덜트"><span>키덜트</span></a>
+      <a href="/product/productList.sf?keyword=연예인굿즈"><span>연예인 굿즈</span></a>
+      <a href="/product/productList.sf?keyword=골동품"><span>골동품</span></a>
+      <a href="/product/productList.sf?keyword=게임"><span>게임</span></a>
+      <a href="/product/productList.sf?keyword=음반"><span>음반</span></a>
    </li>
 </ul>
 </div><!-- end of div top -->
@@ -109,44 +109,44 @@
 <div id="main_navi">
    <ul>
       <li style="margin-left:10px;">
-         <a href="#">신발</a>
-         <a href="#">모자</a>
-         <a href="#">시계</a>
+         <a href="/product/productList.sf?sub_category_code=0101">신발</a>
+         <a href="/product/productList.sf?sub_category_code=0102">모자</a>
+         <a href="/product/productList.sf?sub_category_code=0103">시계</a>
       </li>
       <li>
-         <a href="#">필름카메라</a>
-         <a href="#">DSLR</a>
-         <a href="#">미러리스</a>
+         <a href="/product/productList.sf?sub_category_code=0201">필름카메라</a>
+         <a href="/product/productList.sf?sub_category_code=0202">DSLR</a>
+         <a href="/product/productList.sf?sub_category_code=0203">미러리스</a>
       </li>
       <li>
-         <a href="#">바이올린</a>
-         <a href="#">피아노</a>
-         <a href="#">일렉 기타</a>
+         <a href="/product/productList.sf?sub_category_code=0301">바이올린</a>
+         <a href="/product/productList.sf?sub_category_code=0302">피아노</a>
+         <a href="/product/productList.sf?sub_category_code=0303">일렉 기타</a>
       </li>
       <li>
-         <a href="#">피규어</a>
-         <a href="#">프라모델</a>
-         <a href="#">만화책</a>
+         <a href="/product/productList.sf?sub_category_code=0401">피규어</a>
+         <a href="/product/productList.sf?sub_category_code=0402">프라모델</a>
+         <a href="/product/productList.sf?sub_category_code=0403">만화책</a>
       </li>
       <li>
-         <a href="#">사인물품</a>
-         <a href="#">애장품</a>
-         <a href="#">기타</a>
+         <a href="/product/productList.sf?sub_category_code=0501">사인물품</a>
+         <a href="/product/productList.sf?sub_category_code=0502">애장품</a>
+         <a href="/product/productList.sf?sub_category_code=0503">기타</a>
       </li>
       <li>
-         <a href="#">동전</a>
-         <a href="#">우표</a>
-         <a href="#">기타</a>
+         <a href="/product/productList.sf?sub_category_code=0601">동전</a>
+         <a href="/product/productList.sf?sub_category_code=0602">우표</a>
+         <a href="/product/productList.sf?sub_category_code=0603">기타</a>
       </li>
       <li>
-         <a href="#">게임기</a>
-         <a href="#">게임팩</a>
-         <a href="#">기타</a>
+         <a href="/product/productList.sf?sub_category_code=0701">게임기</a>
+         <a href="/product/productList.sf?sub_category_code=0702">게임팩</a>
+         <a href="/product/productList.sf?sub_category_code=0703">기타</a>
       </li>
       <li>
-         <a href="#">국내</a>
-         <a href="#">해외</a>
-         <a href="#">기타</a>
+         <a href="/product/productList.sf?sub_category_code=0801">국내</a>
+         <a href="/product/productList.sf?sub_category_code=0802">해외</a>
+         <a href="/product/productList.sf?sub_category_code=0803">기타</a>
       </li>
    </ul>   
 </div><!-- end of main_navi -->
