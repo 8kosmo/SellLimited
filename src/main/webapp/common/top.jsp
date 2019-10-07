@@ -9,12 +9,14 @@
    String mem_name = null;
    int nowBalance = 0;
    String mem_id = null;
+   String acct_number = null;
     if (session.getAttribute("mem_name") == null 
           ||session.getAttribute("nowBalance") == null) {
     }else{
         mem_name = (String)session.getAttribute("mem_name");
         nowBalance = (int)session.getAttribute("nowBalance");
         mem_id = (String)session.getAttribute("mem_id");
+        acct_number = (String)session.getAttribute("acct_number");
     }
 %>
 

@@ -66,6 +66,7 @@ public class MemberLogic {
       String mem_name="";
       int acct_balance=0;
       String mem_id = "";
+      String acct_number= "";
       List<String> list = new ArrayList<String>(); 
       try {
     	  mem_name = memberDao.login(pMap);
@@ -73,8 +74,11 @@ public class MemberLogic {
     	  mem_id = pMap.get("mem_id").toString();
     	  acct_balance = accountDao.accountNowBalance(mem_id);
     	  logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
+    	  acct_number = accountDao.acct_number(mem_id);
+    	  logger.info("acct_number===========>"+acct_number);
     	  list.add(pMap.get("mem_name").toString());
     	  list.add(""+acct_balance);
+    	  list.add(""+acct_number);
 	} catch (DataAccessException e) {
 		  throw e;
 	  }

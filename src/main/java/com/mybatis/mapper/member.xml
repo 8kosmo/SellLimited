@@ -7,7 +7,7 @@
 	FROM member
 	where mem_id=#{mem_id}  
 	</select>
-		
+
 	<select id="idInspection" parameterType="map" resultType="string">
 		 SELECT DECODE(
 		 			(SELECT MEM_ID FROM member WHERE mem_id=#{mem_id})

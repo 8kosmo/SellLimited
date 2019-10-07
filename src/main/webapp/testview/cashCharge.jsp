@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@ include file="/common/cssJs.jsp" %>
+
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
@@ -26,7 +27,7 @@
                   </p>
                </td>
                <td class="mtt_right" align="center">
-                  <a href="/testview/cashCharge.jsp"><button type="button" class="juliet"><img src="/images/integ/20150918_03.png">캐시충전</button></a>
+                  <a href="/testview/cashCharge.jsp"><button type="button" class="juliet" ><img src="/images/integ/20150918_03.png">캐시충전</button></a>
                </td>
             </tr></tbody>
          </table>
@@ -72,7 +73,9 @@
          </table>
       </li>
    	  <li style="margin-bottom:20px">
-      	<form action="#" name="order_frm" id="order_frm" method="post" accept-charset="utf-8">
+      	<form action="/account/accountCharge.sf" name="order_frm" id="order_frm" method="post" accept-charset="utf-8">
+      	 <input type="hidden" name="mem_id" value="<%=mem_id%>"/>
+      	 <input type="hidden" name="acct_number" value="<%=acct_number%>"/>
       		<table class="mypage_table_head">
       			<caption>
 					캐시충전 <img src="/images/integ/20150918_10.png"> <span class="mth_left">무통장 또는 신용카드를 이용하여 결제하실 수 있습니다.</span><span class="mth_right"></span>
@@ -92,7 +95,7 @@
 						</colgroup>
 						<tr>
 							<th>충전(결제)금액</th>
-							<td><input type="text" class="input_rebill" name="price" maxlength="30" value="0">
+							<td><input type="text" class="input_rebill" name="trade_ammount" maxlength="30" value="0">
 							<p><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(10000)">1만</button><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(50000)">5만</button><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(100000)">10만</button><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(200000)">20만</button><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(300000)">30만</button><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(500000)">50만</button><button type="button" class="scotch" style="cursor:pointer" onclick="cash_input_add(1000000)">100만</button><button type="button" class="scotch" style="cursor:pointer" style="color:#ED564D;" onclick="cash_zero()">정정</button></p>
 							</td>
 						</tr>
@@ -108,19 +111,19 @@
 										<td style="border-bottom:none;padding:0" class="select_bank">
 											<div id="select_boxstyle" style="margin:0;">
 												<label for="color"></label>								
-													<select name="LGD_BANKCODE" id="LGD_BANKCODE" class="selbox_tr" >
-														<option value="011">농협은행</option>
-														<option value="088">신한은행</option>
-														<option value="004">국민은행</option>
-														<option value="020">우리은행</option>
-														<option value="081">하나은행</option>
-														<option value="003">기업은행</option>
-														<option value="005">외환은행</option>
-														<option value="007">수협은행</option>
-														<option value="031">대구은행</option>
-														<option value="032">부산은행</option>
-														<option value="039">경남은행</option>
-														<option value="071">우체국</option>
+													<select name="user_bank" id="user_bank" class="selbox_tr" >
+														<option value="농협">농협은행</option>
+														<option value="신한">신한은행</option>
+														<option value="국민">국민은행</option>
+														<option value="우리">우리은행</option>
+														<option value="하나">하나은행</option>
+														<option value="기업">기업은행</option>
+														<option value="외환">외환은행</option>
+														<option value="수협">수협은행</option>
+														<option value="대구">대구은행</option>
+														<option value="부산">부산은행</option>
+														<option value="경남">경남은행</option>
+														<option value="우체국">우체국</option>
 													 </select>
 											</div>
 											입금자명 <input type="text" name="LGD_ACCOUNTOWNER" id="LGD_ACCOUNTOWNER" class="input_name">
@@ -222,7 +225,8 @@
 					</td>
 					<td style="vertical-align:middle;">
 						<span id="credit_ok">
-							<button type="submit" class="ireland" style="cursor:pointer"><img src="/images/integ/20150923_03.png">결제하기</button>
+							<button class="ireland" style="cursor:pointer" onclick="document.getElementById('order_frm').submit()">
+							<img src="/images/integ/20150923_03.png">결제하기</button>
 						</span>
 					</td>
 				</tr>
@@ -232,8 +236,8 @@
      <script type="text/javascript">
 	     function cash_input_add(price)
 	     {
-	     	$('input[name=price]').val(price);
-	     	$('input[name=price]').focus();
+	     	$('input[name=trade_ammount]').val(price);
+	     	$('input[name=trade_ammount]').focus();
 	     }
 	     
 	     function cash_zero()
@@ -243,8 +247,8 @@
 	     		return false;
 	     	}
 	     	else{
-	     		$('input[name=price]').val('');
-	     		$('input[name=price]').focus();
+	     		$('input[name=trade_ammount]').val('');
+	     		$('input[name=trade_ammount]').focus();
 	     	}
 	     }
 	     
@@ -256,36 +260,36 @@
 	     	var credit_method = $('#credit_method').val();
 	     	if(credit_method == 2) {
 	     		if (chk_type == 4) {
-	     			$('input[name=price]').val('');
-	     			$('input[name=price]').attr("readonly", false);
+	     			$('input[name=trade_ammount]').val('');
+	     			$('input[name=trade_ammount]').attr("readonly", false);
 	     		}else{
-	     			$('input[name=price]').val('');
-	     			$('input[name=price]').attr("readonly", true);
+	     			$('input[name=trade_ammount]').val('');
+	     			$('input[name=trade_ammount]').attr("readonly", true);
 	     		}
 
 	     	}else{
 
 	     		if(chk_type == 4) {
-	     			$('input[name=price]').val('');
-	     			$('input[name=price]').attr("readonly",false);
+	     			$('input[name=trade_ammount]').val('');
+	     			$('input[name=trade_ammount]').attr("readonly",false);
 	     			$('.select_card').hide();
 	     			$('.select_bank').show();
 
 	     		} else if(chk_type == 2) {
-	     			$('input[name=price]').val('');
-	     			$('input[name=price]').attr("readonly",true);
+	     			$('input[name=trade_ammount]').val('');
+	     			$('input[name=trade_ammount]').attr("readonly",true);
 	     			$('.select_bank').hide();
 	     			$('.select_card').show();
 
 	     		} else if(chk_type == 3) {
-	     			$('input[name=price]').val('');
-	     			$('input[name=price]').attr("readonly",true);
+	     			$('input[name=trade_ammount]').val('');
+	     			$('input[name=trade_ammount]').attr("readonly",true);
 	     			$('.select_bank').hide();
 	     			$('.select_card').show();
 
 	     		} else {
-	     			$('input[name=price]').val('');
-	     			$('input[name=price]').attr("readonly",false);
+	     			$('input[name=trade_ammount]').val('');
+	     			$('input[name=trade_ammount]').attr("readonly",false);
 	     			$('.select_card').hide();
 	     			$('.select_bank').show();
 	     		}
@@ -301,11 +305,11 @@
 	     function execPay($form)
 	     {
 	     	var $pay_method = $('input[name=pay_method]:checked');
-	     	var price = $('input[name=price]').val();
+	     	var price = $('input[name=trade_ammount]').val();
 
 	     	if(price <= 0) {
 	     		alert('충전 금액을 선택하셔야 합니다.');
-	     		$('input[name=price]').focus();
+	     		$('input[name=trade_ammount]').focus();
 	     		return false;
 	     	}
 	     /* 	if ($pay_method.val() == 1)

@@ -2,70 +2,113 @@
 <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mybatis.mapper.AccountMapper">
 
-	<insert id="accountMake" parameterType="map">
+   <insert id="accountMake" parameterType="map">
                    INSERT INTO account(acct_number,r_num,acct_balance,acct_dealdate
                            ,trade_ammount,trade, trade_detail,trade_target,mem_id)
                     values(#{acct_number},0,0,0
-                            ,0,0,0,0,#{mem_id})				
-	</insert>
-	
-	<insert id="accountIns" parameterType="map">
-	INSERT INTO account(acct_number
-	                    ,r_num
-	                    ,acct_balance
-	                    ,acct_dealdate
-	                    ,trade_ammount
-	                    ,trade
-	                    ,trade_detail
-	                    ,trade_target
-	                    ,mem_id
-	                    ,hidden)
-	             VALUES((SELECT max(acct_number) FROM account
-						 WHERE mem_id = #{mem_id})
-	                    ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
-	                    ,#{acct_balance}
-	                    ,(SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD/HH/MI/SS') FROM DUAL)
-	                    ,#{trade_ammount}
-	                    ,#{trade}
-	                    ,#{trade_detail}
-	                    ,#{trade_target}
-	                    ,#{mem_id}
-	                    ,'no'
-	                    )
-	</insert>
-	
-	<select id="getAcct_number" resultType="string">
-		select seq_acct_number.nextval from dual
+                            ,0,0,0,0,#{mem_id})            
+   </insert>
+   	
+   	<select id="acct_number" parameterType="string" resultType="string">
+        SELECT acct_number 
+          FROM account
+         WHERE mem_id=#{mem_id} 
+           AND r_num = (SELECT max(r_num) FROM account where mem_id=#{mem_id})
 	</select>
 	
-	<select id="accountList" parameterType="map" resultType="map" >
-		SELECT acct_balance, acct_dealdate, tr_ammount, tr
-			  ,tr_detail,tr_target
+		
+   <update id="accountCharge" parameterType="map">
+   		INSERT INTO acct_charge(
+   			 					charge_code, mem_id, acct_number, trade_ammount, user_bank, apply_date,status
+   			 					,deposit_date, approval_date )
+   						 VALUES(
+         						(SELECT dbms_random.string('U',2)||LPAD(ROUND(dbms_random.value(1,10000)),4,0) FROM dual)
+         						,#{mem_id},#{acct_number},#{trade_ammount},#{user_bank}
+        						,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd/hh24/mi/ss') FROM DUAL)
+      						    ,'대기'
+      						    ,'0','0'
+    							)
+    
+   </update>
+   <insert id="accountIns" parameterType="map">
+   INSERT INTO account(acct_number
+                       ,r_num
+                       ,acct_balance
+                       ,acct_dealdate
+                       ,trade_ammount
+                       ,trade
+                       ,trade_detail
+                       ,trade_target
+                       ,mem_id
+                       ,hidden)
+                VALUES((SELECT max(acct_number) FROM account
+                   WHERE mem_id = #{mem_id})
+                       ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
+                       ,#{acct_balance}
+                       ,(SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD/HH/MI/SS') FROM DUAL)
+                       ,#{trade_ammount}
+                       ,#{trade}
+                       ,#{trade_detail}
+                       ,#{trade_target}
+                       ,#{mem_id}
+                       ,'no'
+                       )
+   </insert>
+
+   <select id="getAcct_number" resultType="string">
+      select seq_acct_number.nextval from dual
+   </select>
+   
+   <select id="accountList" parameterType="map" resultType="map" >
+      SELECT acct_balance, acct_dealdate, tr_ammount, tr
+           ,tr_detail,tr_target
           FROM account
          WHERE mem_id=#{mem_id}
            AND hidden='no'
-	</select>
-	
-	<select id="accountNowBalance" parameterType="string" resultType="int" >
-		SELECT acct_balance FROM account d,
-		(SELECT mem_id, MAX(r_num) r_num FROM account GROUP BY mem_id) c
-		WHERE d.mem_id = #{mem_id}
-		AND d.mem_id = c.mem_id
-		AND d.r_num = c.r_num		
-	</select>
-		
-	<select id="nowPoint" parameterType="map" resultType="string">
+   </select>
+   
+   <select id="accountNowBalance" parameterType="string" resultType="int" >
+      SELECT acct_balance FROM account d,
+      (SELECT mem_id, MAX(r_num) r_num FROM account GROUP BY mem_id) c
+      WHERE d.mem_id = #{mem_id}
+      AND d.mem_id = c.mem_id
+      AND d.r_num = c.r_num      
+   </select>
+      
+   <select id="nowPoint" parameterType="map" resultType="string">
         SELECT acct_balance
           FROM account
          WHERE mem_id =#{mem_id}
            AND r_num=(SELECT max(r_num) FROM account)
     </select>
-	
-	<delete id="accountHidden" parameterType="map">
-		UPDATE account
-		   SET hidden='yes'
-		 WHERE mem_id=#{mem_id}
-		   AND r_num = #{r_num}
-	</delete>
-	
+   
+   <delete id="accountHidden" parameterType="map">
+      UPDATE account
+         SET hidden='yes'
+       WHERE mem_id=#{mem_id}
+         AND r_num = #{r_num}
+   </delete>
+   
+   <select id="accountStatusList" resultType="map">
+      SELECT charge_code, mem_id, trade_ammount, user_bank
+           ,acct_number, apply_date, deposit_date, approval_date, status FROM acct_charge
+       WHERE status='대기'
+       ORDER BY apply_date
+   </select>
+   
+   <update id="managerPermissionAccount" parameterType="string">
+      UPDATE acct_charge
+         SET status='승인'
+              ,deposit_date = (SELECT to_char(sysdate,('yyyy/mm/dd/hh24/mi/ss')) FROM dual)
+              ,approval_date = (SELECT to_char(sysdate,('yyyy/mm/dd/hh24/mi/ss')) FROM dual)
+      WHERE charge_code = #{charge_code}
+   </update>
+   
+   <update id="managerRefuseAcct" parameterType="string">
+   		UPDATE acct_charge
+         SET status='거절'
+              ,deposit_date = '0'
+              ,approval_date = (SELECT to_char(sysdate,('yyyy/mm/dd/hh24/mi/ss')) FROM dual)
+      WHERE charge_code = #{charge_code}
+   </update>
 </mapper> 
