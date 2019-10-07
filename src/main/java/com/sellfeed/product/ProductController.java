@@ -8,12 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +29,10 @@ public class ProductController {
    String path;
    int result;
    String savePath =  "\\\\192.168.0.187\\itemPhoto";
-      String photo_name =  null;
-     String fullPath = null;
-     List<Map<String,Object>> itemList = null;
-     Map<String,Object> fileMap = null;
+   String photo_name =  null;
+   String fullPath = null;
+   List<Map<String,Object>> itemList = null;
+   Map<String,Object> fileMap = null;
    @Autowired
    public ProductLogic productLogic = null;
    
@@ -165,19 +166,114 @@ public class ProductController {
       productLogic.managerPermission(item_code,auct_period);
       return "redirect:../product/itemStatusList.sf";
    }
-   
-   //관리자 페이지 접속 시 리스트 검색
-   @GetMapping(value="/itemStatusList.sf")
-   public String itemStatusList(ModelMap mod) {
-      List<Map<String, Object>> itemStatusList = null;
-      itemStatusList = productLogic.itemStatusList();
-      mod.addAttribute("itemStatusList", itemStatusList);
-      return "forward:../testview/managerPermission.jsp";
-   }
+	//관리자 페이지 접속 시 리스트 검색
+	@GetMapping(value="/itemStatusList.sf")
+	public String itemStatusList(Model mod, HttpServletRequest req) {
+		List<Map<String, Object>> itemStatusList = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		 if(req.getParameter("nowPage")!=null) {
+			 nowPage = Integer.parseInt(req.getParameter("nowPage"));
+         }
+         if(req.getParameter("pageSize")!=null) {
+             pageSize =  Integer.parseInt(req.getParameter("pageSize"));
+         }
+		logger.info("nowPage :"+nowPage);
+		logger.info("pageSize :"+pageSize);
+		Map<String, Object> pMap = new HashMap<>();
+		pMap.put("nowPage",nowPage);
+		pMap.put("pageSize",pageSize);
+		itemStatusList = productLogic.itemStatusList(pMap);
+		mod.addAttribute("itemStatusList", itemStatusList);
+		return "forward:../testview/managerPermission.jsp";
+	}
    //승인대기 -> 등록거절하기
    @GetMapping(value="/managerRefuse.sf")
    public String managerRefuse(@RequestParam("item_code") String item_code) {
       productLogic.managerRefuse(item_code);
       return "redirect:../product/itemStatusList.sf";
    }
+   	//시드참여중 리스트 검색
+	@GetMapping(value="/productList.sf")
+	public String productList(Model mod, @RequestParam Map<String, Object>pMap) {
+		if(pMap.get("sub_category_code")!=null) {
+			String sub_category_code =  pMap.get("sub_category_code").toString();
+			pMap.put("sub_category_code",sub_category_code);
+		}
+		/*시드참여중 리스트*/
+		List<Map<String, Object>> itemStatusSeedList = null;
+		int nowPage = 0;
+		int pageSize = 15;
+		 if(pMap.get("nowPage")!=null) {
+             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+         }
+         if(pMap.get("pageSize")!=null) {
+        	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+         }
+		logger.info("nowPage :"+nowPage);
+		logger.info("pageSize :"+pageSize);
+		pMap.put("nowPage",nowPage);
+		pMap.put("pageSize",pageSize);
+		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
+		mod.addAttribute("itemStatusSeedList", itemStatusSeedList);
+		/*경매진행중 리스트*/
+		List<Map<String, Object>> itemStatusAuctionList = null;
+		int nowPage1 = 0;
+		int pageSize1 = 15;
+		 if(pMap.get("nowPage1")!=null) {
+             nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
+         }
+         if(pMap.get("pageSize1")!=null) {
+        	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
+         }
+		logger.info("nowPage1 :"+nowPage1);
+		logger.info("pageSize1 :"+pageSize1);
+		pMap.put("nowPage1",nowPage1);
+		pMap.put("pageSize1",pageSize1);
+		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
+		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
+		return "forward:../testview/productListView.jsp";
+	}
+	//ajax 시드참여중
+	@GetMapping(value="/itemStatusSeedList.sf")
+	public String itemStatusSeedList(Model mod, @RequestParam Map<String, Object> pMap) {
+		/*시드참여중 리스트*/
+		List<Map<String, Object>> itemStatusSeedList = null;
+		int nowPage = 0;
+		int pageSize = 15;
+		 if(pMap.get("nowPage")!=null) {
+             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+         }
+         if(pMap.get("pageSize")!=null) {
+        	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+         }
+		logger.info("nowPage :"+nowPage);
+		logger.info("pageSize :"+pageSize);
+		pMap.put("nowPage",nowPage);
+		pMap.put("pageSize",pageSize);
+		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
+		mod.addAttribute("itemStatusSeedList", itemStatusSeedList);
+		return "forward:../testview/itemStatusSeedList.jsp";
+	}
+	//ajax 경매진행중
+	@GetMapping(value="/itemStatusAuctionList.sf")
+	public String itemStatusAuctionList(Model mod, @RequestParam Map<String, Object> pMap) {
+		/*경매진행중 리스트*/
+		List<Map<String, Object>> itemStatusAuctionList = null;
+		int nowPage1 = 0;
+		int pageSize1 = 15;
+		 if(pMap.get("nowPage1")!=null) {
+             nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
+         }
+         if(pMap.get("pageSize1")!=null) {
+        	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
+         }
+		logger.info("nowPage1 :"+nowPage1);
+		logger.info("pageSize1 :"+pageSize1);
+		pMap.put("nowPage1",nowPage1);
+		pMap.put("pageSize1",pageSize1);
+		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
+		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
+		return "forward:../testview/itemStatusAuctionList.jsp";
+	}
 }

@@ -77,12 +77,12 @@ public class ProductDao {
       return result;
    }
    
-   public List<Map<String, Object>> itemStatusList() {
-      List<Map<String, Object>> itemStatusList = 
-            new ArrayList<Map<String,Object>>();
-      itemStatusList = sqlSessionTemplate.selectList("itemStatusList");
-      return itemStatusList;
-   }
+	public List<Map<String, Object>> itemStatusList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusList = 
+				new ArrayList<Map<String,Object>>();
+		itemStatusList = sqlSessionTemplate.selectList("itemStatusList",pMap);
+		return itemStatusList;
+	}
    
    public void managerRefuse(String item_code) {
       sqlSessionTemplate.delete("managerRefuse", item_code);
@@ -108,4 +108,31 @@ public class ProductDao {
       photoList = sqlSessionTemplate.selectList("photoList",pMap);
       return photoList;
    }
+	public int getPermissionTotal() {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getPermissionTotal");
+		return total;
+	}
+	public List<Map<String, Object>> itemStatusSeedList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusSeedList = 
+				new ArrayList<Map<String,Object>>();
+		itemStatusSeedList = sqlSessionTemplate.selectList("itemStatusSeedList",pMap);
+		return itemStatusSeedList;
+	}
+	public int getSeedListTotal(Map<String, Object> pMap) {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getSeedListTotal",pMap);
+		return total;
+	}
+	public List<Map<String, Object>> itemStatusAuctionList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusAuctionList = 
+				new ArrayList<Map<String,Object>>();
+		itemStatusAuctionList = sqlSessionTemplate.selectList("itemStatusAuctionList",pMap);
+		return itemStatusAuctionList;
+	}
+	public int getAuctionListTotal(Map<String, Object> pMap) {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getAuctionListTotal",pMap);
+		return total;
+	}
 }

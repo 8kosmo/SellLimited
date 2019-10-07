@@ -37,7 +37,7 @@ public class PageBar {
    private int nowBlock;
    //적용할 페이지 이름
    private String pagePath;
-   //
+   //Stringbuffer생성
    private String pagination;
    
    //페이지 네비게이션 초기화
@@ -54,7 +54,7 @@ public class PageBar {
 	   }
 	   this.totalPage = (int)Math.ceil((double)this.totalRecord/this.numPerPage);
 	   this.totalBlock = (int)Math.ceil((double)this.totalPage/this.pagePerBlock);
-	   this.nowBlock = this.nowPage/this.pagePerBlock;
+	   this.nowBlock = (int)((double)this.nowPage/this.pagePerBlock);
    }
    //setter메소드 선언
    public void setPageBar() {
@@ -96,6 +96,48 @@ public class PageBar {
    //getter메소드 선언
    public String getPageBar() {
 	   this.setPageBar();
+	   return pagination;
+   }
+   //setter메소드 선언
+   public void setPageBar1() {
+	   StringBuilder pageLink = new StringBuilder();
+	   //전체 레코드 수가 0보다 클때 처리하기
+	   if(totalRecord>0) {
+		   //nowBlock이 0보다 클때 처리
+		   //이전페이지로 이동해야 하므로 페이지 번호에 a태그를 붙여야 하고
+		   //pagePath뒤에 이동할 페이지 번호를 붙여서 호출해야함.
+		   if(nowBlock > 0) {
+			   pageLink.append("<a href='"+pagePath+((nowBlock-1)*pagePerBlock+(pagePerBlock-1))+");"+"' class='btn_page btn_prev' title='이전'>");
+			   pageLink.append("</a>");
+		   }
+		   for(int i=0;i<pagePerBlock;i++) {
+			   //현재 내가 보고있는 페이지 블록일때와
+			   if(nowBlock*pagePerBlock+i==nowPage) {
+				   pageLink.append("<a href='"+pagePath+((nowBlock*pagePerBlock)+i)+");"+"' class='btn_page _current' title='page "+(nowBlock*pagePerBlock+i+1)+"'>");
+				   pageLink.append((nowBlock*pagePerBlock+i+1));
+				   pageLink.append("</a>");
+			   }
+			   //그렇지 않을때를 나누어 처리해야 함.
+			   else {
+				   pageLink.append("<a href='"+pagePath+((nowBlock*pagePerBlock)+i)+");"+"' class='btn_page' title='page "+(nowBlock*pagePerBlock+i+1)+"'>");
+				   pageLink.append((nowBlock*pagePerBlock+i+1));
+				   pageLink.append("</a>");
+			   }
+			   //모든 경우에 pagePerBlock만큼 반복되지 않으므로 break처리해야 함.
+			   if((nowBlock*pagePerBlock)+i+1==totalPage) break;
+		   }
+		   //현재 블록에서 다음 블록이 존재할 경우 이미지 추가하고 페이지 이동 할 수 있도록
+		   //a태그 활용하여 링크처리하기.
+		   if(totalBlock > nowBlock+1) {
+			   pageLink.append("<a href='"+pagePath+((nowBlock+1)*pagePerBlock)+");"+"' class='btn_page btn_next' title='다음'>");
+			   pageLink.append("</a>");
+		   }
+	   }
+	   pagination = pageLink.toString();
+   }
+   //getter메소드 선언
+   public String getPageBar1() {
+	   this.setPageBar1();
 	   return pagination;
    }
 }

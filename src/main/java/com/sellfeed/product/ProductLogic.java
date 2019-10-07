@@ -87,13 +87,93 @@ public class ProductLogic {
       return productList;
    }
    
-   public List<Map<String, Object>> itemStatusList() {
-      List<Map<String, Object>> itemStatusList = null;
-      itemStatusList = productDao.itemStatusList();
-      return itemStatusList;
-   }
+	public List<Map<String, Object>> itemStatusList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusList = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		int start = 0;
+		int end = 0;
+		int total = productDao.getPermissionTotal();
+		if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
+			nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+		}
+		if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+		}
+		if(nowPage>0) {
+			start = ((nowPage-1)*pageSize)+1;
+			end = nowPage*pageSize;
+			logger.info("시작 ROW : "+start);
+			logger.info("끝 ROW : "+end);
+			pMap.put("start", start);
+			if(end>=total) {
+				pMap.put("end", total);
+			} else {
+				pMap.put("end", end);
+			}
+		}
+		itemStatusList = productDao.itemStatusList(pMap);
+		return itemStatusList;
+	}
 
    public void managerRefuse(String item_code) {
       productDao.managerRefuse(item_code);
    }
+   	public List<Map<String, Object>> itemStatusSeedList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusSeedList = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		int start = 0;
+		int end = 0;
+		int total = productDao.getSeedListTotal(pMap);
+		 if(Integer.parseInt(pMap.get("nowPage").toString())!=0) {
+             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+         }
+         if(Integer.parseInt(pMap.get("pageSize").toString())!=0) {
+        	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+         }
+		if(nowPage>0) {
+			start = ((nowPage-1)*pageSize)+1+pageSize;
+			end = (nowPage*pageSize)+pageSize;
+			logger.info("시작 ROW : "+start);
+			logger.info("끝 ROW : "+end);
+			pMap.put("start", start);
+			if(end>=total) {
+				pMap.put("end", total);
+			} else {
+				pMap.put("end", end);
+			}
+		}
+		itemStatusSeedList = productDao.itemStatusSeedList(pMap);
+		return itemStatusSeedList;
+	}
+
+	public List<Map<String, Object>> itemStatusAuctionList(Map<String, Object> pMap) {
+		List<Map<String, Object>> itemStatusAuctionList = null;
+		int nowPage1 = 0;
+		int pageSize1 = 0;
+		int start1 = 0;
+		int end1 = 0;
+		int total = productDao.getAuctionListTotal(pMap);
+		 if(Integer.parseInt(pMap.get("nowPage1").toString())!=0) {
+             nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
+         }
+         if(Integer.parseInt(pMap.get("pageSize1").toString())!=0) {
+        	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
+         }
+		if(nowPage1>0) {
+			start1 = ((nowPage1-1)*pageSize1)+1+pageSize1;
+			end1 = (nowPage1*pageSize1)+pageSize1;
+			logger.info("시작 ROW : "+start1);
+			logger.info("끝 ROW : "+end1);
+			pMap.put("start", start1);
+			if(end1>=total) {
+				pMap.put("end", total);
+			} else {
+				pMap.put("end", end1);
+			}
+		}
+		itemStatusAuctionList = productDao.itemStatusAuctionList(pMap);
+		return itemStatusAuctionList;
+	}
 }

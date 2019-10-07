@@ -8,13 +8,15 @@
    List<Map<String,Object>> itemStatusList = 
          (List<Map<String,Object>>)request.getAttribute("itemStatusList");
    int size = 0;
-   int nowPage = 0;
    if(itemStatusList != null && itemStatusList.size()>0){
       size = itemStatusList.size();
    }
-/*    if(itemStatusList != null){
-      out.print(itemStatusList.get(0).get("MEM_ID"));
-   } */
+   /* 페이지네이션 추가 */
+   int numPerPage = 10;
+   int nowPage = 0;
+   if(request.getParameter("nowPage")!=null){
+	   nowPage = Integer.parseInt(request.getParameter("nowPage"));
+   }
 %>
 <!DOCTYPE html>
 <html>
@@ -110,7 +112,7 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
+            <col width="200px">
             <col width="80px;">
             <col width="80px;">
             <col width="60px;">
@@ -134,7 +136,7 @@
             </tr>
       </table>
 <%
-   if(size > 0){
+	if(size > 0){
       
 %>
        <table class="mypage_table">
@@ -143,7 +145,7 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
+            <col width="200px">
             <col width="80px;">
             <col width="80px;">
             <col width="60px;">
@@ -152,8 +154,9 @@
             <col width="80px;">
          </colgroup>
 <%
-      for(int i=0;i<size;i++){
-         Map<String,Object> rMap = itemStatusList.get(i);
+		for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+			if(size==i) break;
+			Map<String,Object> rMap = itemStatusList.get(i);
 %>
             <tr>
                <td><%=rMap.get("ITEM_CODE") %></td>
@@ -187,7 +190,7 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
+            <col width="200px">
             <col width="80px;">
             <col width="80px;">
             <col width="60px;">
@@ -212,8 +215,8 @@
             <tr>
                <td>
 <%
-					   String pagePath = "#";
-					   PageBar pb = new PageBar(10,size,nowPage,pagePath);
+					   String pagePath = "/product/itemStatusList.sf?";
+					   PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
 					   String pagination = pb.getPageBar();
 					   out.print(pagination);
 %>
