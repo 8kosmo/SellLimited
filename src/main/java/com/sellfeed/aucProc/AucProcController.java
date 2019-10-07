@@ -25,10 +25,10 @@ public class AucProcController {
 		List<Map<String,Object>> auctionList = null;
 		auctionList = aucProcLogic.auctionList(pMap);
 		if(auctionList!=null&&auctionList.size()>1) {
-			return null;
+			return "forward:/testview/auctioningPage.jsp";
 		}
 		else {
-			return null;
+			return "forward:/testview/mainView.jsp";
 			
 		}
 	}

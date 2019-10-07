@@ -64,7 +64,9 @@ $(document).ready(function(){
 	}else{
 	   $("#login").hide();
 	   $("#logout").show();
-});//_______________________________________________________________________end of ready
+	}
+}
+);//_______________________________________________________________________end of ready
 
 //_________________________________________타임
 function getTime() {
@@ -152,7 +154,8 @@ function getTime() {
              ,data:'data'
              ,success:function(result){
                 if(result=='0'){
-                   alert("경매 가즈아");
+                	//alert("경매가즈아");
+                	window.open('/testview/auctioningPage.jsp','경매진행중','width=1200,height=800,fullscreen=no');
                 }else if(result=='1'){
                    alert("시드를 발급받지 않은 상품입니다");
                 }
@@ -304,7 +307,7 @@ function getTime() {
                                  </th>
                                  <!-- 시작가격 -->
                                  <td><%=rMap.get("START_PRICE")%>원<br> 
-                                 <!-- 시작가격 -->
+                                 <!-- 바로구매가격 -->
                                  <%=rMap.get("BUYNOW_PRICE")%>원<br> 
                                  <!-- 시작시간 -->    
                                      <%=rMap.get("AUCT_STARTDATE")%><br>
