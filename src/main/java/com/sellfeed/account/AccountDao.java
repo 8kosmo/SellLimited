@@ -89,4 +89,10 @@ public class AccountDao {
 		return acct_number;
 	}
 
+	public int managerRefuseAcct(String charge_code) {
+		int result=0;
+		result = sqlSessionTemplate.update("managerRefuseAcct", charge_code);
+		return result;
+	}
+
 }

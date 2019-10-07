@@ -118,4 +118,10 @@ public class AccountLogic {
 	}
       return result;
    }
+
+	public int managerRefuseAcct(String charge_code) {
+		int result=0;
+		result = accountDao.managerRefuseAcct(charge_code);
+		return result;
+	}
 }

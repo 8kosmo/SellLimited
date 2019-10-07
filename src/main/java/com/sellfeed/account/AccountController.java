@@ -81,5 +81,11 @@ public class AccountController {
 		accountLogic.managerPermissionAccount(charge_code,pMap);
 		return"redirect:../account/accountStatusList.sf";
 	}
+	@GetMapping(value="/managerRefuseAcct.sf")
+	public String managerRefuseAcct(@RequestParam("charge_code") String charge_code) {
+		logger.info("managerPermissionAccount 호출 성공");
+		accountLogic.managerRefuseAcct(charge_code);
+		return"redirect:../account/accountStatusList.sf";
+	}
    
 }
