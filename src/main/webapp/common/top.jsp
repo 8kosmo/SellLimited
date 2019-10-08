@@ -88,7 +88,7 @@
          <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
       </span>
       <!-- 검색버튼 -->
-      <span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
+      <span><a href="#null" onclick="total_search()"><img src="/images/japanstyle_files/20160926_07.png"></a></span>
    </li>
    <!-- 검색창 오른쪽 광고배너 -->
    <li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>

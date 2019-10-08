@@ -67,9 +67,23 @@
 			}
 		});
 	}
+	function total_search() {
+		var total_keyword = encodeURIConponent($("#SearchWord").val());
+		if(total_keyword == ''){
+			alert('검색할 상품을 입력해주세요.');
+			$("#SearchWord").focus();
+			return false;
+		}
+		
+	}
 </script>
 </head>
 <body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#")
+	});
+</script>
 <%@ include file="/common/top.jsp" %>
 <!-- 경매물품리스트 나오는 전체 폼테이블 -->
 <div id="mypage">

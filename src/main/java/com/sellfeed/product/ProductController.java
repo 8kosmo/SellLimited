@@ -35,20 +35,6 @@ public class ProductController {
    Map<String,Object> fileMap = null;
    @Autowired
    public ProductLogic productLogic = null;
-   
-   @GetMapping("/productList.sf")
-      public String productList(@RequestParam (required=false) Map<String, Object> pMap) {
-         logger.info("Controller| Call productList");
-         List<Map<String,Object>> productList = null;
-         logger.info("아이디 : "+ pMap.get("mem_id"));
-         productList =productLogic.productList(pMap);
-         if(productList!=null&&productList.size()>0) {
-            return "testview/DetailView";
-         }
-         logger.info("잘 못 가져옴"+"----------pMap---------------" +pMap);
-         logger.info("잘 못 가져옴"+"----------productList---------------" +productList);
-         return "redirect:/testview/DetailView";
-      }
 
    @GetMapping("/productTest.sf")
    	 public String produdctTest(Model mod) {
@@ -110,7 +96,7 @@ public class ProductController {
       fileNullCheck(product_file2);
       fileNullCheck(product_file3);
       result = productLogic.productIns(pMap,itemList);
-      return "redirect:/testview/mainView.jsp";
+      return "redirect:/testview/ProductIns.jsp";
    }
    public void fileNullCheck(MultipartFile mFile) {
       if(mFile!=null && !mFile.isEmpty()) {

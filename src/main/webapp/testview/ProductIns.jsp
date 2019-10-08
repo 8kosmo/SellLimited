@@ -151,6 +151,21 @@
 										<option value="0301">바이올린</option>
 										<option value="0302">피아노</option>
 										<option value="0303">일렉기타</option>
+										<option value="0401">피규어</option>
+										<option value="0402">프라모델</option>
+										<option value="0403">만화책</option>
+										<option value="0501">사인물품</option>
+										<option value="0502">애장품</option>
+										<option value="0503">기타</option>
+										<option value="0601">동전</option>
+										<option value="0602">우표</option>
+										<option value="0603">기타</option>
+										<option value="0701">게임기</option>
+										<option value="0702">게임팩</option>
+										<option value="0703">기타</option>
+										<option value="0801">국내</option>
+										<option value="0802">해외</option>
+										<option value="0803">기타</option>
 									</select>
 								</div>
 							</td>
