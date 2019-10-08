@@ -15,7 +15,7 @@
    int numPerPage = 10;
    int nowPage = 0;
    if(request.getParameter("nowPage")!=null){
-	   nowPage = Integer.parseInt(request.getParameter("nowPage"));
+      nowPage = Integer.parseInt(request.getParameter("nowPage"));
    }
 %>
 <!DOCTYPE html>
@@ -94,18 +94,6 @@
       <table class="mypage_table_head">
          <caption>승인 대기 상품 목록 <img src="/images/integ/20150918_10.png"> 
             <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
-            <span class="mth_right">
-               <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
-                  <div id="select_boxview">
-                     <label for="color">30개씩 보기</label>
-                     <select name="search_limit" title="select color">
-                        <option value="30" selected="selected">30개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
-                        <option value="100">100개씩 보기</option>
-                     </select>
-                  </div>
-               </form>
-            </span>
          </caption>
          <colgroup>
             <col width="80px;">
@@ -136,7 +124,7 @@
             </tr>
       </table>
 <%
-	if(size > 0){
+   if(size > 0){
       
 %>
        <table class="mypage_table">
@@ -154,9 +142,9 @@
             <col width="80px;">
          </colgroup>
 <%
-		for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
-			if(size==i) break;
-			Map<String,Object> rMap = itemStatusList.get(i);
+      for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+         if(size==i) break;
+         Map<String,Object> rMap = itemStatusList.get(i);
 %>
             <tr>
                <td><%=rMap.get("ITEM_CODE") %></td>
@@ -215,10 +203,10 @@
             <tr>
                <td>
 <%
-					   String pagePath = "/product/itemStatusList.sf?";
-					   PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
-					   String pagination = pb.getPageBar();
-					   out.print(pagination);
+                  String pagePath = "/product/itemStatusList.sf?";
+                  PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
+                  String pagination = pb.getPageBar();
+                  out.print(pagination);
 %>
             </tr>
          </tbody>
