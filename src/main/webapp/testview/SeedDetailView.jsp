@@ -2,12 +2,21 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Map, java.util.List" %>
 <%@ page import="java.util.StringTokenizer" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+ <!-- jQuery CDN-->
+<script
+  src="https://code.jquery.com/jquery-1.9.0.js"
+  integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+  crossorigin="anonymous"></script>
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
+<!-- Web socket CDN -->
+<script type="text/javascript" 
+src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
    String mem_name = null;
    int nowBalance = 0;
@@ -72,23 +81,33 @@
 
 //_________________________________________타임
 function getTime() {
-   now = new Date();
-   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>,); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
-   days = (dday - now) / 1000 / 60 / 60 / 24;
-   daysRound = Math.floor(days);
-   hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
-   hoursRound = Math.floor(hours);
-   minutes = (dday - now) / 1000 /60 - (24 * 60 * daysRound) - (60 * hoursRound);
-   minutesRound = Math.floor(minutes);
-   seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
-   secondsRound = Math.round(seconds);
-
-   document.getElementById("counter0").innerHTML = daysRound;
-   document.getElementById("counter1").innerHTML = hoursRound;
-   document.getElementById("counter2").innerHTML = minutesRound;
-   document.getElementById("counter3").innerHTML = secondsRound;
-   newtime = window.setTimeout("getTime();", 1000);
-
+  	   now = new Date();
+  	   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
+	  
+	   days = (dday - now) / 1000 / 60 / 60 / 24;
+	   daysRound = Math.floor(days);
+	   hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
+	   hoursRound = Math.floor(hours);
+	   minutes = (dday - now) / 1000 /60 - (24 * 60 * daysRound) - (60 * hoursRound);
+	   minutesRound = Math.floor(minutes);
+	   seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+	   secondsRound = Math.round(seconds);
+	
+ 	   if(daysRound==-1 && hoursRound==23 && minutesRound==59 && secondsRound==59){
+		   alert("시간 같아짐.");
+		   var roomName = '<%=rMap.get("BID_CODE")%>';
+		   let sock = new SockJS("<c:url value="/echo?roomCreate:roomName"/>");
+		   alert("페이지 이동");
+		   location.href="/rest/productUpd.sf";
+	   }
+ 	   else{
+		   document.getElementById("counter0").innerHTML = daysRound;
+		   document.getElementById("counter1").innerHTML = hoursRound;
+		   document.getElementById("counter2").innerHTML = minutesRound;
+		   document.getElementById("counter3").innerHTML = secondsRound;
+ 	   }
+	   
+	   newtime = window.setTimeout("getTime();", 1000);
    }
    var mem_name = '<%=mem_name%>';
    var nowBalance = '<%=nowBalance%>';

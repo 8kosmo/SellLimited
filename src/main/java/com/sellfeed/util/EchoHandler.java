@@ -26,9 +26,10 @@ public class EchoHandler extends TextWebSocketHandler {
 		String status = real.split("\\:")[0];
 		String roomName = real.split("\\:")[1];
 		logger.info(status+", "+roomName);
-		if("roomcreate".equals(status)) {
+		if("roomCreate".equals(status)) {
 			sessionList = new ArrayList<>();
 			sessionMap.put(roomName, sessionList);
+			logger.info(roomName+" 방을 생성");
 		}
 		else {
 			sessionList = sessionMap.get(roomName);

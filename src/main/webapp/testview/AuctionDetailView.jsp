@@ -71,7 +71,7 @@ $(document).ready(function(){
 //_________________________________________타임
 function getTime() {
    now = new Date();
-   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>,); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
+   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
    days = (dday - now) / 1000 / 60 / 60 / 24;
    daysRound = Math.floor(days);
    hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
@@ -132,17 +132,20 @@ function getTime() {
  			 method:'GET'
  			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
  			,data:'data'
- 			,success:function(data){s
+ 			,success:function(data){
  				alert(data);
  			}		
  		});
  	   };
     function loginSessionCheck(){
- 	   <%		if(mem_id==null){	
+ 	   <%		
+ 	   		if(mem_id==null){	
  	   %>
  	   			alert("로그인이 필요합니다");
  	   			location.href="/testview/login.jsp";
- 	   <%}%>
+ 	   <%
+ 	   		}
+ 	   %>
  	      }
     
     function auctionStart(){
