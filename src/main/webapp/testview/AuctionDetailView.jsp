@@ -9,16 +9,18 @@
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
-   String mem_name = null;
-   int nowBalance = 0;
-   String mem_id = null;
-    if (session.getAttribute("mem_name") == null 
-          ||session.getAttribute("nowBalance") == null) {
-    }else{
-        mem_name = (String)session.getAttribute("mem_name");
-        nowBalance = (int)session.getAttribute("nowBalance");
-        mem_id = (String)session.getAttribute("mem_id");
-    }
+	String mem_name = null;
+	int nowBalance = 0;
+	String mem_id = null;
+	String acct_number = null;
+	 if (session.getAttribute("mem_name") == null 
+	       ||session.getAttribute("nowBalance") == null) {
+	 }else{
+	     mem_name = (String)session.getAttribute("mem_name");
+	     nowBalance = (int)session.getAttribute("nowBalance");
+	     mem_id = (String)session.getAttribute("mem_id");
+	     acct_number = (String)session.getAttribute("acct_number");
+	 }
     
    int size = 0;
    Map<String,Object> rMap = 
@@ -57,16 +59,29 @@ $(document).ready(function(){
 <%   }      
 }%>   //__________________________________________________________________end of for
 
+	var mem_name = '<%=mem_name%>';
+	var nowBalance = '<%=nowBalance%>';
+
 	//로그인 실패시
 	if(mem_name=='null'){
-	   $("#logout").hide();
-	   $("#login").show();
-	}else{
-	   $("#login").hide();
-	   $("#logout").show();
+	    $("#login").show();
+	    $("#logout").hide();
+	    $("#managerLogout").hide();
+	 }else if(mem_name=='관리자'){
+	    $("#login").hide();
+	    $("#logout").hide();
+	    $("#managerLogout").show();
+	 }else {
+	    $("#login").hide();
+	    $("#logout").show();
+	    $("#managerLogout").hide();
+	 }
+	});
+	 function logout(){
+	    location.href="/common/sessionDel.jsp";   
 	}
-}
-);//_______________________________________________________________________end of ready
+
+//_______________________________________________________________________end of ready
 
 //_________________________________________타임
 function getTime() {
@@ -89,12 +104,8 @@ function getTime() {
    newtime = window.setTimeout("getTime();", 1000);
 
    }
-   var mem_name = '<%=mem_name%>';
-   var nowBalance = '<%=nowBalance%>';
 
-      function logout(){
-         location.href="/common/sessionDel.jsp";   
-   }
+ 
    
    function clickSub1(){
       var big_img = document.getElementById("big_img");
@@ -176,9 +187,15 @@ function getTime() {
       </div>
       <div id="logout" style="display:inline;">
       <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-      <a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
+      <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="#"><strong>마이페이지</strong></a><span>|</span>
+      </div>
+       <div id="managerLogout" style="display:inline;">
+         <a href="#"><%= mem_name+"님 환영합니다." %></a>
+         <a href="#" style="margin-right:600px">&nbsp</a>
+         <a href="#" onclick="logout()">로그아웃</a><span>|</span>
+         <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
       <a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
       <div class="layer_add2">

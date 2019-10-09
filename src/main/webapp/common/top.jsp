@@ -58,11 +58,11 @@
          <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
          <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
-         <a href="#"><strong>마이페이지</strong></a><span>|</span>
+         <a href="/testview/notice.jsp"><strong>마이페이지</strong></a><span>|</span>
       </div>
       <div id="managerLogout" style="display:inline;">
-         <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-         <a href="#" style="margin-right:500px">&nbsp</a>
+         <a href="#"><%= mem_name+"님 환영합니다." %></a>
+         <a href="#" style="margin-right:600px">&nbsp</a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
@@ -70,9 +70,9 @@
       <div class="layer_add2">
          <a href="#">고객센터</a>
          <ul class="list_layer2">
-               <li><a href="#">공지사항</a></li>
-               <li><a href="#">1:1문의</a></li>
-               <li><a href="#">FAQ</a></li>
+               <li><a href="/testview/notice.jsp">공지사항</a></li>
+               <li><a href="/testview/QNA.jsp">1:1문의</a></li>
+               <li><a href="/testview/FAQ.jsp">FAQ</a></li>
          </ul>
          </div>
    </li>  
