@@ -52,12 +52,12 @@ public class MemberDao {
 	    return result;
 	}
 
-	public Map<String, Object> memberList(Map<String, Object> pMap) {
-		logger.info("================>memberList 호출 성공");
-		Map<String,Object> rMap = new HashMap<>();
-		rMap = sqlSessionTemplate.selectOne("memberList",pMap);
-		return rMap;
-	}
+   public Map<String, Object> memberList(Map<String, Object> pMap) {
+      logger.info("================>memberList 호출 성공");
+      Map<String,Object> rMap = new HashMap<>();
+      rMap = sqlSessionTemplate.selectOne("memberList",pMap);
+      return rMap;
+   }
 
 
 }

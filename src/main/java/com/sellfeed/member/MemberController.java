@@ -54,12 +54,12 @@ public class MemberController {
 		return "forward:/testview/mainView.jsp";
 	}
 	
-	@PostMapping(value="memberUpd.sf")
-	public String memberUpd(@RequestParam Map<String,Object> pMap) {
-		logger.info("=================>memberUpd 호출 성공");
-		memberLogic.memberUpd(pMap);
-		return "redirect:../index.jsp";
-	}
+   @PostMapping(value="memberUpd.sf")
+   public String memberUpd(@RequestParam Map<String,Object> pMap) {
+      logger.info("=================>memberUpd 호출 성공");
+      memberLogic.memberUpd(pMap);
+      return "forward:/testview/notice.jsp";
+   }
 	@GetMapping(value="memberDel.sf")
 	public String memberDel(@RequestParam Map<String,Object> pMap) {
 		logger.info("=================>memberDel 호출 성공");

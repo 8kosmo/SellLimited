@@ -2,33 +2,25 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Map, java.util.List" %>
 <%@ page import="java.util.StringTokenizer" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
- <!-- jQuery CDN-->
-<script
-  src="https://code.jquery.com/jquery-1.9.0.js"
-  integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
-  crossorigin="anonymous"></script>
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
-<!-- Web socket CDN -->
-<script type="text/javascript" 
-src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
-   String mem_name = null;
-   int nowBalance = 0;
-   String mem_id = null;
-    if (session.getAttribute("mem_name") == null 
-          ||session.getAttribute("nowBalance") == null) {
-    }else{
-        mem_name = (String)session.getAttribute("mem_name");
-        nowBalance = (int)session.getAttribute("nowBalance");
-        mem_id = (String)session.getAttribute("mem_id");
-    }
-    
+	String mem_name = null;
+	int nowBalance = 0;
+	String mem_id = null;
+	String acct_number = null;
+	 if (session.getAttribute("mem_name") == null 
+	       ||session.getAttribute("nowBalance") == null) {
+	 }else{
+	     mem_name = (String)session.getAttribute("mem_name");
+	     nowBalance = (int)session.getAttribute("nowBalance");
+	     mem_id = (String)session.getAttribute("mem_id");
+	     acct_number = (String)session.getAttribute("acct_number");
+	 }
    int size = 0;
    Map<String,Object> rMap = 
          (Map<String,Object>)request.getAttribute("rMap");
@@ -67,45 +59,51 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
    <%   }      
    }%>   //__________________________________________________________________end of for
 
-
-   //로그인 실패시
-   if(mem_name=='null'){
-      $("#logout").hide();
-      $("#login").show();
-   }else{
-      $("#login").hide();
-      $("#logout").show();
+   var mem_name = '<%=mem_name%>';
+   var nowBalance = '<%=nowBalance%>';
+   $(document).ready(function(){
+      //로그인 실패시
+      if(mem_name=='null'){
+         $("#login").show();
+         $("#logout").hide();
+         $("#managerLogout").hide();
+      }else if(mem_name=='관리자'){
+         $("#login").hide();
+         $("#logout").hide();
+         $("#managerLogout").show();
+      }else {
+         $("#login").hide();
+         $("#logout").show();
+         $("#managerLogout").hide();
+      }
+   });
+      function logout(){
+         location.href="/common/sessionDel.jsp";   
    }
    
 });//_______________________________________________________________________end of ready
 
 //_________________________________________타임
 function getTime() {
-  	   now = new Date();
-  	   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
-	  
-	   days = (dday - now) / 1000 / 60 / 60 / 24;
-	   daysRound = Math.floor(days);
-	   hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
-	   hoursRound = Math.floor(hours);
-	   minutes = (dday - now) / 1000 /60 - (24 * 60 * daysRound) - (60 * hoursRound);
-	   minutesRound = Math.floor(minutes);
-	   seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
-	   secondsRound = Math.round(seconds);
-	
-		   document.getElementById("counter0").innerHTML = daysRound;
-		   document.getElementById("counter1").innerHTML = hoursRound;
-		   document.getElementById("counter2").innerHTML = minutesRound;
-		   document.getElementById("counter3").innerHTML = secondsRound;
-	   
-	   newtime = window.setTimeout("getTime();", 1000);
-   }
-   var mem_name = '<%=mem_name%>';
-   var nowBalance = '<%=nowBalance%>';
+   now = new Date();
+   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>,); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
+   days = (dday - now) / 1000 / 60 / 60 / 24;
+   daysRound = Math.floor(days);
+   hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
+   hoursRound = Math.floor(hours);
+   minutes = (dday - now) / 1000 /60 - (24 * 60 * daysRound) - (60 * hoursRound);
+   minutesRound = Math.floor(minutes);
+   seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+   secondsRound = Math.round(seconds);
 
-   function logout(){
-        location.href="/common/sessionDel.jsp";   
+   document.getElementById("counter0").innerHTML = daysRound;
+   document.getElementById("counter1").innerHTML = hoursRound;
+   document.getElementById("counter2").innerHTML = minutesRound;
+   document.getElementById("counter3").innerHTML = secondsRound;
+   newtime = window.setTimeout("getTime();", 1000);
+
    }
+
    
    function clickSub1(){
       var big_img = document.getElementById("big_img");
@@ -201,6 +199,17 @@ function getTime() {
 	   <%}
 	   %>
 	      }
+   function total_search() {
+       var searchWord = $("#SearchWord").val();
+       if(searchWord == ''){
+         alert('검색 할 상품을 입력 해주세요');
+         $("#SearchWord").focus();
+         return false;
+       }else{           
+          location.href="/product/productList.sf?keyword="+searchWord;
+       }
+  }
+
 </script>
 </head>
 <body>
@@ -215,9 +224,15 @@ function getTime() {
       </div>
       <div id="logout" style="display:inline;">
       <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-      <a href="#" style="margin-right:500px"><%="현재 보유 캐시 : "+nowBalance %></a>
+      <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="#"><strong>마이페이지</strong></a><span>|</span>
+      </div>
+       <div id="managerLogout" style="display:inline;">
+         <a href="#"><%= mem_name+"님 환영합니다." %></a>
+         <a href="#" style="margin-right:600px">&nbsp</a>
+         <a href="#" onclick="logout()">로그아웃</a><span>|</span>
+         <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
       <a href="/testview/howToUse.jsp">이용안내</a><span>|</span>
       <div class="layer_add2">
@@ -249,14 +264,14 @@ function getTime() {
 <!-- 대분류  -->
 <ul class="gnb">
    <li class="gnb_left">
-      <a href="#"><span>패션</span></a>
-      <a href="#"><span>카메라</span></a>
-      <a href="#"><span>악기</span></a>
-      <a href="#"><span>키덜트</span></a>
-      <a href="#"><span>연예인 굿즈</span></a>
-      <a href="#"><span>골동품</span></a>
-      <a href="#"><span>게임</span></a>
-      <a href="#"><span>음반</span></a>
+      <a href="/product/productList.sf?sub_category=패션"><span>패션</span></a>
+      <a href="/product/productList.sf?sub_category=카메라"><span>카메라</span></a>
+      <a href="/product/productList.sf?sub_category=악기"><span>악기</span></a>
+      <a href="/product/productList.sf?sub_category=키덜트"><span>키덜트</span></a>
+      <a href="/product/productList.sf?sub_category=연예인굿즈"><span>연예인 굿즈</span></a>
+      <a href="/product/productList.sf?sub_category=골동품"><span>골동품</span></a>
+      <a href="/product/productList.sf?sub_category=게임"><span>게임</span></a>
+      <a href="/product/productList.sf?sub_category=음반"><span>음반</span></a>
    </li>
 </ul>
 </div><!-- end of div top -->

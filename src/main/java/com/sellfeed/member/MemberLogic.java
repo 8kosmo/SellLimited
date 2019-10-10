@@ -28,19 +28,19 @@ public class MemberLogic {
    
 
    public String idInspection(Map<String,Object> pMap) {
-	   String inspectedId="";
-	   //String u_id=p_id;
-	   inspectedId = memberDao.idInspection(pMap);
-	   logger.info("=================>inspectedId : "+inspectedId);
-	   //logger.info("=================>u_id : "+u_id);
-	   if(inspectedId.equals("_ok")) {
-		   logger.info("==================>아이디 사용 불가");
-	   }else {
-		   logger.info("==============================>아이디 사용 가능");
-	   }
-	   return inspectedId;
-		
-	}
+      String inspectedId="";
+      //String u_id=p_id;
+      inspectedId = memberDao.idInspection(pMap);
+      logger.info("=================>inspectedId : "+inspectedId);
+      //logger.info("=================>u_id : "+u_id);
+      if(inspectedId.equals("_ok")) {
+         logger.info("==================>아이디 사용 불가");
+      }else {
+         logger.info("==============================>아이디 사용 가능");
+      }
+      return inspectedId;
+      
+   }
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="execution(* com.sellfeed.member.*Logic.*(..)")
    public int memberIns(Map<String, Object> pMap)  {
@@ -48,16 +48,16 @@ public class MemberLogic {
       int result=0;
       String acct_number = "";
       //트랜잭션처리
-    	  try {
-    		  result = memberDao.memberIns(pMap);
-    		  acct_number = accountDao.getAcct_number();
-			  pMap.put("acct_number", acct_number);
-			  accountDao.accountMake(pMap);
-    	  } 
-    	  catch (DataAccessException e) {
-    		  throw e;
-    	  }
-    	  return result;
+         try {
+            result = memberDao.memberIns(pMap);
+            acct_number = accountDao.getAcct_number();
+           pMap.put("acct_number", acct_number);
+           accountDao.accountMake(pMap);
+         } 
+         catch (DataAccessException e) {
+            throw e;
+         }
+         return result;
    }
    
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
@@ -70,19 +70,19 @@ public class MemberLogic {
       String acct_number= "";
       List<String> list = new ArrayList<String>(); 
       try {
-    	  mem_name = memberDao.login(pMap);
-    	  logger.info(mem_name);
-    	  mem_id = pMap.get("mem_id").toString();
-    	  acct_balance = accountDao.accountNowBalance(mem_id);
-    	  logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
-    	  acct_number = accountDao.acct_number(mem_id);
-    	  logger.info("acct_number===========>"+acct_number);
-    	  list.add(pMap.get("mem_name").toString());
-    	  list.add(""+acct_balance);
-    	  list.add(""+acct_number);
-	} catch (DataAccessException e) {
-		  throw e;
-	  }
+         mem_name = memberDao.login(pMap);
+         logger.info(mem_name);
+         mem_id = pMap.get("mem_id").toString();
+         acct_balance = accountDao.accountNowBalance(mem_id);
+         logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
+         acct_number = accountDao.acct_number(mem_id);
+         logger.info("acct_number===========>"+acct_number);
+         list.add(pMap.get("mem_name").toString());
+         list.add(""+acct_balance);
+         list.add(""+acct_number);
+   } catch (DataAccessException e) {
+        throw e;
+     }
       return list;
    }
 

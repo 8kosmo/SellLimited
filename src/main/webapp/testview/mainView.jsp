@@ -16,10 +16,10 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="/product/productDetail.sf?bid_code=QYQK5573&status=auction&item_code=QYQK5573"><button>경매중 테스트</button></a></td>
+<td><a href="/product/productDetail.sf?bid_code=LQNO3604&status=auction&item_code=LQNO3604"><button>경매중 테스트</button></a></td>
 </tr>
 <tr>
-<td><a href="/product/productDetail.sf?bid_code=QYQK5573&status=seed&item_code=QYQK5573"><button>시드발급 테스트</button></a></td>
+<td><a href="/product/productDetail.sf?bid_code=TMQX0829&status=seed&item_code=TMQX0829"><button>시드발급 테스트</button></a></td>
 </tr>
 <tr>
 <td><a href="/account/accountStatusList.sf"><button>충전 =>매니저 승인 테스트</button></a></td>
