@@ -66,7 +66,8 @@ public class AccountController {
       result = accountLogic.accountCharge(pMap);
 //      mod.addAllAttributes(); cashChargeOk.jsp의 입금액, 입금기한칸에 들어갈 값||   입금액, 현재시간 +3일정도면 될듯
       if(result==1) {
-         return "redirect:/testview/cashChargeOK.jsp";   //성공시에 1, cashChargeOK.jsp로 이동합니다~~~
+    	 mod.addAttribute("rMap",pMap);
+         return "forward:/testview/cashChargeOK.jsp";   //성공시에 1, cashChargeOK.jsp로 이동합니다~~~
       }else {
          return "";
       }
