@@ -43,6 +43,17 @@
       function logout(){
          location.href="/common/sessionDel.jsp";   
    }
+      function total_search() {
+          var searchWord = $("#SearchWord").val();
+          if(searchWord == ''){
+            alert('검색 할 상품을 입력 해주세요');
+            $("#SearchWord").focus();
+            return false;
+          }else{           
+             location.href="/product/productList.sf?keyword="+searchWord;
+          }
+     }
+
 </script>
 </head>
 <body>
@@ -97,14 +108,14 @@
 <!-- 대분류  -->
 <ul class="gnb">
    <li class="gnb_left">
-      <a href="/product/productList.sf?keyword=패션"><span>패션</span></a>
-      <a href="/product/productList.sf?keyword=카메라"><span>카메라</span></a>
-      <a href="/product/productList.sf?keyword=악기"><span>악기</span></a>
-      <a href="/product/productList.sf?keyword=키덜트"><span>키덜트</span></a>
-      <a href="/product/productList.sf?keyword=연예인굿즈"><span>연예인 굿즈</span></a>
-      <a href="/product/productList.sf?keyword=골동품"><span>골동품</span></a>
-      <a href="/product/productList.sf?keyword=게임"><span>게임</span></a>
-      <a href="/product/productList.sf?keyword=음반"><span>음반</span></a>
+      <a href="/product/productList.sf?sub_category=패션"><span>패션</span></a>
+      <a href="/product/productList.sf?sub_category=카메라"><span>카메라</span></a>
+      <a href="/product/productList.sf?sub_category=악기"><span>악기</span></a>
+      <a href="/product/productList.sf?sub_category=키덜트"><span>키덜트</span></a>
+      <a href="/product/productList.sf?sub_category=연예인굿즈"><span>연예인 굿즈</span></a>
+      <a href="/product/productList.sf?sub_category=골동품"><span>골동품</span></a>
+      <a href="/product/productList.sf?sub_category=게임"><span>게임</span></a>
+      <a href="/product/productList.sf?sub_category=음반"><span>음반</span></a>
    </li>
 </ul>
 </div><!-- end of div top -->

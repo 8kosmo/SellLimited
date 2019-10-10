@@ -22,10 +22,9 @@
       AND auct_progress.bid_code = #{bid_code}
    </select>
      
-     
     
-	<select id="seedDetail" parameterType="map" resultType="map">
-   	SELECT bid_title ,start_price ,buynow_price, mem_id ,product_detail ,sale_item.item_code,brand,model_name  
+   <select id="seedDetail" parameterType="map" resultType="map">
+      SELECT bid_title ,start_price ,buynow_price, mem_id ,product_detail ,sale_item.item_code,brand,model_name  
             ,cur_seed, auction_info.bid_code
             ,photo_name 
             ,start_seed,end_seed
@@ -111,7 +110,7 @@
    </insert> 
    <select id="itemStatusList" parameterType="map" resultType="map">
       SELECT ROWNUM, SALE_ITEM.ITEM_CODE, MEM_ID, SUB_CATEGORY_CODE, PRODUCT_NAME
-      		, MODEL_NAME, BUYNOW_PRICE, START_PRICE, AUCT_PERIOD, ITEM_PHOTO.PHOTO_NAME
+            , MODEL_NAME, BUYNOW_PRICE, START_PRICE, AUCT_PERIOD, ITEM_PHOTO.PHOTO_NAME
         FROM SALE_ITEM, (
                             SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME
                               FROM ITEM_PHOTO
@@ -120,7 +119,7 @@
        WHERE STATUS = '승인대기'
          AND SALE_ITEM.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
        <if test="start>0 and end >0">
-		 <![CDATA[AND ROWNUM BETWEEN #{start} and #{end}]]>
+       <![CDATA[AND ROWNUM BETWEEN #{start} and #{end}]]>
        </if>
        ORDER BY SALE_ITEM.REGISTERTIME DESC
    </select>
@@ -136,187 +135,237 @@
             AND STATUS = '승인대기'
    </select>
    <select id="itemStatusSeedList" parameterType="map" resultType="map">
-   SELECT RNO, BID_CODE, ITEM_CODE, STATUS, PRODUCT_DETAIL, BUYNOW_PRICE,
+   SELECT RNO, BID_CODE, ITEM_CODE, STATUS, BID_TITLE, BUYNOW_PRICE,
           MEM_ID, PHOTO_NAME, START_SEED, BIDDER_COUNT, END_SEED, BID_COUNT, FINAL_PRICE
      FROM(
-	        SELECT RNO, BID_CODE, ITEM_CODE, STATUS, PRODUCT_DETAIL, BUYNOW_PRICE,
-	               MEM_ID, PHOTO_NAME, START_SEED, BIDDER_COUNT, END_SEED, BID_COUNT, FINAL_PRICE
-	          FROM(
-	                SELECT ROWNUM RNO, AUCTION_INFO.BID_CODE,  AUCTION_INFO.ITEM_CODE, SALE_ITEM.STATUS,
-	                       SALE_ITEM.PRODUCT_DETAIL, SALE_ITEM.BUYNOW_PRICE,  SALE_ITEM.MEM_ID,
-	                       ITEM_PHOTO.PHOTO_NAME, AUCTION_INFO.START_SEED, NVL(SEED.BIDDER_COUNT,'0') BIDDER_COUNT,
-	                       TO_DATE(SUBSTR(AUCTION_INFO.END_SEED,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' END_SEED,
-	                       NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  NVL(BID_LOG.FINAL_PRICE,'0') FINAL_PRICE
-	                  FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
-	                       (SELECT ITEM_CODE, SUB_CATEGORY_CODE, PRODUCT_DETAIL, BUYNOW_PRICE,  MEM_ID, STATUS FROM SALE_ITEM) SALE_ITEM,
-	                       (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
-	                       (SELECT BID_CODE, AUCT_STARTDATE, AUCT_ENDDATE  FROM AUCT_PROGRESS) AUCT_PROGRESS,
-	                       (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
-	                       (SELECT BID_CODE, COUNT(BIDDERS_ID) BIDDER_COUNT FROM SEED GROUP BY BID_CODE) SEED
-	                WHERE AUCTION_INFO.ITEM_CODE = SALE_ITEM.ITEM_CODE
-	                   AND AUCTION_INFO.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
-	                   AND AUCTION_INFO.BID_CODE = AUCT_PROGRESS.BID_CODE
-	                   AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
-	                   AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
-				  <if test="sub_category_code != null and sub_category_code.length()>0">
-				   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
-				  </if>
-				  <if test="keyword!=null and keyword.equals('패션')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
-				  </if>
-  				  <if test="keyword!=null and keyword.equals('카메라')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('악기')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('키덜트')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('연예인굿즈')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('골동품')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('게임')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('음반')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
-  				  </if>
-	                   AND SALE_ITEM.STATUS = '시드참여중'
-	                   ORDER BY AUCTION_INFO.END_SEED
-	               )
+            SELECT ROWNUM RNO, BID_CODE, ITEM_CODE, STATUS, BID_TITLE, BUYNOW_PRICE, PRODUCT_NAME, PRODUCT_DETAIL,
+                   MEM_ID, PHOTO_NAME, START_SEED, BIDDER_COUNT, END_SEED, BID_COUNT, FINAL_PRICE
+              FROM(
+                    SELECT AUCTION_INFO.BID_CODE,  AUCTION_INFO.ITEM_CODE, SALE_ITEM.STATUS,
+                           SALE_ITEM.BID_TITLE, SALE_ITEM.BUYNOW_PRICE, SALE_ITEM.MEM_ID, SALE_ITEM.PRODUCT_NAME, SALE_ITEM.PRODUCT_DETAIL,
+                           ITEM_PHOTO.PHOTO_NAME, AUCTION_INFO.START_SEED, NVL(SEED.BIDDER_COUNT,'0') BIDDER_COUNT,
+                           TO_DATE(SUBSTR(AUCTION_INFO.END_SEED,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' END_SEED,
+                           NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  NVL(BID_LOG.FINAL_PRICE,'0') FINAL_PRICE
+                      FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
+                            SALE_ITEM,
+                           (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
+                           (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
+                           (SELECT BID_CODE, COUNT(BIDDERS_ID) BIDDER_COUNT FROM SEED GROUP BY BID_CODE) SEED
+                    WHERE AUCTION_INFO.ITEM_CODE = SALE_ITEM.ITEM_CODE
+                       AND AUCTION_INFO.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
+                       AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
+                       AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+              <if test="sub_category_code != null and sub_category_code.length()>0">
+                     AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+              </if>
+              <if test="sub_category != null and sub_category.equals('패션')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0101,0102,0103)
+              </if>
+                <if test="sub_category != null and sub_category.equals('카메라')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0201,0202,0203)
+                </if>
+                <if test="sub_category != null and sub_category.equals('악기')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0301,0302,0303)
+                </if>
+                <if test="sub_category != null and sub_category.equals('키덜트')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0401,0402,0403)
+                </if>
+                <if test="sub_category != null and sub_category.equals('연예인굿즈')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0501,0502,0503)
+                </if>
+                <if test="sub_category != null and sub_category.equals('골동품')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0601,0602,0603)
+                </if>
+                <if test="sub_category != null and sub_category.equals('게임')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0701,0702,0703)
+                </if>
+                <if test="sub_category != null and sub_category.equals('음반')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0801,0802,0803)
+                </if>
+                      AND SALE_ITEM.STATUS = '시드참여중'
+                      AND END_SEED<![CDATA[ > ]]>TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+                      ORDER BY AUCTION_INFO.END_SEED
+                  )
+                 <if test="keyword != null and keyword.length()>0">
+                WHERE BID_TITLE LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_NAME LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_DETAIL LIKE '%'||#{keyword}||'%'
+              </if>
            )
        <if test="start>0 and end >0">
-		  <![CDATA[WHERE RNO BETWEEN #{start} AND #{end}]]>
+    WHERE RNO BETWEEN #{start} AND #{end}
        </if>
    </select>
    <select id="getSeedListTotal" parameterType="map" resultType="int">
-        SELECT COUNT(SALE_ITEM.item_code)
-          FROM SALE_ITEM,
-              (SELECT item_code, MAX(photo_name) FROM ITEM_PHOTO GROUP BY item_code) ITEM_PHOTO
-         WHERE SALE_ITEM.item_code = ITEM_PHOTO.item_code(+)
-	  <if test="sub_category_code != null and sub_category_code.length()>0">
-	   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
-	  </if>
-	  <if test="keyword!=null and keyword.equals('패션')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
-	  </if>
-			  <if test="keyword!=null and keyword.equals('카메라')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('악기')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('키덜트')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('연예인굿즈')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('골동품')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('게임')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('음반')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
-			  </if>
-            AND STATUS = '시드참여중'
+        SELECT COUNT(ITEM_CODE)
+          FROM(
+                SELECT AUCTION_INFO.BID_CODE,  AUCTION_INFO.ITEM_CODE, SALE_ITEM.STATUS,
+                       SALE_ITEM.BID_TITLE, SALE_ITEM.BUYNOW_PRICE,  SALE_ITEM.MEM_ID, SALE_ITEM.PRODUCT_NAME, SALE_ITEM.PRODUCT_DETAIL,
+                       ITEM_PHOTO.PHOTO_NAME, AUCTION_INFO.START_SEED, NVL(SEED.BIDDER_COUNT,'0') BIDDER_COUNT,
+                       TO_DATE(SUBSTR(AUCTION_INFO.END_SEED,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' END_SEED,
+                       NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  NVL(BID_LOG.FINAL_PRICE,'0') FINAL_PRICE
+                  FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
+                        SALE_ITEM,
+                       (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
+                       (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
+                       (SELECT BID_CODE, COUNT(BIDDERS_ID) BIDDER_COUNT FROM SEED GROUP BY BID_CODE) SEED
+                WHERE AUCTION_INFO.ITEM_CODE = SALE_ITEM.ITEM_CODE
+                   AND AUCTION_INFO.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
+                   AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
+                   AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+           <if test="sub_category_code != null and sub_category_code.length()>0">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+           </if>
+           <if test="sub_category != null and sub_category.equals('패션')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0101,0102,0103)
+           </if>
+           <if test="sub_category != null and sub_category.equals('카메라')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0201,0202,0203)
+           </if>
+           <if test="sub_category != null and sub_category.equals('악기')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0301,0302,0303)
+           </if>
+           <if test="sub_category != null and sub_category.equals('키덜트')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0401,0402,0403)
+           </if>
+           <if test="sub_category != null and sub_category.equals('연예인굿즈')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0501,0502,0503)
+           </if>
+           <if test="sub_category != null and sub_category.equals('골동품')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0601,0602,0603)
+           </if>
+           <if test="sub_category != null and sub_category.equals('게임')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0701,0702,0703)
+           </if>
+           <if test="sub_category != null and sub_category.equals('음반')">
+               AND SALE_ITEM.SUB_CATEGORY_CODE IN (0801,0802,0803)
+           </if>
+                   AND SALE_ITEM.STATUS = '시드참여중'
+                   AND END_SEED<![CDATA[ > ]]>TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+               )
+              <if test="keyword != null and keyword.length()>0">
+                WHERE BID_TITLE LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_NAME LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_DETAIL LIKE '%'||#{keyword}||'%'
+           </if>
    </select>
    <select id="itemStatusAuctionList" parameterType="map" resultType="map">
-	SELECT RNO, BID_CODE, ITEM_CODE, STATUS, PRODUCT_DETAIL, BUYNOW_PRICE, MEM_ID,
-	       PHOTO_NAME, START_SEED, BIDDER_COUNT, AUCT_ENDDATE, BID_COUNT, FINAL_PRICE
-	  FROM(
-	        SELECT ROWNUM RNO, BID_CODE, ITEM_CODE, STATUS, PRODUCT_DETAIL, BUYNOW_PRICE, MEM_ID,
-	               PHOTO_NAME, START_SEED, BIDDER_COUNT, AUCT_ENDDATE, BID_COUNT, FINAL_PRICE
-	          FROM(
-	                SELECT AUCTION_INFO.BID_CODE,  AUCTION_INFO.ITEM_CODE, SALE_ITEM.STATUS,
-	                       SALE_ITEM.PRODUCT_DETAIL, SALE_ITEM.BUYNOW_PRICE,  SALE_ITEM.MEM_ID,
-	                       ITEM_PHOTO.PHOTO_NAME, AUCTION_INFO.START_SEED, NVL(SEED.BIDDER_COUNT,'0') BIDDER_COUNT,
-	                       TO_DATE(SUBSTR(AUCT_PROGRESS.AUCT_ENDDATE,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' AUCT_ENDDATE,
-	                       NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  BID_LOG.FINAL_PRICE
-	                  FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
-	                       (SELECT ITEM_CODE, SUB_CATEGORY_CODE, PRODUCT_DETAIL, BUYNOW_PRICE,  MEM_ID, STATUS FROM SALE_ITEM) SALE_ITEM,
-	                       (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
-	                       (SELECT BID_CODE, AUCT_STARTDATE, AUCT_ENDDATE  FROM AUCT_PROGRESS) AUCT_PROGRESS,
-	                       (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
-	                       (SELECT BID_CODE, COUNT(BIDDERS_ID) BIDDER_COUNT FROM SEED GROUP BY BID_CODE) SEED
-	                WHERE AUCTION_INFO.ITEM_CODE = SALE_ITEM.ITEM_CODE
-	                   AND AUCTION_INFO.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
-	                   AND AUCTION_INFO.BID_CODE = AUCT_PROGRESS.BID_CODE
-	                   AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
-	                   AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
-				  <if test="sub_category_code != null and sub_category_code.length()>0">
-				   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
-				  </if>
-				  <if test="keyword!=null and keyword.equals('패션')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
-				  </if>
-  				  <if test="keyword!=null and keyword.equals('카메라')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('악기')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('키덜트')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('연예인굿즈')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('골동품')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('게임')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
-  				  </if>
-  				  <if test="keyword!=null and keyword.equals('음반')">
-					   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
-  				  </if>
-	                   AND SALE_ITEM.STATUS = '경매진행중'
-	                ORDER BY AUCT_PROGRESS.AUCT_ENDDATE
-	            )
-	      )
+   SELECT RNO, BID_CODE, ITEM_CODE, STATUS, BID_TITLE, BUYNOW_PRICE, MEM_ID,
+          PHOTO_NAME, START_SEED, BIDDER_COUNT, AUCT_ENDDATE, BID_COUNT, FINAL_PRICE
+     FROM(
+           SELECT ROWNUM RNO, BID_CODE, ITEM_CODE, STATUS, BID_TITLE, BUYNOW_PRICE, MEM_ID, PRODUCT_NAME, PRODUCT_DETAIL,
+                  PHOTO_NAME, START_SEED, BIDDER_COUNT, AUCT_ENDDATE, BID_COUNT, FINAL_PRICE
+             FROM(
+                   SELECT AUCTION_INFO.BID_CODE,  AUCTION_INFO.ITEM_CODE, SALE_ITEM.STATUS,
+                          SALE_ITEM.BID_TITLE, SALE_ITEM.BUYNOW_PRICE,  SALE_ITEM.MEM_ID, SALE_ITEM.PRODUCT_NAME, SALE_ITEM.PRODUCT_DETAIL,
+                          ITEM_PHOTO.PHOTO_NAME, AUCTION_INFO.START_SEED, NVL(SEED.BIDDER_COUNT,'0') BIDDER_COUNT,
+                          TO_DATE(SUBSTR(AUCT_PROGRESS.AUCT_ENDDATE,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' AUCT_ENDDATE,
+                          NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  BID_LOG.FINAL_PRICE
+                     FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
+                           SALE_ITEM,
+                          (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
+                          (SELECT BID_CODE, AUCT_STARTDATE, AUCT_ENDDATE  FROM AUCT_PROGRESS) AUCT_PROGRESS,
+                          (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
+                          (SELECT BID_CODE, COUNT(BIDDERS_ID) BIDDER_COUNT FROM SEED GROUP BY BID_CODE) SEED
+                   WHERE AUCTION_INFO.ITEM_CODE = SALE_ITEM.ITEM_CODE
+                      AND AUCTION_INFO.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
+                      AND AUCTION_INFO.BID_CODE = AUCT_PROGRESS.BID_CODE
+                      AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
+                      AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+              <if test="sub_category_code != null and sub_category_code.length()>0">
+                     AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+              </if>
+              <if test="sub_category != null and sub_category.equals('패션')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0101,0102,0103)
+              </if>
+                <if test="sub_category != null and sub_category.equals('카메라')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0201,0202,0203)
+                </if>
+                <if test="sub_category != null and sub_category.equals('악기')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0301,0302,0303)
+                </if>
+                <if test="sub_category != null and sub_category.equals('키덜트')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0401,0402,0403)
+                </if>
+                <if test="sub_category != null and sub_category.equals('연예인굿즈')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0501,0502,0503)
+                </if>
+                <if test="sub_category != null and sub_category.equals('골동품')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0601,0602,0603)
+                </if>
+                <if test="sub_category != null and sub_category.equals('게임')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0701,0702,0703)
+                </if>
+                <if test="sub_category != null and sub_category.equals('음반')">
+                  AND SALE_ITEM.SUB_CATEGORY_CODE IN (0801,0802,0803)
+                </if>
+                      AND SALE_ITEM.STATUS = '경매진행중'
+                      AND AUCT_ENDDATE<![CDATA[ > ]]>TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+                   ORDER BY AUCT_PROGRESS.AUCT_ENDDATE
+               )
+             <if test="keyword != null and keyword.length()>0">
+                WHERE BID_TITLE LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_NAME LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_DETAIL LIKE '%'||#{keyword}||'%'
+           </if>
+         )
        <if test="start>0 and end >0">
-		 <![CDATA[WHERE RNO BETWEEN #{start} AND #{end}]]>
+    WHERE RNO BETWEEN #{start} AND #{end}
        </if>
    </select>
    <select id="getAuctionListTotal" parameterType="map" resultType="int">
-        SELECT COUNT(SALE_ITEM.item_code)
-          FROM SALE_ITEM,
-              (SELECT item_code, MAX(photo_name) FROM ITEM_PHOTO GROUP BY item_code) ITEM_PHOTO
-         WHERE SALE_ITEM.item_code = ITEM_PHOTO.item_code(+)
-            AND STATUS = '경매진행중'
-	  <if test="sub_category_code != null and sub_category_code.length()>0">
-	   	   AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
-	  </if>
-	  <if test="keyword!=null and keyword.equals('패션')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0101,0102,0103)
-	  </if>
-			  <if test="keyword!=null and keyword.equals('카메라')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0201,0202,0203)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('악기')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0301,0302,0303)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('키덜트')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0401,0402,0403)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('연예인굿즈')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0501,0502,0503)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('골동품')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0601,0602,0603)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('게임')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0701,0702,0703)
-			  </if>
-			  <if test="keyword!=null and keyword.equals('음반')">
-		   AND SALE_ITEM .SUB_CATEGORY_CODE IN (0801,0802,0803)
-			  </if>
+     SELECT COUNT(ITEM_CODE)
+       FROM(
+             SELECT AUCTION_INFO.BID_CODE,  AUCTION_INFO.ITEM_CODE, SALE_ITEM.STATUS,
+                    SALE_ITEM.BID_TITLE, SALE_ITEM.BUYNOW_PRICE,  SALE_ITEM.MEM_ID, SALE_ITEM.PRODUCT_NAME, SALE_ITEM.PRODUCT_DETAIL,
+                    ITEM_PHOTO.PHOTO_NAME, AUCTION_INFO.START_SEED, NVL(SEED.BIDDER_COUNT,'0') BIDDER_COUNT,
+                    TO_DATE(SUBSTR(AUCT_PROGRESS.AUCT_ENDDATE,0,10),'YYYY/MM/DD')-TO_DATE(TO_CHAR(SYSDATE,'YYYY/MM/DD'))||'일' AUCT_ENDDATE,
+                    NVL(BID_LOG.BID_COUNT,'0') BID_COUNT,  BID_LOG.FINAL_PRICE
+               FROM (SELECT BID_CODE, ITEM_CODE, START_SEED, END_SEED  FROM AUCTION_INFO) AUCTION_INFO,
+                     SALE_ITEM,
+                    (SELECT ITEM_CODE, MAX(PHOTO_NAME) PHOTO_NAME FROM  ITEM_PHOTO GROUP BY ITEM_CODE) ITEM_PHOTO,
+                    (SELECT BID_CODE, AUCT_STARTDATE, AUCT_ENDDATE  FROM AUCT_PROGRESS) AUCT_PROGRESS,
+                    (SELECT BID_CODE, COUNT(FINAL_PRICE) BID_COUNT,  MAX(FINAL_PRICE) FINAL_PRICE FROM BID_LOG GROUP BY  BID_CODE) BID_LOG,
+                    (SELECT BID_CODE, COUNT(BIDDERS_ID) BIDDER_COUNT FROM SEED GROUP BY BID_CODE) SEED
+             WHERE AUCTION_INFO.ITEM_CODE = SALE_ITEM.ITEM_CODE
+                AND AUCTION_INFO.ITEM_CODE = ITEM_PHOTO.ITEM_CODE(+)
+                AND AUCTION_INFO.BID_CODE = AUCT_PROGRESS.BID_CODE
+                AND AUCTION_INFO.BID_CODE = BID_LOG.BID_CODE(+)
+                AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+        <if test="sub_category_code != null and sub_category_code.length()>0">
+               AND SALE_ITEM.SUB_CATEGORY_CODE = #{sub_category_code}
+        </if>
+        <if test="sub_category != null and sub_category.equals('패션')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0101,0102,0103)
+        </if>
+        <if test="sub_category != null and sub_category.equals('카메라')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0201,0202,0203)
+        </if>
+        <if test="sub_category != null and sub_category.equals('악기')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0301,0302,0303)
+        </if>
+        <if test="sub_category != null and sub_category.equals('키덜트')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0401,0402,0403)
+        </if>
+        <if test="sub_category != null and sub_category.equals('연예인굿즈')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0501,0502,0503)
+        </if>
+        <if test="sub_category != null and sub_category.equals('골동품')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0601,0602,0603)
+        </if>
+        <if test="sub_category != null and sub_category.equals('게임')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0701,0702,0703)
+        </if>
+        <if test="sub_category != null and sub_category.equals('음반')">
+            AND SALE_ITEM.SUB_CATEGORY_CODE IN (0801,0802,0803)
+        </if>
+                AND SALE_ITEM.STATUS = '경매진행중'
+                AND AUCT_ENDDATE<![CDATA[ > ]]>TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+            )
+         <if test="keyword != null and keyword.length()>0">
+                WHERE BID_TITLE LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_NAME LIKE '%'||#{keyword}||'%'
+                   OR PRODUCT_DETAIL LIKE '%'||#{keyword}||'%'
+       </if>
    </select>
 </mapper>
