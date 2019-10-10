@@ -50,7 +50,7 @@
          </table>
       </li>
 <!-- 나중에 관리자 페이지에서 관리 목록이 생기면 추가할 카테고리 -->
-<!--       <li>
+     <li>
          <table class="mypage_category">
             <colgroup>
             <col width="20%;">
@@ -89,7 +89,7 @@
                </td>
             </tr></tbody>
          </table>
-      </li> -->
+      </li>
         <li>
       <table class="mypage_table_head">
          <caption>승인 대기 상품 목록 <img src="/images/integ/20150918_10.png"> 

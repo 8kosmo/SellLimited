@@ -93,19 +93,10 @@ function getTime() {
 	   seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
 	   secondsRound = Math.round(seconds);
 	
- 	   if(daysRound==-1 && hoursRound==23 && minutesRound==59 && secondsRound==59){
-		   alert("시간 같아짐.");
-		   var roomName = '<%=rMap.get("BID_CODE")%>';
-		   let sock = new SockJS("<c:url value="/echo?roomCreate:roomName"/>");
-		   alert("페이지 이동");
-		   location.href="/rest/productUpd.sf";
-	   }
- 	   else{
 		   document.getElementById("counter0").innerHTML = daysRound;
 		   document.getElementById("counter1").innerHTML = hoursRound;
 		   document.getElementById("counter2").innerHTML = minutesRound;
 		   document.getElementById("counter3").innerHTML = secondsRound;
- 	   }
 	   
 	   newtime = window.setTimeout("getTime();", 1000);
    }
