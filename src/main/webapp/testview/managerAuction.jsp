@@ -2,6 +2,7 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="com.sellfeed.util.PageBar"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -16,9 +17,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"">
+<meta charset="UTF-8">
 <title>관리자페이지</title>
+ <!-- jQuery CDN-->
+<script
+  src="https://code.jquery.com/jquery-1.9.0.js"
+  integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+  crossorigin="anonymous"></script>
+<!-- Web socket CDN -->
+<script type="text/javascript" 
+src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <%@ include file="/common/cssJs.jsp" %>
+<script type="text/javascript">
+	function startAuction(bid_code, item_code, auct_period){
+		alert("startAuction 함수호출 성공"+bid_code+"/"+item_code+"/"+auct_period);
+		let sock = new SockJS('http://localhost:8000/echo?roomCreate:'+bid_code);
+		location.href="/auction/auctionIns.sf?bid_code="+bid_code+"&item_code="+item_code+"&auct_period="+auct_period;
+	};
+
+</script>
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
@@ -142,8 +159,8 @@
                <td><%=rMap.get("BUYNOW_PRICE") %></td>
                <td><%=rMap.get("START_PRICE") %></td>
                <td><%=rMap.get("PHOTO_NAME") %>
-               <td><a href="/auction/auctionIns.sf?item_code=<%=rMap.get("ITEM_CODE") %>&bid_code=<%=rMap.get("BID_CODE") %>&auct_period=<%=rMap.get("AUCT_PERIOD") %>">
-               <button type="button">경매 승인</button></a></td>
+               <td>
+               <button onclick="javascript: startAuction('<%=rMap.get("BID_CODE") %>','<%=rMap.get("ITEM_CODE") %>','<%=rMap.get("AUCT_PERIOD")%>')" type="button">경매 승인</button></td>
                <td><a href="/account/managerRefuseAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>"><button type="button">경매 비승인</button></a></td>
             </tr>
 <%
