@@ -1,5 +1,6 @@
 package com.sellfeed.member;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,13 +31,13 @@ public class MemberController {
 	}
 	
 	@GetMapping(value="memberList.sf")
-	public String memberList(@RequestParam Map<String,Object> pMap) {
+	public String memberList(@RequestParam Map<String,Object> pMap, Model mod) {
 		logger.info("=================>memberList 호출 성공");
-		List<Map<String,Object>> rList = null;
-		rList = memberLogic.memberList(pMap);
-		logger.info(rList.toString());
-		
-		return "redirect:../index.jsp";
+		Map<String,Object> rMap = new HashMap<>();
+	    rMap = memberLogic.memberList(pMap);
+		mod.addAttribute("rMap",rMap);
+		logger.info("rrrrrrrr"+rMap);
+		return "forward:/testview/memberUpd.jsp";
 	}
 	@PostMapping(value="memberIns.sf")
 	public String memberIns(@RequestParam Map<String,Object> pMap) {

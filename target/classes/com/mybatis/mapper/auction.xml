@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mybatis.mapper.aucLogMapper">
-	
-	
-
-     
+<mapper namespace="com.mybatis.mapper.auctionMapper">
+	<select id="beforeAuctionList" resultType="map">
+		SELECT auction_info.item_code, auction_info.bid_code, cntSeed, mem_id, sub_category_code, product_name, model_name, auct_period, buynow_price, start_price, photo_name 
+		FROM sale_item, (SELECT item_code, MAX(photo_name) photo_name FROM item_photo
+		GROUP BY item_code) item_photo,(SELECT bid_code, count(bidders_id) cntSeed FROM seed GROUP BY bid_code) seed, auction_info
+		WHERE status = '시드참여중'
+		AND SALE_ITEM.ITEM_CODE = ITEM_PHOTO.ITEM_CODE
+		AND ITEM_PHOTO.ITEM_CODE = auction_info.item_code
+		AND AUCTION_INFO.END_SEED <![CDATA[<]]> TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+		AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
+	</select>
+	<insert id="auctionIns" parameterType="map">
+		INSERT INTO AUCT_PROGRESS (bid_code, auct_startdate, auct_enddate)
+					VALUES (#{bid_code}, TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS'), TO_CHAR(SYSDATE+#{auct_period}/24,'YYYY/MM/DD/HH24/MI/SS'))
+	</insert>
+	<update id="statusAuction" parameterType="map">
+		UPDATE SALE_ITEM SET status = '경매진행중'
+		WHERE item_code = #{item_code}
+	</update>
  </mapper>

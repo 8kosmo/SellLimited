@@ -234,6 +234,7 @@
 			type: 'get',
 			url: '/rest/idInspection.sf?mem_id='+username,
 			success: function(data) {
+				
 				if(data != '_ok') {
 					$overlap.val(1);
 					$('#notice_id').html('※ 사용가능한 아이디 입니다.');

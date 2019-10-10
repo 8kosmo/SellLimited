@@ -1,6 +1,7 @@
 package com.sellfeed.member;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,11 +100,11 @@ public class MemberLogic {
       return result;
    }
 
-   public List<Map<String, Object>> memberList(Map<String, Object> pMap) {
+   public Map<String, Object> memberList(Map<String, Object> pMap) {
       logger.info("=================>memberList 호출 성공");
-      List<Map<String,Object>> rList = null;
-      rList = memberDao.memberList(pMap);
-      return rList;
+      Map<String,Object> rMap = new HashMap<>();
+      rMap = memberDao.memberList(pMap);
+      return rMap;
       
    }
 

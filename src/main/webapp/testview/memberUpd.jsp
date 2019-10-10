@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.Map, java.util.StringTokenizer" %>
+<%
+	Map<String,Object> rMap = (Map<String,Object>)request.getAttribute("rMap");
+	String MEM_BDATE = rMap.get("MEM_BDATE").toString();
+	StringTokenizer st = new StringTokenizer(MEM_BDATE,"/");
+	String YY = st.nextToken();
+	String MM = st.nextToken();
+	String DD = st.nextToken();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,11 +97,11 @@
 			</colgroup>
 			<tr>
 				<th>아이디</th>
-				<td style="height:25px;">여긴수정불가</td>
+				<td style="height:25px;"><%=mem_id%></td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>
-				<td><input type="password" class="input_name" name="password" id="password">
+				<td><input type="password" class="input_name" name="password" id="password" value="<%=rMap.get("MEM_PASSWORD")%>">
 					<img src="/images/join/lock_1.gif" id="pw_chk_img1" class="q">
 					<!-- 6~20자사이의 비밀번호 안치면 나오는부분 -->
 					<div class="reg_notice"  id="notice_password" style="color:#929292;font-size:11px;">
@@ -117,7 +126,7 @@
 			</tr>
 			<tr>
 				<th>닉네임</th>
-				<td><input type="text" class="input_name" name="nickname" value=""  maxlength="30"></td>
+				<td><input type="text" class="input_name" name="nickname" value="<%=rMap.get("MEM_NICKNAME")%>"  maxlength="30"></td>
 			</tr>
 			<tr>
 				<th>성별</th>
@@ -127,15 +136,15 @@
 				<th>생년월일</th>
 				<td>
 					<span class="info_input2">
-						<input type="text" name="birth_year" id="birth_year" class="input_name" style="width:60px" maxlength="4" onkeydown="return showKeyCode(event)" value="1988" readonly>
+						<input type="text" name="birth_year" id="birth_year" class="input_name" style="width:60px" maxlength="4" onkeydown="return showKeyCode(event)" value="<%=YY %>" readonly>
 						년
 					</span>
 					<span class="info_input3">
-						<input type="text" name="birth_month" id="birth_month" class="input_name" style="width:40px" maxlength="2" onkeydown="return showKeyCode(event)" value="10" readonly>
+						<input type="text" name="birth_month" id="birth_month" class="input_name" style="width:40px" maxlength="2" onkeydown="return showKeyCode(event)" value="<%=MM %>" readonly>
 						월
 					</span>
 					<span class="info_input3">
-						<input type="text" name="birth_days" id="birth_days" class="input_name" style="width:40px" maxlength="2" onkeydown="return showKeyCode(event)" value="02" readonly>
+						<input type="text" name="birth_days" id="birth_days" class="input_name" style="width:40px" maxlength="2" onkeydown="return showKeyCode(event)" value="<%=DD %>" readonly>
 						일
 					</span>
 					<div class="reg_notice" id="bir_notice" style="color:#929292;font-size:11px;"></div>
@@ -144,7 +153,7 @@
 			<tr>
 				<th>이메일</th>
 				<td>
-					<input type="text" class="input_email" name="email" id="email" value="ds0110818@gmail.com" style="ime-mode:disabled;width:200px" maxlength="100" onblur="chk_email2()">
+					<input type="text" class="input_email" name="email" id="email" value="<%=rMap.get("MEM_EMAIL") %>" style="ime-mode:disabled;width:200px" maxlength="100" onblur="chk_email2()">
 				</td>
 			</tr>
 			<tr>
@@ -163,7 +172,7 @@
 			<tr>
 				<th>휴대전화번호</th>
 				<td>
-					<input type="text" class="input_name" placeholder="- 없이 입력" name="mobile" id="mobile" style="ime-mode:disabled;"  onkeydown="return showKeyCode(event)" maxlength="12" value="01085482645">
+					<input type="text" class="input_name" placeholder="- 없이 입력" name="mobile" id="mobile" style="ime-mode:disabled;"  onkeydown="return showKeyCode(event)" maxlength="12" value="<%=rMap.get("MEM_PHONE")%>">
 				</td>
 			</tr>
 			<tr>

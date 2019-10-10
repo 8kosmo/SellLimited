@@ -1,6 +1,6 @@
 package com.sellfeed.member;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class MemberDao {
@@ -53,11 +52,11 @@ public class MemberDao {
 	    return result;
 	}
 
-	public List<Map<String, Object>> memberList(Map<String, Object> pMap) {
+	public Map<String, Object> memberList(Map<String, Object> pMap) {
 		logger.info("================>memberList 호출 성공");
-		List<Map<String,Object>> rList = null;
-		rList = sqlSessionTemplate.selectList("memberList",pMap);
-		return rList;
+		Map<String,Object> rMap = new HashMap<>();
+		rMap = sqlSessionTemplate.selectOne("memberList",pMap);
+		return rMap;
 	}
 
 

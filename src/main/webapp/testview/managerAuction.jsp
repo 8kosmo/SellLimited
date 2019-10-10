@@ -5,19 +5,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-   List<Map<String,Object>> acctStatusList = 
-         (List<Map<String,Object>>)request.getAttribute("accountStatusList");
+   List<Map<String,Object>> rList = 
+         (List<Map<String,Object>>)request.getAttribute("rList");
    int size = 0;
    int nowPage = 0;
-   if(acctStatusList != null && acctStatusList.size()>0){
-      size = acctStatusList.size();
+   if(rList != null && rList.size()>0){
+      size = rList.size();
    }  
-/*    if(itemStatusList != null){
-      out.print(itemStatusList.get(0).get("MEM_ID"));
-   } */
-
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,7 +76,7 @@
          <colgroup>
             <col width="80px;">
             <col width="80px;">
-            <col width="60px;">
+            <col width="100px;">
             <col width="80px;">
             <col width="80px;">
             <col width="130px;">
@@ -90,20 +85,24 @@
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">
+            <col width="100px;">
+            <col width="100px;">
          </colgroup>
          <tbody>
             <tr>
-               <td>충전코드</td>
+               <td>상품코드</td>
+               <td>경매코드</td>
+               <td>시드참여 수</td>
                <td>아이디</td>
-               <td>충전금액</td>
-               <td>입금은행</td>
-               <td>계좌번호</td>
-               <td>신청일자</td>
-               <td>입금일자</td>
-               <td>처리일자</td>
-               <td>상태</td>
-               <td>승인</td>
-               <td>거절</td>
+               <td>소분류코드</td>
+               <td>상품이름</td>
+               <td>모델명</td>
+               <td>경매기간</td>
+               <td>즉시구매가</td>
+               <td>경매시작가격</td>
+               <td>이미지</td>
+               <td>경매 승인</td>
+               <td>경매 비승인</td>
             </tr>
       </table>
 <%
@@ -114,7 +113,7 @@
          <colgroup>
             <col width="80px;">
             <col width="80px;">
-            <col width="60px;">
+            <col width="100px;">
             <col width="80px;">
             <col width="80px;">
             <col width="130px;">
@@ -123,25 +122,29 @@
             <col width="60px;">
             <col width="80px;">
             <col width="80px;">
+            <col width="100px;">
+            <col width="100px;">
          </colgroup>
 <%
       for(int i=0;i<size;i++){
-         Map<String,Object> rMap = acctStatusList.get(i);
+         Map<String,Object> rMap = rList.get(i);
 %>
             <tr>
                
-               <td><%=rMap.get("CHARGE_CODE") %></td>
+               <td><%=rMap.get("ITEM_CODE") %></td>
+               <td><%=rMap.get("BID_CODE") %></td>
+               <td><%=rMap.get("CNTSEED") %></td>
                <td><%=rMap.get("MEM_ID") %></td>
-               <td><%=rMap.get("TRADE_AMMOUNT") %></td>
-               <td><%=rMap.get("USER_BANK") %></td>
-               <td><%=rMap.get("ACCT_NUMBER") %></td>
-               <td><%=rMap.get("APPLY_DATE") %></td>
-               <td><%=rMap.get("DEPOSIT_DATE") %></td>
-               <td><%=rMap.get("APPROVAL_DATE") %></td>
-               <td><%=rMap.get("STATUS") %></td>
-               <td><a href="/account/managerPermissionAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>&mem_id=<%=rMap.get("MEM_ID") %>&trade_ammount=<%=rMap.get("TRADE_AMMOUNT") %>">
-               <button type="button">충전승인</button></a></td>
-               <td><a href="/account/managerRefuseAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>"><button type="button">충전거절</button></a></td>
+               <td><%=rMap.get("SUB_CATEGORY_CODE") %></td>
+               <td><%=rMap.get("PRODUCT_NAME") %></td>
+               <td><%=rMap.get("MODEL_NAME") %></td>
+               <td><%=rMap.get("AUCT_PERIOD") %></td>
+               <td><%=rMap.get("BUYNOW_PRICE") %></td>
+               <td><%=rMap.get("START_PRICE") %></td>
+               <td><%=rMap.get("PHOTO_NAME") %>
+               <td><a href="/auction/auctionIns.sf?item_code=<%=rMap.get("ITEM_CODE") %>&bid_code=<%=rMap.get("BID_CODE") %>&auct_period=<%=rMap.get("AUCT_PERIOD") %>">
+               <button type="button">경매 승인</button></a></td>
+               <td><a href="/account/managerRefuseAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>"><button type="button">경매 비승인</button></a></td>
             </tr>
 <%
       }
