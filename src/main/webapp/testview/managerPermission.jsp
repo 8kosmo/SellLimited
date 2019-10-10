@@ -50,7 +50,7 @@
          </table>
       </li>
 <!-- 나중에 관리자 페이지에서 관리 목록이 생기면 추가할 카테고리 -->
-     <li>
+       <li>
          <table class="mypage_category">
             <colgroup>
             <col width="20%;">
@@ -60,32 +60,20 @@
             <col width="">
             </colgroup>
             <tbody><tr>
-               <td>회원관리
-                  <p><a href="/testview/memberUpd.jsp">회원 정보수정</a><br>
-                     <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
-                     <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
-                  </p>
+               <td>
+               		<p><a href="/product/itemStatusList.sf">시드등록 관리</a></p>
                </td>
-               <td>관심목록
-                  <p><a href="/testview/favSeller.jsp">관심 회원 목록</a><br>
-                     <a href="/testview/favProduct.jsp">관심 상품 목록</a><br>
-                  </p>
+               <td>
+               		<p><a href="/auction/beforeAuctionList.sf">경매등록 관리</a></p>
                </td>
-               <td>내 상품관리
-                  <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
-                     <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
-                     <a href="/testview/seedInsProduct.jsp">시드 모집 상품</a><br>
-                     <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
+               <td>
+               		<p><a href="/account/accountStatusList.sf">충전 관리</a></p>
                </td>
-               <td>참여 상품목록
-                  <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
-                     <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
-                     <a href="/testview/productDelivery.jsp">상품 배송 정보</a></p>
+               <td>
+               		<p><a href="/testview/memberUpd.jsp">경매결산 관리</a></p>
                </td>
-               <td>고객센터
-                  <p><a href="/testview/notice.jsp">공 지 사 항</a><br>
-                     <a href="/testview/FAQ.jsp">FAQ(자주하는 질문)</a><br>
-                     <a href="/testview/QNA.jsp">1:1 문의게시판</a><br>
+               <td>
+               		<p><a href="/testview/memberUpd.jsp">회원관리</a></p>
                </td>
             </tr></tbody>
          </table>

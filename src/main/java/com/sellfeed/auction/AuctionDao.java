@@ -1,5 +1,9 @@
 package com.sellfeed.auction;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,4 +15,19 @@ public class AuctionDao {
 	Logger logger = LoggerFactory.getLogger(AuctionDao.class);
 	@Autowired
 	public SqlSessionTemplate sqlSessionTemplate = null;
+	public List<Map<String, Object>> beforeAuctionList() {
+		List<Map<String,Object>> rList = new ArrayList<>();
+		rList = sqlSessionTemplate.selectList("beforeAuctionList");
+		return rList;
+	}
+	public int auctionIns(Map<String, Object> pMap) {
+		logger.info("###########################################{auctionIns호출 성공}///DAO");
+		int result=sqlSessionTemplate.update("auctionIns",pMap);
+		return result;
+	}
+	public int statusAuction(Map<String,Object> pMap) {
+		logger.info("###########################################{statusAuction호출 성공}///DAO");
+		int result=sqlSessionTemplate.update("statusAuction",pMap);
+		return result;
+	}
 }
