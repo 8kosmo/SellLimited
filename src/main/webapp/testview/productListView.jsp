@@ -56,24 +56,24 @@
 			}
 		});
 	}
-	function addFavProduct(bidcode,myid){
-		alert(bidcode+","+myid);
-		loginSessionCheck(myid);
-		$.ajax({
-			 method:'GET'
-			,url:'/rest/favProductAdd.sf?fav_bidcode='+bidcode+'&mem_id='+myid
-			,data:'data'
-			,success:function(data){
-				alert(data);
-			}		
-		});
-	}
-	function loginSessionCheck(myid){
-		if(myid==null){	
-			alert("로그인이 필요합니다");
-			location.href="/testview/login.jsp";
-	   }
-	}
+	   /* 관심상품 등록 추가 함수 */
+    function addFavProduct(bid_code,seller_id,my_id){
+ 	   loginSessionCheck(my_id);
+ 		$.ajax({
+ 			 method:'GET'
+ 			,url:'/rest/favProductAdd.sf?fav_bidcode='+bid_code+'&mem_id='+seller_id
+ 			,data:'data'
+ 			,success:function(data){
+ 				alert(data);
+ 			}		
+ 		});
+ 	   };
+    function loginSessionCheck(my_id){
+ 	   		if(my_id==null){	
+ 	   			alert("로그인이 필요합니다");
+ 	   			location.href="/testview/login.jsp";
+ 	   		}
+ 	      }
 </script>
 </head>
 <body>
@@ -131,7 +131,7 @@
 										<span class="mb_view">시드<strong><%=rMap.get("BIDDER_COUNT") %>명</strong></span>
 										<span class="mb_btns">
 											<a href="#null" ><img src="/images/integ/20151029_08.png"></a>
-											<a href="javascript:addFavProduct(<%=rMap.get("BID_CODE")%>,<%=mem_id%>)" ><img src="/images/integ/20151029_09.png"></a>
+											<a href="javascript:addFavProduct(<%=rMap.get("BID_CODE")%>,<%=rMap.get("MEM_ID")%>,<%=mem_id %>)" ><img src="/images/integ/20151029_09.png"></a>
 											<a href="/product/productDetail.sf?bid_code=<%=rMap.get("BID_CODE") %>&status=seed&item_code=<%=rMap.get("ITEM_CODE") %>" ><img src="/images/integ/magnifier.png"></a>
 										</span>
 									</li>
@@ -235,7 +235,7 @@
 										<span class="mb_view">시드<strong><%=rMap.get("BIDDER_COUNT") %>명</strong></span>
 										<span class="mb_btns">
 											<a href="#null" ><img src="/images/integ/20151029_08.png"></a>
-											<a href="javascript:addFavProduct(<%=rMap.get("BID_CODE")%>,<%=mem_id%>)" ><img src="/images/integ/20151029_09.png"></a>
+											<a href="javascript:addFavProduct(<%=rMap.get("BID_CODE")%>,<%=rMap.get("MEM_ID")%>,<%=mem_id %>)" ><img src="/images/integ/20151029_09.png"></a>
 											<a href="/product/productDetail.sf?bid_code=<%=rMap.get("BID_CODE") %>&status=auction&item_code=<%=rMap.get("ITEM_CODE") %>" ><img src="/images/integ/magnifier.png"></a>
 										</span>
 									</li>
