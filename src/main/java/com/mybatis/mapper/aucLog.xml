@@ -9,9 +9,9 @@
 	</select>
 	
 	<insert id="aucLogIns" parameterType="map">
-		INSERT INTO bid_log (bid_code, bidder, final_price, r_num)	
-    	VALUES (#{bid_code}, #{mem_id}, (SELECT MAX(final_price) AS maxBid FROM bid_log
-    	WHERE bid_code=#{bid_code})+#{increase_rate}, (SELECT MAX(r_num) FROM bid_log WHERE bid_code=#{bid_code})+1)   
+		INSERT INTO BID_LOG (BID_CODE, bidder_id, final_price, r_num)
+             VALUES (#{bid_code}, #{mem_id}, (SELECT NVL(MAX(final_price),0) FROM bid_log
+        WHERE bid_code=#{bid_code})+#{increase_rate}, (SELECT NVL(MAX(r_num),0) FROM bid_log WHERE bid_code=#{bid_code})+1) 
 	</insert>
 	
  </mapper>

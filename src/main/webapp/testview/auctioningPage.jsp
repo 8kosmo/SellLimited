@@ -2,11 +2,19 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Map, java.util.List" %>
 <%@ page import="java.util.StringTokenizer" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>상세페이지</title>
+<script
+  src="https://code.jquery.com/jquery-1.9.0.js"
+  integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+  crossorigin="anonymous"></script>
+<!-- Web socket CDN -->
+<script type="text/javascript" 
+src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <%@ include file="/common/cssJs.jsp" %>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
    String mem_name = null;
@@ -64,8 +72,11 @@ $(document).ready(function(){
       $("#login").hide();
       $("#logout").show();
    }
-}
-);//_______________________________________________________________________end of ready
+   
+ 
+   
+   
+});//_______________________________________________________________________end of ready
 
 //_________________________________________타임
 function getTime() {
@@ -115,242 +126,39 @@ function getTime() {
       big_img.src=sub_img2_src;
       sub_img2.src=big_img_src;
    }
-   function addFavSeller(){
-      $.ajax({
-          method:'GET'
-         ,url:'/rest/favSellerAdd.sf?fav_sellerid=<%=rMap.get("MEM_ID")%>&mem_id=<%=mem_id%>'
-         ,data:'data'
-         ,success:function(data){
-            alert(data);
-         }      
-      });
-      };
-    function addFavProduct(){
-       loginSessionCheck();
-       $.ajax({
-           method:'GET'
-          ,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
-          ,data:'data'
-          ,success:function(data){s
-             alert(data);
-          }      
-       });
-       };
-    function loginSessionCheck(){
-       <%      if(mem_id==null){   
-       %>
-                alert("로그인이 필요합니다");
-                location.href="/testview/login.jsp";
-       <%}%>
-          }
-    
-    function auctionStart(){
-    
-       loginSessionCheck();
-        $.ajax({
-              method:'GET'
-             ,url:'/rest/seedOverlapCheck.sf?bidders_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>'
-             ,data:'data'
-             ,success:function(result){
-                if(result=='0'){
-                   //alert("경매가즈아");
-                   window.open('/auction/AuctionningPage.sf?bid_code=<%=rMap.get("BID_CODE")%>'
-                		   ,'경매진행중','width=1200,height=1000,fullscreen=no');
-                }else if(result=='1'){
-                   alert("시드를 발급받지 않은 상품입니다");
-                }
-             }      
-          });
-    } 
-
+   function bid(){
+	   var final_price = $("#final_price").html();
+	   alert("값"+final_price);
+	   var increase_rate = 0;
+	   var total = 0;
+	   if(final_price<=500000){
+		   increase_rate = 10000;
+	   }
+	   else if(500000<final_price){
+		   increase_rate = final_price/20
+	   }
+	   total = final_price*1+increase_rate*1;
+	   alert("토탈: "+total);
+	   console.log("increase_rate: "+increase_rate);
+	   if(total><%=nowBalance%>){
+		   alert("잔액이 부족합니다 충전하시겠습니까? 필요금액: "+total+"현재 보유금액: "+<%=nowBalance%>);
+	   }else{
+		   $.ajax({
+			   method:'GET'
+			         ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+			         ,data:'data'
+			         ,success:function(data){
+			            $("#my_price").html(total);
+			            sendMessage();
+			         }
+		   });
+	   }
+   }
+		
 </script>
 </head>
 <body>
-<%-- <!-- 디테일뷰 시작 전체폼-->
-<div id="mypage">
-   <form action="#" id="detail_frm" method="post" accept-charset="utf-8">
-      <div id="dv">
-         <ul class="dv_title" style="margin-top:20px;">
-				<li class="dv_title_left" id="trans_after_subject" style="vertical-align:middle;height:50px;padding:0px;background-color:#614190;color:white;font-weight:bold;">
-					<div style="margin:13px;"><%=rMap.get("BID_TITLE")%></div>
-				</li>
-				<li class="dv_title_right" style="height:50px;width:218px;background-color:#614190;color:white;">
-					<div style="margin-top:24px;margin-right:13px">경매상품ID : <%=rMap.get("ITEM_CODE")%></div>
-				</li>
-			</ul>
-         <ul>
-            <li>
-               <table class="dv_out_table">
-                  <tr>
-                     <!-- 상세페이지 네모안에 왼쪽부분전체 -->
-                     <td class="dot_left" style="position:relative;">
-                        <table class="dotl_in">
-                           <!-- 상세페이지 네모안에 사진나오는 부분 -->
-                           <tr>
-                              <td class="dotl_in_thumb">
-                                 <!-- 제일 큰 메인사진 -->
-                                 <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)">
-                                 </div>
-                                 <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                 <div class="ditsmallthumb" id="d_small_img">
-                                 </div>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td style="height:200px;">
-                                 <div style="position:absolute;bottom:0px;width:100%;">
-                                    <!-- 제품상세설명 간단히 적는부분 -->
-                                    <span class="ctntxt" style="margin-top:0px">
-                                       <strong>제품상세설명</strong>
-                                       <br>
-                                       <%=rMap.get("PRODUCT_DETAIL")%>
-                              <br>
-                                     </span>
-                                     <!-- 빨간글씨로 주의사항 적은부분 -->
-                                     <span class="endtxt" style="font-weight:bold;color:red">
-                                        낙찰금액외에 현지운송료, 상품검수비(물품검사비), 대행수수료 등의 추가요금이 발생합니다.
-                                     </span>
-                                 </div>
-                              </td>
-                           </tr>
-                        </table>
-                     </td>
-                     <!-- 상세페이지 네모안에 오른쪽부분전체 -->
-                     <td class="dot_right">
-                        <!-- 입찰건수, 남은시간 나오는 부분 -->
-                        <span>
-                           <table class="dr_step1">
-                              <colgroup>
-                                 <col width="50%;" />
-                                 <col width="50%;" />
-                              </colgroup>
-                              <tr>
-                                 <td style="border-right:1px solid #E7E7E7;">입찰건수
-                                    <!-- 입찰건수 -->
-                                    <p style="font-size:20px; margin-top:5px;"><%=rMap.get("CNTBID")%></p>
-                                 </td>
-                                 <td>남은시간
-             <p style="font-size:20px; margin-top:5px; ">
-                  <SPAN id=counter0></SPAN>일+
-                  <SPAN id=counter1></SPAN>:<SPAN id=counter2></SPAN>:<SPAN id=counter3></SPAN></p>
-                                 </td>
-                              </tr>
-                           </table>
-                        </span>
-                        <!-- 시작가격~종료일 나오는 부분 -->
-                        <span>
-                           <table class="dr_step2">
-                              <colgroup>
-                                 <col width="105px;" />
-                                 <col width="" />
-                              </colgroup>
-                              <tr>
-                                 <th>시작가격<br> 즉시구매가<br> 시작시간<br> 종료일
-                                 </th>
-                                 <!-- 시작가격 -->
-                                 <td><%=rMap.get("START_PRICE")%>원<br> 
-                                 <!-- 바로구매가격 -->
-                                 <%=rMap.get("BUYNOW_PRICE")%>원<br> 
-                                 <!-- 시작시간 -->    
-                                     <%=rMap.get("AUCT_STARTDATE")%><br>
-                                 <!-- 종료일 -->
-                                     <%=rMap.get("AUCT_ENDDATE")%><br>
-                                 </td>
-                              </tr>
-                           </table>
-                        </span>
-                        <!-- 현재가격,입찰하기,관심등록 버튼부분 -->
-                        <span>
-                           <table class="dr_step3">
-                              <colgroup>
-                                 <col width="95px;" />
-                                 <col width="" />
-                              </colgroup>
-                              <tr>
-                                 <th>현재가격</th>
-                                 <td class="pprice"><%=rMap.get("START_PRICE")%>원
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td colspan="2" class="buttonsarray">
-                                    <button type="button" class="btn_algerie" onclick="auctionStart()">입찰하기</button>
-                                    <button type="button" class="btn_nigeria" onclick="addFavProduct()">관심등록</button>
-                                 </td>
-                              </tr>
-                           </table>
-                        </span>
-                        <!-- 파손위험 보상경고, 참고하세요! 부분 -->
-                        <span>
-                           <!-- 파손위험 보상경고 -->
-                           <span>
-                              <img src="/images/banner/notice_banner.png" style="margin-left: 25px; margin-top: 0px" />
-                           </span>
-                           <div style="height: 10px;"></div>
-                           <!-- 참고하세요! 부분 -->
-                           <table class="dr_step9" style="margin-bottom: -15px;">
-                              <colgroup>
-                                 <col width="" />
-                                 <col width="103px;" />
-                              </colgroup>
-                              <tr>
-                                 <th>
-                                    <textarea class="input_panama">
-                                       우리 여기에 무언가 참고할 만한 내용들을 적어서 표현하면 될거같습니다. 이용안내에 대한 내용을
-                                       간단하게 쓰고 오른쪽에 자세하게 보고싶으면 클릭해서 링크걸어주면 될듯합니다.
-                                    </textarea>
-                                 </th>
-                                 <td>
-                                    <a href="#" target="_blank">
-                                       <img src="/images/integ/20150925_03.png">
-                                    </a>
-                                 </td>
-                              </tr>
-                           </table>
-                           <div style="height: 220px;"></div>
-                        </span>
-                        <!-- 수량,반품가능여부,출품자정보 부분 -->
-                        <span class="dotbot_all">
-                           <table class="corona" style="margin-top:5px">
-                              <colgroup>
-                                 <col width="105px;"/>
-                                 <col width=""/>
-                              </colgroup>
-                              <tr>
-                                 <th>
-                                       브랜드<br> 모델명<br>  수량<br> 반품가능 여부 <br>
-                                 </th>
-                                 <td>
-                                    <span id="brand" name="brand"><%=rMap.get("BRAND")%></span><br>
-                                    <span id="model_name" name="model_name"><%=rMap.get("MODEL_NAME")%></span> <br>
-                                     1<br>
-                                    <span id="trans_after_return_info">반품불가</span><br>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td colspan="2" style="padding-left: 0;" >
-                                   <br>
-                                    <strong>출품자정보</strong><br>
-                                    <span style="height: 25px; line-height: 25px;">
-                                       ID : <a href="#" style="text-decoration: none;">
-                                             <span class="corona_id"><%=rMap.get("MEM_ID")%></span>
-                                           </a>
-                                    </span>&nbsp;&nbsp;
-                                    <a href="javascript:addFavSeller()">
-                                       <img src="/images/seller_icon.png" alt="관심등록">
-                                    </a>
-                                 </td>
-                              </tr>
-                           </table>
-                        </span>
-                     </td>
-                  </tr>
-               </table>
-            </li>
-         </ul>
-      </div>
-   </form>
-</div> --%>
-<!-- =------------------------------------------------ -->
+
 <div id="mypage">
 	<form action="#" id="detail_frm" method="post" accept-charset="utf-8">
 		<div id="dv">
@@ -395,12 +203,8 @@ function getTime() {
 												</colgroup>
 												<tr>
 													<td style="border-right:1px solid #E7E7E7;height:20px;font-size:15px;text-align:center;font-weight:bold;">현재 최고 입찰금액
-														<!-- <p style="font-size:25px;margin-top:10px;">
-														500,000</p> -->
 													</td>
 													<td style="height:20px;font-size:15px;text-align:center;font-weight:bold;">나의 입찰금액
-														<!-- <p style="font-size:25px;margin-top:10px;">
-														100,000</p> -->
 													</td>
 												</tr>
 											</table>
@@ -416,12 +220,10 @@ function getTime() {
 												</colgroup>
 												<tr>
 													<td style="border-right:1px solid #E7E7E7;height:90px;text-align:center;">
-														<p style="font-size:25px;margin-top:20px;">
-														<%=rMap.get("START_PRICE") %></p>
+														<p id="final_price" style="font-size:25px;margin-top:20px;"><%=rMap.get("FPRICE") %></p>
 													</td>
 													<td style="border-right:1px solid #E7E7E7;">
-														<p style="font-size:25px;margin-top:20px;text-align:center;">
-														0</p>
+														<p id="my_price" style="font-size:25px;margin-top:20px;text-align:center;">0</p>
 													</td>
 												</tr>
 											</table>
@@ -439,8 +241,8 @@ function getTime() {
 											<col width="50%;" />
 										</colgroup>
 										<tr>
-											<td style="border-right:1px solid #E7E7E7;">참여인원
-												<p>0 / <%=rMap.get("SEEDCNT") %></p>
+											<td style="border-right:1px solid #E7E7E7;">참여인원<br>
+												<p id="enterCnt" style="display:inline;"></p><p style="display:inline;"> / <%=rMap.get("SEEDCNT") %></p>
 											</td>
 											<td>남은시간
             	 <p style="font-size:20px; margin-top:5px; ">
@@ -494,7 +296,7 @@ function getTime() {
 												<br>1 개<br> 
 												반품불가<br><br><br><br>
 												<%=rMap.get("MEM_ID") %><br><br><br>
-												<%=nowBalance %>
+												<%=nowBalance%>
 											</td>
 										</tr>
 									</table>
@@ -507,7 +309,8 @@ function getTime() {
 											<col width="85px;" />
 										</colgroup>
 										<tr>
-											<button type="button" class="btn_algerie" style="width:360px;height:70px;margin-top:3px;">입찰하기</button><br>
+											<button onclick="javascript:bid()" type="button" class="btn_algerie" style="width:360px;height:70px;margin-top:3px;">입찰하기</button>
+											<br>
 											<button type="button" class="btn_nigeria" style="width:360px;height:70px">즉시구매</button>
 										</tr>
 									</table>
@@ -524,4 +327,51 @@ function getTime() {
 </html>
    <script>getTime()</script>
 </body>
+<script type="text/javascript">
+        $(document).ready(function() {
+               $("#sendBtn").click(function() {
+                       sendMessage();
+                       $('#message').val('')
+               });
+
+               $("#message").keydown(function(key) {
+                       if (key.keyCode == 13) {// 엔터
+                              sendMessage();
+                              $('#message').val('')
+                       }
+               });
+        });
+
+        // 웹소켓을 지정한 url로 연결한다.
+        let sock = new SockJS('http://localhost:8000/echo?roomIn:<%=rMap.get("BID_CODE")%>');
+        sock.onmessage = onMessage;
+        sock.onclose = onClose;
+
+        // 메시지 전송
+        function sendMessage() {
+			   alert("sendMessage");
+			   var bid_code = '<%=rMap.get("BID_CODE")%>';
+               sock.send(bid_code+'?'+$("#my_price").text());
+        }
+
+        // 서버로부터 메시지를 받았을 때
+        function onMessage(msg) {
+               var data = msg.data;
+               var result = data.split(':')[0];
+               var status = data.split(':')[1];
+               if(status=='enterCnt'){
+            	   alert("방 입장시"+result);
+            	   $("#enterCnt").text(result);
+               }else{
+            	   alert("입찰 시 "+result);
+             	   $("#final_price").text(result);
+               }
+        }
+
+        // 서버와 연결을 끊었을 때
+        function onClose(evt) {
+               $("#data").append("연결 끊김");
+        }
+
+</script>
 </html>

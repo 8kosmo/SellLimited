@@ -35,6 +35,9 @@ public class EchoHandler extends TextWebSocketHandler {
 			sessionList = sessionMap.get(roomName);
 			sessionList.add(session);
 			logger.info("{} 연결됨", session.getId());
+			for (WebSocketSession sess : sessionList) {
+				sess.sendMessage(new TextMessage(sessionList.size()+":"+"enterCnt"));
+			}
 		}
 	}
 
@@ -47,7 +50,7 @@ public class EchoHandler extends TextWebSocketHandler {
 		String realMessage = pullMessage.split("\\?")[1];
 		sessionList = sessionMap.get(roomName);
 		for (WebSocketSession sess : sessionList) {
-			sess.sendMessage(new TextMessage(session.getId() + " : " + realMessage));
+			sess.sendMessage(new TextMessage(realMessage+":"+roomName));
 		}
 	}
 
