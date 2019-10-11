@@ -194,20 +194,20 @@ function getTime() {
 <div id="top" align="center">
 <!-- head -->
 <ul class="head">
-      <li class="head_txt" style="width: auto; float: right;">
+   <li class="head_txt" style="width: auto; float: right;">
       <div id="login" style="display:inline;">
          <a href="/testview/login.jsp" onclick="">로그인</a><span>|</span>
          <a href="/testview/memberIns.jsp"><strong>회원가입</strong></a><span>|</span>
       </div>
       <div id="logout" style="display:inline;">
-      <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
-      <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
+         <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+         <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
-         <a href="#"><strong>마이페이지</strong></a><span>|</span>
+         <a href="/testview/myPage.jsp"><strong>마이페이지</strong></a><span>|</span>
       </div>
-       <div id="managerLogout" style="display:inline;">
-         <a href="#"><%= mem_name+"님 환영합니다." %></a>
-         <a href="#" style="margin-right:600px">&nbsp</a>
+      <div id="managerLogout" style="display:inline;">
+         <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+         <a href="#" style="margin-right:500px">&nbsp</a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
@@ -215,9 +215,9 @@ function getTime() {
       <div class="layer_add2">
          <a href="#">고객센터</a>
          <ul class="list_layer2">
-               <li><a href="#">공지사항</a></li>
-               <li><a href="#">1:1문의</a></li>
-               <li><a href="#">FAQ</a></li>
+               <li><a href="/testview/notice.jsp">공지사항</a></li>
+               <li><a href="/testview/QNA.jsp">1:1문의</a></li>
+               <li><a href="/testview/FAQ.jsp">FAQ</a></li>
          </ul>
          </div>
    </li>  
@@ -233,7 +233,7 @@ function getTime() {
          <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
       </span>
       <!-- 검색버튼 -->
-      <span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
+      <span><a href="javascript:total_search()"><img src="/images/japanstyle_files/20160926_07.png"></a></span>
    </li>
    <!-- 검색창 오른쪽 광고배너 -->
    <li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>

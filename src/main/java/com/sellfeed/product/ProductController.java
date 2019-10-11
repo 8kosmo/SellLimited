@@ -189,7 +189,7 @@ public class ProductController {
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
 		int nowPage = 0;
-		int pageSize = 15;
+		int pageSize = 0;
 		 if(pMap.get("nowPage")!=null) {
              nowPage = Integer.parseInt(pMap.get("nowPage").toString());
          }
@@ -205,7 +205,7 @@ public class ProductController {
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
 		int nowPage1 = 0;
-		int pageSize1 = 15;
+		int pageSize1 = 0;
 		 if(pMap.get("nowPage1")!=null) {
              nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
          }
@@ -218,6 +218,7 @@ public class ProductController {
 		pMap.put("pageSize1",pageSize1);
 		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
 		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
+		//return "forward:../testview/productListView.jsp";
 		return "forward:../testview/productListView.jsp";
 	}
 	//ajax 시드참여중
@@ -226,7 +227,7 @@ public class ProductController {
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
 		int nowPage = 0;
-		int pageSize = 15;
+		int pageSize = 0;
 		 if(pMap.get("nowPage")!=null) {
              nowPage = Integer.parseInt(pMap.get("nowPage").toString());
          }
@@ -247,7 +248,7 @@ public class ProductController {
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
 		int nowPage1 = 0;
-		int pageSize1 = 15;
+		int pageSize1 = 0;
 		 if(pMap.get("nowPage1")!=null) {
              nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
          }
