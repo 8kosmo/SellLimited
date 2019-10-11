@@ -73,7 +73,7 @@
 										<span class="mb_view">시드<strong><%=rMap.get("BIDDER_COUNT") %>명</strong></span>
 										<span class="mb_btns">
 											<a href="#null" ><img src="/images/integ/20151029_08.png"></a>
-											<a href="javascript:addFavProduct(<%=rMap.get("BID_CODE")%>,<%=mem_id%>)" ><img src="/images/integ/20151029_09.png"></a>
+											<a href="javascript:addFavProduct('<%=rMap.get("BID_CODE") %>','<%=rMap.get("MEM_ID") %>','<%=mem_id %>')" ><img src="/images/integ/20151029_09.png"></a>
 											<a href="/product/productDetail.sf?bid_code=<%=rMap.get("BID_CODE") %>&status=seed&item_code=<%=rMap.get("ITEM_CODE") %>" ><img src="/images/integ/magnifier.png"></a>
 										</span>
 									</li>
