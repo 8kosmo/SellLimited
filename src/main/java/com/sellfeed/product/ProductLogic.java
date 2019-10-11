@@ -53,14 +53,12 @@ public class ProductLogic {
    public void managerPermission
    (String item_code, int auct_period) {
       logger.info("Logic| Call managerPermission");
-      int step1, step2, step3 = 0;
+      int step1, step2 = 0;
       try {
          step1 = productDao.managerPermission(item_code);//ts step1
          logger.info("관리자 승인 결과 : "+step1);
          step2 = productDao.auction_infoIn(item_code);//ts step2
          logger.info("시드관리 INSERT 결과 : "+step2);
-         step3 = productDao.auct_progressIns(item_code,auct_period);//ts step3
-         logger.info("경매관리 INSERT 결과 : "+step3);
       } catch (DataAccessException e) {
          throw e;
       }
@@ -96,8 +94,6 @@ public class ProductLogic {
 		if(nowPage>0) {
 			start = ((nowPage-1)*pageSize)+1;
 			end = nowPage*pageSize;
-			logger.info("시작 ROW : "+start);
-			logger.info("끝 ROW : "+end);
 			pMap.put("start", start);
 			if(end>=total) {
 				pMap.put("end", total);
@@ -105,6 +101,8 @@ public class ProductLogic {
 				pMap.put("end", end);
 			}
 		}
+		logger.info("시작 ROW : "+start);
+		logger.info("끝 ROW : "+end);
 		itemStatusList = productDao.itemStatusList(pMap);
 		return itemStatusList;
 	}
@@ -128,8 +126,6 @@ public class ProductLogic {
 		if(nowPage>0) {
 			start = ((nowPage-1)*pageSize)+1+pageSize;
 			end = (nowPage*pageSize)+pageSize;
-			logger.info("시작 ROW : "+start);
-			logger.info("끝 ROW : "+end);
 			pMap.put("start", start);
 			if(end>=total) {
 				pMap.put("end", total);
@@ -137,6 +133,8 @@ public class ProductLogic {
 				pMap.put("end", end);
 			}
 		}
+		logger.info("시작 ROW : "+start);
+		logger.info("끝 ROW : "+end);
 		itemStatusSeedList = productDao.itemStatusSeedList(pMap);
 		return itemStatusSeedList;
 	}
@@ -157,8 +155,6 @@ public class ProductLogic {
 		if(nowPage1>0) {
 			start1 = ((nowPage1-1)*pageSize1)+1+pageSize1;
 			end1 = (nowPage1*pageSize1)+pageSize1;
-			logger.info("시작 ROW : "+start1);
-			logger.info("끝 ROW : "+end1);
 			pMap.put("start", start1);
 			if(end1>=total) {
 				pMap.put("end", total);
@@ -166,6 +162,8 @@ public class ProductLogic {
 				pMap.put("end", end1);
 			}
 		}
+		logger.info("시작 ROW : "+start1);
+		logger.info("끝 ROW : "+end1);
 		itemStatusAuctionList = productDao.itemStatusAuctionList(pMap);
 		return itemStatusAuctionList;
 	}

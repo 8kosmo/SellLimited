@@ -42,17 +42,16 @@
       function logout(){
          location.href="/common/sessionDel.jsp";   
    }
-      
       function total_search() {
-          var searchWord = $("#SearchWord").val();
-          if(searchWord == ''){
-            alert('검색 할 상품을 입력 해주세요');
-            $("#SearchWord").focus();
-            return false;
-          }else{           
-             location.href="/product/productList.sf?keyword="+searchWord;
-          }
-     }
+    	 var searchWord = $("#SearchWord").val();
+    	 if(searchWord == ''){
+	    	alert('검색 할 상품을 입력 해주세요');
+	    	$("#SearchWord").focus();
+	    	return false;
+    	 }else{    		 
+    	 	location.href="/product/productList.sf?keyword="+searchWord;
+    	 }
+	}
 </script>
 </head>
 <body>
@@ -69,11 +68,11 @@
          <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
          <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
-         <a href="/testview/notice.jsp"><strong>마이페이지</strong></a><span>|</span>
+         <a href="#"><strong>마이페이지</strong></a><span>|</span>
       </div>
       <div id="managerLogout" style="display:inline;">
-         <a href="#"><%= mem_name+"님 환영합니다." %></a>
-         <a href="#" style="margin-right:600px">&nbsp</a>
+         <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+         <a href="#" style="margin-right:500px">&nbsp</a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
@@ -81,9 +80,9 @@
       <div class="layer_add2">
          <a href="#">고객센터</a>
          <ul class="list_layer2">
-               <li><a href="/testview/notice.jsp">공지사항</a></li>
-               <li><a href="/testview/QNA.jsp">1:1문의</a></li>
-               <li><a href="/testview/FAQ.jsp">FAQ</a></li>
+               <li><a href="#">공지사항</a></li>
+               <li><a href="#">1:1문의</a></li>
+               <li><a href="#">FAQ</a></li>
          </ul>
          </div>
    </li>  
@@ -92,14 +91,14 @@
 <ul class="logopart">
    <!-- 로고있는부분 -->
    <li class="logopart_left"><a href="/testview/mainView.jsp"><img src="/images/logo.png"></a></li>
- <!-- 검색창있는부분 -->
+   <!-- 검색창있는부분 -->
    <li class="logopart_center">
       <span class="searchbox_form">
          <!-- 검색창 -->
          <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
       </span>
       <!-- 검색버튼 -->
-      <span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
+      <span><a href="javascript:total_search()"><img src="/images/japanstyle_files/20160926_07.png"></a></span>
    </li>
    <!-- 검색창 오른쪽 광고배너 -->
    <li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>
