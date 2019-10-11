@@ -169,7 +169,8 @@ function getTime() {
              ,success:function(result){
                 if(result=='0'){
                    alert("경매 가즈아");
-                   window.open('/testview/auctioningPage.jsp','경매진행중','width=1200,height=800,fullscreen=no');
+                   window.open('/auction/AuctionningPage.sf?bid_code=<%=rMap.get("BID_CODE")%>'
+                		   ,'경매진행중','width=1200,height=750,fullscreen=no');
                 }else if(result=='1'){
                    alert("시드를 발급받지 않은 상품입니다");
                 }
