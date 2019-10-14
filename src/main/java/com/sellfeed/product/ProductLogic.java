@@ -141,20 +141,20 @@ public class ProductLogic {
 
 	public List<Map<String, Object>> itemStatusAuctionList(Map<String, Object> pMap) {
 		List<Map<String, Object>> itemStatusAuctionList = null;
-		int nowPage = 0;
-		int pageSize = 0;
+		int nowPage1 = 0;
+		int pageSize1 = 0;
 		int start = 0;
 		int end = 0;
 		int total = productDao.getPermissionTotal();
-		if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
-			nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+		if(Integer.parseInt(pMap.get("nowPage1").toString())>0) {
+			nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
 		}
-		if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
-			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+		if(Integer.parseInt(pMap.get("pageSize1").toString())>0) {
+			pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
 		}
-		if(nowPage>0) {
-			start = ((nowPage-1)*pageSize)+1;
-			end = nowPage*pageSize;
+		if(nowPage1>0) {
+			start = ((nowPage1-1)*pageSize1)+1;
+			end = nowPage1*pageSize1;
 			pMap.put("start", start);
 			if(end>=total) {
 				pMap.put("end", total);

@@ -64,7 +64,7 @@
 	function itemStatusAuctionList(pageNumber1) {
 		$.ajax({
 			method:'GET'
-			,url:'/product/itemStatusAuctionList.sf?nowPage1='+pageNumber1
+			,url:'/product/itemStatusAuctionList.sf?nowPage1='+pageNumber1+'&<%=status%>=<%=result%>'
 			,success:function(data){
 				$("#contents2").html(data);
 			}

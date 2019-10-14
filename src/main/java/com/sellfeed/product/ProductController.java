@@ -192,11 +192,13 @@ public class ProductController {
 		if(pMap.get("sub_category")!=null) {
 			sub_category = pMap.get("sub_category").toString();
 			mod.addAttribute("sub_category", sub_category);
+			logger.info(sub_category);
 		}
 		String keyword = null;
 		if(pMap.get("keyword")!=null) {
 			keyword = pMap.get("keyword").toString();
 			mod.addAttribute("keyword", keyword);
+			logger.info(keyword);
 		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
@@ -246,11 +248,13 @@ public class ProductController {
 		if(pMap.get("sub_category")!=null) {
 			sub_category = pMap.get("sub_category").toString();
 			mod.addAttribute("sub_category", sub_category);
+			logger.info(sub_category);
 		}
 		String keyword = null;
 		if(pMap.get("keyword")!=null) {
 			keyword = pMap.get("keyword").toString();
 			mod.addAttribute("keyword", keyword);
+			logger.info(keyword);
 		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
@@ -283,11 +287,13 @@ public class ProductController {
 		if(pMap.get("sub_category")!=null) {
 			sub_category = pMap.get("sub_category").toString();
 			mod.addAttribute("sub_category", sub_category);
+			logger.info(sub_category);
 		}
 		String keyword = null;
 		if(pMap.get("keyword")!=null) {
 			keyword = pMap.get("keyword").toString();
 			mod.addAttribute("keyword", keyword);
+			logger.info(keyword);
 		}
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
