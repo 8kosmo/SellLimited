@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.jws.HandlerChain;
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -16,10 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
+import com.sellfeed.aucLog.AucLogLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
 import com.sellfeed.seed.SeedLogic;
@@ -36,6 +34,8 @@ public class RestSellFeedController {
 	private MemberLogic memberLogic = null;
 	@Autowired
 	private SeedLogic seedLogic = null;
+	@Autowired
+	private AucLogLogic aucLogLogic = null;
 	
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
@@ -173,6 +173,16 @@ public class RestSellFeedController {
 		session.setAttribute("nowBalance" ,acct_balance);
 		return result; 
 	}
-	
+	@GetMapping("/aucLogIns.sf")
+	public String aucLogIns(@RequestParam Map<String,Object> pMap) {
+		logger.info("Controller| auctLogIns 호출성공");
+		int Ok  = aucLogLogic.aucLogIns(pMap);
+		if(Ok!=0) {
+			logger.info("aucLogIns 성공!");
+		}else {
+			return "";
+		}
+		return "";
+	}
 
 }

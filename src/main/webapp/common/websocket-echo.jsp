@@ -38,13 +38,13 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
         });
 
         // 웹소켓을 지정한 url로 연결한다.
-        let sock = new SockJS("<c:url value="/echo?roomCreate:shoes"/>");
+        let sock = new SockJS("<c:url value="/echo?roomCreate:LQNO3604"/>");
         sock.onmessage = onMessage;
         sock.onclose = onClose;
 
         // 메시지 전송
         function sendMessage() {
-               sock.send("shoes?"+$("#message").val());
+               sock.send("shoes12qw?"+$("#message").val());
         }
 
         // 서버로부터 메시지를 받았을 때
