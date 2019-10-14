@@ -182,14 +182,28 @@ public class ProductController {
    	//시드참여중 리스트 검색
 	@GetMapping(value="/productList.sf")
 	public String productList(Model mod, @RequestParam Map<String, Object>pMap) {
+		String sub_category_code = null;
 		if(pMap.get("sub_category_code")!=null) {
-			String sub_category_code =  pMap.get("sub_category_code").toString();
-			pMap.put("sub_category_code",sub_category_code);
+			sub_category_code = pMap.get("sub_category_code").toString();
+			mod.addAttribute("sub_category_code", sub_category_code);
+			logger.info(sub_category_code);
+		}
+		String sub_category = null;
+		if(pMap.get("sub_category")!=null) {
+			sub_category = pMap.get("sub_category").toString();
+			mod.addAttribute("sub_category", sub_category);
+			logger.info(sub_category);
+		}
+		String keyword = null;
+		if(pMap.get("keyword")!=null) {
+			keyword = pMap.get("keyword").toString();
+			mod.addAttribute("keyword", keyword);
+			logger.info(keyword);
 		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
 		int nowPage = 0;
-		int pageSize = 15;
+		int pageSize = 0;
 		 if(pMap.get("nowPage")!=null) {
              nowPage = Integer.parseInt(pMap.get("nowPage").toString());
          }
@@ -205,7 +219,7 @@ public class ProductController {
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
 		int nowPage1 = 0;
-		int pageSize1 = 15;
+		int pageSize1 = 0;
 		 if(pMap.get("nowPage1")!=null) {
              nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
          }
@@ -218,15 +232,34 @@ public class ProductController {
 		pMap.put("pageSize1",pageSize1);
 		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
 		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
+		//return "forward:../testview/productListView.jsp";
 		return "forward:../testview/productListView.jsp";
 	}
 	//ajax 시드참여중
 	@GetMapping(value="/itemStatusSeedList.sf")
 	public String itemStatusSeedList(Model mod, @RequestParam Map<String, Object> pMap) {
+		String sub_category_code = null;
+		if(pMap.get("sub_category_code")!=null) {
+			sub_category_code = pMap.get("sub_category_code").toString();
+			mod.addAttribute("sub_category_code", sub_category_code);
+			logger.info(sub_category_code);
+		}
+		String sub_category = null;
+		if(pMap.get("sub_category")!=null) {
+			sub_category = pMap.get("sub_category").toString();
+			mod.addAttribute("sub_category", sub_category);
+			logger.info(sub_category);
+		}
+		String keyword = null;
+		if(pMap.get("keyword")!=null) {
+			keyword = pMap.get("keyword").toString();
+			mod.addAttribute("keyword", keyword);
+			logger.info(keyword);
+		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
 		int nowPage = 0;
-		int pageSize = 15;
+		int pageSize = 0;
 		 if(pMap.get("nowPage")!=null) {
              nowPage = Integer.parseInt(pMap.get("nowPage").toString());
          }
@@ -244,10 +277,28 @@ public class ProductController {
 	//ajax 경매진행중
 	@GetMapping(value="/itemStatusAuctionList.sf")
 	public String itemStatusAuctionList(Model mod, @RequestParam Map<String, Object> pMap) {
+		String sub_category_code = null;
+		if(pMap.get("sub_category_code")!=null) {
+			sub_category_code = pMap.get("sub_category_code").toString();
+			mod.addAttribute("sub_category_code", sub_category_code);
+			logger.info(sub_category_code);
+		}
+		String sub_category = null;
+		if(pMap.get("sub_category")!=null) {
+			sub_category = pMap.get("sub_category").toString();
+			mod.addAttribute("sub_category", sub_category);
+			logger.info(sub_category);
+		}
+		String keyword = null;
+		if(pMap.get("keyword")!=null) {
+			keyword = pMap.get("keyword").toString();
+			mod.addAttribute("keyword", keyword);
+			logger.info(keyword);
+		}
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
 		int nowPage1 = 0;
-		int pageSize1 = 15;
+		int pageSize1 = 0;
 		 if(pMap.get("nowPage1")!=null) {
              nowPage1 = Integer.parseInt(pMap.get("nowPage1").toString());
          }

@@ -70,11 +70,11 @@
          <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
          <a href="#" style="margin-right:450px"><%="현재 보유 캐시 : "+nowBalance %></a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
-         <a href="/testview/notice.jsp"><strong>마이페이지</strong></a><span>|</span>
+         <a href="/testview/myPage.jsp"><strong>마이페이지</strong></a><span>|</span>
       </div>
       <div id="managerLogout" style="display:inline;">
-         <a href="#"><%= mem_name+"님 환영합니다." %></a>
-         <a href="#" style="margin-right:600px">&nbsp</a>
+         <a href="#"><%= mem_name+"님 환영합니다." %></a><span>|</span>
+         <a href="#" style="margin-right:500px">&nbsp</a>
          <a href="#" onclick="logout()">로그아웃</a><span>|</span>
          <a href="/product/itemStatusList.sf"><strong>관리페이지</strong></a><span>|</span>
       </div>
@@ -100,23 +100,10 @@
          <input type="text" class="input_search" name="SearchWord" id="SearchWord" value="" onkeydown="javascript: if (event.keyCode == 13) { total_search();return false; }">
       </span>
       <!-- 검색버튼 -->
-      <span><a href="#" onclick=""><img src="/images/japanstyle_files/20160926_07.png"></a></span>
+      <span><a href="javascript:total_search()"><img src="/images/japanstyle_files/20160926_07.png"></a></span>
    </li>
    <!-- 검색창 오른쪽 광고배너 -->
    <li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>
-</ul>
-<!-- 대분류  -->
-<ul class="gnb">
-   <li class="gnb_left">
-      <a href="/product/productList.sf?sub_category=패션"><span>패션</span></a>
-      <a href="/product/productList.sf?sub_category=카메라"><span>카메라</span></a>
-      <a href="/product/productList.sf?sub_category=악기"><span>악기</span></a>
-      <a href="/product/productList.sf?sub_category=키덜트"><span>키덜트</span></a>
-      <a href="/product/productList.sf?sub_category=연예인굿즈"><span>연예인 굿즈</span></a>
-      <a href="/product/productList.sf?sub_category=골동품"><span>골동품</span></a>
-      <a href="/product/productList.sf?sub_category=게임"><span>게임</span></a>
-      <a href="/product/productList.sf?sub_category=음반"><span>음반</span></a>
-   </li>
 </ul>
 </div><!-- end of div top -->
 <div id="mypage">
