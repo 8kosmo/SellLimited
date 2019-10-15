@@ -1,5 +1,6 @@
 package com.sellfeed.aucLog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +21,21 @@ public class AucLogDao {
 		aucList = sqlSessionTemplate.selectList("aucLogList",pMap);
 		return aucList;
 	}
-	
 	public int aucLogIns(Map<String, Object> pMap) {
 		logger.info("Dao| highPrice 호출성공");
 		int result = 0;
 		result = sqlSessionTemplate.update("aucLogIns",pMap);
 		return result;
+	}
+	public void aucWinner(Map<String, Object> pMap) {
+		logger.info("aucWinner 호출 성공 | pMap :"+pMap);
+		sqlSessionTemplate.selectOne("aucWinner", pMap);
+	}
+	public List<Map<String, Object>> LooserList(Map<String, Object> pMap) {
+		List<Map<String, Object>> looserList = new ArrayList<>();
+		looserList = sqlSessionTemplate.selectList("looserList",pMap);
+		logger.info("looserList : "+looserList);
+		return looserList;
 	}
 
 }

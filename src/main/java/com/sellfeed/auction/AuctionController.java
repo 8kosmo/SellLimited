@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sellfeed.account.AccountDao;
+import com.sellfeed.account.AccountLogic;
+import com.sellfeed.aucLog.AucLogLogic;
 import com.sellfeed.product.ProductLogic;
 
 
@@ -25,6 +28,35 @@ public class AuctionController {
 	public ProductLogic productLogic = null;
 	@Autowired
 	public AuctionLogic auctionLogic = null;
+	@Autowired
+	public AccountLogic accountLogic = null;
+	@Autowired
+	public AucLogLogic aucLogLogic = null;
+	@Autowired
+	public AccountDao accountDao = null;
+	
+	@GetMapping("/endAuction.sf")
+	public String endAuction(@RequestParam Map<String,Object> pMap) {
+		logger.info("Controller|endAuction 호출 성공");
+		//구매자 계좌에 INSERT
+		logger.info("구매자 INSERT");
+		pMap.put("mem_id", pMap.get("bidder_id"));
+		pMap.put("trade", "출금");
+		pMap.put("trade_target", "SELLIMITED");
+		pMap.put("trade_detail", "경매 낙찰");
+		Map<String,Object> rMap = new HashMap<>();
+		rMap = accountLogic.accountIns(pMap);
+		//중간계좌에 INSERT
+		logger.info("중간계좌 INSERT");
+		pMap.put("mem_id", "manager");
+		pMap.put("trade", "입금");
+		pMap.put("trade_target", pMap.get("bidder_id"));
+		pMap.put("trade_detail", "경매 낙찰");
+		rMap = accountLogic.accountIns(pMap);
+		auctionLogic.endAuction(pMap);
+		return "redirect:/auction/endAuctionList.sf";				
+	}
+	
 	@GetMapping(value="/beforeAuctionList.sf")
 	public String beforeAuctionList(Model mod){
 		logger.info("###########################################{beforeAuctionList호출 성공}");
@@ -60,5 +92,13 @@ public class AuctionController {
 		mod.addAttribute("rMap",rMap);
 		return "forward:/testview/auctioningPage.jsp";
 	}
-
+	@GetMapping(value="endAuctionList.sf")
+	public String endAuctionList(Model mod) {
+		logger.info("Controller| endAuctionList 호출 성공");
+		List<Map<String,Object>> rList = new ArrayList<>();
+		rList = auctionLogic.endAuctionList();
+		logger.info("rList"+rList);
+		mod.addAttribute("rList",rList);
+		return "forward:/testview/managerEndAuction.jsp";
+	}
 }

@@ -18,6 +18,7 @@ public class AucLogController {
 	Logger logger = LoggerFactory.getLogger(AucLogController.class);
 	@Autowired
 	public AucLogLogic aucLogLogic = null;
+	
 	@GetMapping("/aucLogList.sf")
 	public String aucLogList(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller| aucLogList 호출성공");

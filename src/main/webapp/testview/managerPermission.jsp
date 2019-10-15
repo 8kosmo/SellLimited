@@ -70,7 +70,7 @@
                		<p><a href="/account/accountStatusList.sf">충전 관리</a></p>
                </td>
                <td>
-               		<p><a href="/testview/memberUpd.jsp">경매결산 관리</a></p>
+               		<p><a href="/auction/endAuctionList.sf">경매결산 관리</a></p>
                </td>
                <td>
                		<p><a href="/testview/memberUpd.jsp">회원관리</a></p>

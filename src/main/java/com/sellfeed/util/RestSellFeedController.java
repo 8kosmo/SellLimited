@@ -20,6 +20,7 @@ import com.sellfeed.account.AccountLogic;
 import com.sellfeed.aucLog.AucLogLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
+import com.sellfeed.product.ProductLogic;
 import com.sellfeed.seed.SeedLogic;
 
 @RestController

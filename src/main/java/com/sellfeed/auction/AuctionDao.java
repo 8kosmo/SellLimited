@@ -30,4 +30,9 @@ public class AuctionDao {
 		int result=sqlSessionTemplate.update("statusAuction",pMap);
 		return result;
 	}
+	public List<Map<String, Object>> endAuctionList() {
+		List<Map<String,Object>> rList = new ArrayList<>();
+		rList = sqlSessionTemplate.selectList("endAuctionList");
+		return rList;
+	}
 }

@@ -95,4 +95,9 @@ public class AccountDao {
 		return result;
 	}
 
+	public void returnDeposit(List<Map<String,Object>> looserList) {
+		int result = 0;
+		result = sqlSessionTemplate.insert("returnDeposit",looserList);
+	}
+
 }

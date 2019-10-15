@@ -2,28 +2,42 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page import="com.sellfeed.util.PageBar"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-   List<Map<String,Object>> acctStatusList = 
-         (List<Map<String,Object>>)request.getAttribute("accountStatusList");
+   List<Map<String,Object>> rList = 
+         (List<Map<String,Object>>)request.getAttribute("rList");
    int size = 0;
    int nowPage = 0;
-   if(acctStatusList != null && acctStatusList.size()>0){
-      size = acctStatusList.size();
+   if(rList != null && rList.size()>0){
+      size = rList.size();
    }  
-/*    if(itemStatusList != null){
-      out.print(itemStatusList.get(0).get("MEM_ID"));
-   } */
-
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"">
+<meta charset="UTF-8">
 <title>관리자페이지</title>
+ <!-- jQuery CDN-->
+<script
+  src="https://code.jquery.com/jquery-1.9.0.js"
+  integrity="sha256-TXsBwvYEO87oOjPQ9ifcb7wn3IrrW91dhj6EMEtRLvM="
+  crossorigin="anonymous"></script>
+<!-- Web socket CDN -->
+<script type="text/javascript" 
+src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <%@ include file="/common/cssJs.jsp" %>
+<script type="text/javascript">
+	
+	function endAuction(bid_code, end_price, bidder_id){
+		alert("endAuction 함수 호출 성공");
+		//경매진행중=>경매종료 , 계좌 인서트
+		location.href="/auction/endAuction.sf?bid_code="+bid_code+"&trade_ammount="+end_price+"&bidder_id="+bidder_id;
+		//소켓닫기			
+	};
+
+</script>
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
@@ -81,29 +95,26 @@
          <colgroup>
             <col width="80px;">
             <col width="80px;">
+            <col width="400px;">
+            <col width="80px;">
+            <col width="80px;">
+            <col width="130px;">
+            <col width="130px;">
+            <col width="130px;">
             <col width="60px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="130px;">
-            <col width="130px;">
-            <col width="130px;">
-            <col width="80px;">
-            <col width="80px;">
-            <col width="80px;">
+            <col width="100px;">
          </colgroup>
          <tbody>
             <tr>
-               <td>충전코드</td>
-               <td>아이디</td>
-               <td>충전금액</td>
-               <td>입금은행</td>
-               <td>계좌번호</td>
-               <td>신청일자</td>
-               <td>입금일자</td>
-               <td>처리일자</td>
-               <td>상태</td>
-               <td>승인</td>
-               <td>거절</td>
+               <td>경매코드</td>
+               <td>판매자ID</td>
+               <td>경매진행기간</td>
+               <td>시작가격</td>
+               <td>낙찰가격</td>
+               <td>낙찰자ID</td>
+               <td>경매 종료</td>
             </tr>
       </table>
 <%
@@ -114,7 +125,7 @@
          <colgroup>
             <col width="80px;">
             <col width="80px;">
-            <col width="60px;">
+            <col width="400px;">
             <col width="80px;">
             <col width="80px;">
             <col width="130px;">
@@ -123,25 +134,23 @@
             <col width="60px;">
             <col width="80px;">
             <col width="80px;">
+            <col width="100px;">
          </colgroup>
 <%
       for(int i=0;i<size;i++){
-         Map<String,Object> rMap = acctStatusList.get(i);
+         Map<String,Object> rMap = rList.get(i);
 %>
             <tr>
                
-               <td><%=rMap.get("CHARGE_CODE") %></td>
+               <td><%=rMap.get("BID_CODE") %></td>
                <td><%=rMap.get("MEM_ID") %></td>
-               <td><%=rMap.get("TRADE_AMMOUNT") %></td>
-               <td><%=rMap.get("USER_BANK") %></td>
-               <td><%=rMap.get("ACCT_NUMBER") %></td>
-               <td><%=rMap.get("APPLY_DATE") %></td>
-               <td><%=rMap.get("DEPOSIT_DATE") %></td>
-               <td><%=rMap.get("APPROVAL_DATE") %></td>
-               <td><%=rMap.get("STATUS") %></td>
-               <td><a href="/account/managerPermissionAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>&mem_id=<%=rMap.get("MEM_ID") %>&trade_ammount=<%=rMap.get("TRADE_AMMOUNT") %>">
-               <button type="button">충전승인</button></a></td>
-               <td><a href="/account/managerRefuseAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>"><button type="button">충전거절</button></a></td>
+               <td><%=rMap.get("AUCTION_PERIOD") %></td>
+               <td><%=rMap.get("START_PRICE") %></td>
+               <td><%=rMap.get("END_PRICE") %></td>
+               <td><%=rMap.get("BIDDER_ID") %></td>
+               <td>
+               <button onclick="javascript: endAuction('<%=rMap.get("BID_CODE")%>','<%=rMap.get("END_PRICE") %>','<%=rMap.get("BIDDER_ID") %>')" type="button">경매 종료</button>
+               </td>
             </tr>
 <%
       }
@@ -156,12 +165,9 @@
          <colgroup>
             <col width="80px;">
             <col width="80px;">
+            <col width="400px;">
             <col width="80px;">
             <col width="80px;">
-            <col width="">
-            <col width="80px;">
-            <col width="80px;">
-            <col width="60px;">
             <col width="80px;">
             <col width="80px;">
             <col width="80px;">

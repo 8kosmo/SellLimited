@@ -14,4 +14,15 @@
         WHERE bid_code=#{bid_code})+#{increase_rate}, (SELECT NVL(MAX(r_num),0) FROM bid_log WHERE bid_code=#{bid_code})+1) 
 	</insert>
 	
+	<select id="aucWinner" parameterType="map" statementType="CALLABLE">
+      {call proc_aucWin(
+      				#{bid_code, mode=IN, javaType=VARCHAR, javaType=java.lang.String}
+      )}
+   </select>
+   <select id="looserList" parameterType="map" resultType="map">
+   		SELECT bidder_id FROM bid_log
+		WHERE bidder_id !=(SELECT bidder_id FROM bid_log WHERE bid_w_bidder = '낙찰')
+		GROUP BY bidder_id
+   </select>
+	
  </mapper>

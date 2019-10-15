@@ -76,7 +76,11 @@
          ,attached_file= #{attached_file}
          WHERE item_code = #{item_code}
    </update>
-   
+   <update id="auct_end">
+   	UPDATE SALE_ITEM 
+            SET status = '배송준비중'
+        WHERE item_code = (SELECT item_code FROM AUCTION_INFO WHERE item_code = (SELECT item_code FROM auction_info WHERE bid_code = #{bid_code}))
+   </update>
    
    <select id="productDel" parameterType="map" statementType="CALLABLE">
     {call proc_ProdDelete(#{item_code, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String}

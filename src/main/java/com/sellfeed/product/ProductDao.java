@@ -35,6 +35,10 @@ public class ProductDao {
       result = sqlSessionTemplate.update("productUpd",pMap);
       return result;
    }
+   public int auct_end(Map<String,Object> pMap) {
+	   result = sqlSessionTemplate.update("auct_end",pMap);
+	   return result;
+   }
 //★   Delete
    public int productDel(Map<String, Object> pMap) {
       logger.info("ProductDao| Call productDel");

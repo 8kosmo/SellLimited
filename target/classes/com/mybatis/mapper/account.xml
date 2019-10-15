@@ -41,7 +41,8 @@
                        ,trade_target
                        ,mem_id
                        ,hidden)
-                VALUES((SELECT max(acct_number) FROM account
+                VALUES(
+                (SELECT max(acct_number) FROM account
                    WHERE mem_id = #{mem_id})
                        ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
                        ,#{acct_balance}
@@ -88,6 +89,25 @@
        WHERE mem_id=#{mem_id}
          AND r_num = #{r_num}
    </delete>
+   <insert id="returnDeposit" parameterType="list">
+		INSERT ALL
+		<foreach collection="list" item="item" index="index" separator=" ">
+			INTO account(acct_number, r_num, acct_balance, acct_dealdate, trade_ammount, trade, trade_detail, trade_target, mem_id, hidden)
+				VALUES(
+					 (SELECT MAX(acct_number) FROM account WHERE mem_id = #{item.BIDDER_ID})
+					,(SELECT MAX(r_num)+1 FROM account WHERE mem_id = #{item.BIDDER_ID})
+					,(SELECT acct_balance FROM account WHERE mem_id = #{item.BIDDER_ID} AND r_num = (SELECT MAX(r_num) FROM account WHERE mem_id = #{item.BIDDER_ID}))
+					,TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+					,10000
+					,'입금'
+					,'보증금반환'
+					,'SELLIMITED'
+					,#{item.BIDDER_ID}
+					,'no'
+				)
+		</foreach>
+		SELECT * FROM DUAL
+   </insert>
    
    <select id="accountStatusList" resultType="map">
       SELECT charge_code, mem_id, trade_ammount, user_bank

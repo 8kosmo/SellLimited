@@ -41,6 +41,12 @@ public class ProductLogic {
       result = productDao.productUpd(pMap);
       return result;
    }
+   
+   public int auct_end(Map<String,Object> pMap) {
+	   logger.info("Logic| Call auct_end");
+	   result = productDao.auct_end(pMap);
+	   return result;
+   }
 
    public int productDel(Map<String, Object> pMap) {
       // TODO Auto-generated method stub
