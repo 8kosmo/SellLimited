@@ -88,5 +88,17 @@ public class AccountController {
 		accountLogic.managerRefuseAcct(charge_code);
 		return"redirect:../account/accountStatusList.sf";
 	}
-   
+   @GetMapping(value="/auctionConfirm.sf")
+   public String auctionConfirm(@RequestParam Map<String, Object> pMap) {
+	    String mem_id = null;
+	    if(pMap.get("mem_id")!=null) {
+	    	mem_id = pMap.get("mem_id").toString();
+	    }
+	    String bid_code = null;
+	    if(pMap.get("bid_code")!=null) {
+	    	bid_code = pMap.get("bid_code").toString();
+	    }
+	    accountLogic.auctionConfirm(pMap);
+	    return "redirect:../product/productDelivery.sf?mem_id="+mem_id;
+   }
 }

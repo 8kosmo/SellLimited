@@ -369,4 +369,26 @@
                    OR PRODUCT_DETAIL LIKE '%'||#{keyword}||'%'
        </if>
    </select>
+   <select id="deliveryList" parameterType="map" resultType="map">
+		SELECT rno, final_price, auct_enddate, bidder_id, bid_title, status, bid_code
+		  FROM (
+		        SELECT ROWNUM rno, final_price, auct_enddate, bidder_id, bid_title, status, bid_code
+		          FROM (
+		                SELECT max(final_price) final_price, max(auct_enddate) auct_enddate
+		                       , bidder_id, bid_title, status, AUCTION_INFO.bid_code
+		                  FROM BID_LOG, AUCT_PROGRESS, SALE_ITEM, AUCTION_INFO 
+		                 WHERE bid_w_bidder = '낙찰'
+		                   AND BID_LOG.bid_code = AUCT_PROGRESS.bid_code
+		                   AND AUCTION_INFO.bid_code = BID_LOG.bid_code
+		                   AND SALE_ITEM.item_code = AUCTION_INFO.item_code
+		                   AND SALE_ITEM.STATUS IN('배송준비중','배송 중','배송도착')
+		                   AND bidder_id = #{mem_id}
+		                GROUP BY bidder_id, bid_title, status, AUCTION_INFO.bid_code
+		                )
+		        )
+       <if test="start>0 and end >0">
+      	  WHERE rno BETWEEN #{start} and #{end}
+       </if>
+   </select>
+
 </mapper>

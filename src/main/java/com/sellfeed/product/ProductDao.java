@@ -129,4 +129,11 @@ public class ProductDao {
 		total = sqlSessionTemplate.selectOne("getAuctionListTotal",pMap);
 		return total;
 	}
+	public List<Map<String, Object>> deliveryList(Map<String, Object> pMap) {
+		List<Map<String, Object>> deliveryList = 
+				new ArrayList<Map<String,Object>>();
+		deliveryList = sqlSessionTemplate.selectList("deliveryList",pMap);
+		return deliveryList;
+	}
+
 }

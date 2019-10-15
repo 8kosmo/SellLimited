@@ -61,7 +61,7 @@
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
                      <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
-                     <a href="/testview/productDelivery.jsp">상품 배송 정보</a></p>
+                     <a href="/product/productDelivery.sf?mem_id=<%=mem_id%>">상품 배송 정보</a></p>
                </td>
                <td>고객센터
                   <p><a href="/testview/notice.jsp">공 지 사 항</a><br>

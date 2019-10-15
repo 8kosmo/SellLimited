@@ -86,7 +86,7 @@
 									<li>현재 구매가 : <%=rMap.get("FINAL_PRICE") %>원</li>
 									<li class="sana_saler">
 										판매자 : <a href="#"><%=rMap.get("MEM_ID") %></a><br>
-										남은시간 : <%=rMap.get("END_SEED") %>
+										남은시간 : <%=rMap.get("AUCT_ENDDATE") %>
 									</li>
 								</ul>
 							</div>

@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sellfeed.product.ProductDao;
+
 @Service
 public class AccountLogic {
    
@@ -22,6 +24,8 @@ public class AccountLogic {
    int acct_balance = 0;
    @Autowired
    public AccountDao accountDao = null;
+   @Autowired
+   public ProductDao productDao = null;
    
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="execution(* com.sellfeed.account.*Logic.*(..)")
@@ -124,4 +128,38 @@ public class AccountLogic {
 		result = accountDao.managerRefuseAcct(charge_code);
 		return result;
 	}
+	
+	//종료된 경매의 낙찰자가 수취확인을 눌렀을 시 관리자-, 판매자+ 트랜잭션처리
+	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
+	@Pointcut(value="excution(* com.sellfeed.account.*Logic.*(..)")
+	public void auctionConfirm(Map<String, Object> pMap) {
+		int step1, step2, step3 = 0;
+		long trade_ammount = 0;
+		int managerBalance = 0;
+		int sellerBalance = 0;
+		if(pMap.get("trade_ammount")!=null) {
+			logger.info("거래금액에서 수수료 차감 성공");
+			trade_ammount = Integer.parseInt(pMap.get("trade_ammount").toString());
+			trade_ammount = (long) (trade_ammount-(trade_ammount*0.07));
+			pMap.put("trade_ammount", (int)trade_ammount);
+		}
+		if(pMap.get("manager")!=null && pMap.get("mem_id")!=null) {
+			logger.info("매니저, 판매자 잔액조회 성공");
+			managerBalance = accountDao.accountNowBalance(pMap.get("manager").toString());
+			pMap.put("managerBalance", managerBalance);
+			sellerBalance = accountDao.accountNowBalance(pMap.get("mem_id").toString());
+			pMap.put("sellerBalance", sellerBalance);
+		}
+		try {
+			step1 = accountDao.auctionConfirmManagerIns(pMap);
+			logger.info("관리자 인출성공여부 : "+step1);
+			step2 = accountDao.auctionConfirmSellerIns(pMap);
+			logger.info("판매자 입금성공여부 : "+step2);
+			step3 = accountDao.auctionConfirmUpdate(pMap);
+			logger.info("판매완료 경매물건 상태변경 수취완료 : "+step3);
+		} catch (DataAccessException e) {
+			throw e;
+		}
+	}
+
 }

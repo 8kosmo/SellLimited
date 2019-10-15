@@ -37,6 +37,13 @@ public class AccountDao {
       return acct_balance;
    }
    
+   public int accountNowBalanceM(String manager) {
+	      logger.info(manager);
+	      int acct_balance = sqlSessionTemplate.selectOne("accountNowBalance",manager);
+	      logger.info("잔액:::::::::::::::" +acct_balance);
+	      return acct_balance;
+	   }
+   
    public int accountIns(Map<String, Object> pMap) {
       logger.info("=================>accountIns 호출 성공");
       int result=0;
@@ -95,4 +102,19 @@ public class AccountDao {
 		return result;
 	}
 
+	public int auctionConfirmManagerIns(Map<String, Object> pMap) {
+		int result = sqlSessionTemplate.insert("auctionConfirmManagerIns", pMap);
+		return result;
+	}
+
+	public int auctionConfirmSellerIns(Map<String, Object> pMap) {
+		int result = sqlSessionTemplate.insert("auctionConfirmSellerIns", pMap);
+		return result;
+	}
+	
+	public int auctionConfirmUpdate(Map<String, Object> pMap) {
+		int result = sqlSessionTemplate.update("auctionConfirmUpdate",pMap);
+		logger.info("CONFIRM UPDATE성공");
+		return result;
+	}
 }
