@@ -41,9 +41,8 @@
                        ,trade_target
                        ,mem_id
                        ,hidden)
-                VALUES(
-                (SELECT max(acct_number) FROM account
-                   WHERE mem_id = #{mem_id})
+                VALUES((SELECT max(acct_number) FROM account
+                   		WHERE mem_id = #{mem_id})
                        ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
                        ,#{acct_balance}
                        ,(SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD/HH/MI/SS') FROM DUAL)
@@ -96,7 +95,7 @@
 				VALUES(
 					 (SELECT MAX(acct_number) FROM account WHERE mem_id = #{item.BIDDER_ID})
 					,(SELECT MAX(r_num)+1 FROM account WHERE mem_id = #{item.BIDDER_ID})
-					,(SELECT acct_balance FROM account WHERE mem_id = #{item.BIDDER_ID} AND r_num = (SELECT MAX(r_num) FROM account WHERE mem_id = #{item.BIDDER_ID}))
+					,(SELECT acct_balance+10000 FROM account WHERE mem_id = #{item.BIDDER_ID} AND r_num = (SELECT MAX(r_num) FROM account WHERE mem_id = #{item.BIDDER_ID}))
 					,TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
 					,10000
 					,'입금'

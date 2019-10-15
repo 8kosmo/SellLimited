@@ -38,22 +38,24 @@ public class AuctionController {
 	@GetMapping("/endAuction.sf")
 	public String endAuction(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller|endAuction 호출 성공");
-		//구매자 계좌에 INSERT
-		logger.info("구매자 INSERT");
-		pMap.put("mem_id", pMap.get("bidder_id"));
-		pMap.put("trade", "출금");
-		pMap.put("trade_target", "SELLIMITED");
-		pMap.put("trade_detail", "경매 낙찰");
-		Map<String,Object> rMap = new HashMap<>();
-		rMap = accountLogic.accountIns(pMap);
-		//중간계좌에 INSERT
-		logger.info("중간계좌 INSERT");
-		pMap.put("mem_id", "manager");
-		pMap.put("trade", "입금");
-		pMap.put("trade_target", pMap.get("bidder_id"));
-		pMap.put("trade_detail", "경매 낙찰");
-		rMap = accountLogic.accountIns(pMap);
-		auctionLogic.endAuction(pMap);
+		int result = auctionLogic.endAuction(pMap);
+		if (result == 1){
+			//구매자 계좌에 INSERT
+			logger.info("구매자 INSERT");
+			pMap.put("mem_id", pMap.get("bidder_id"));
+			pMap.put("trade", "출금");
+			pMap.put("trade_target", "SELLIMITED");
+			pMap.put("trade_detail", "경매 낙찰");
+			Map<String,Object> rMap = new HashMap<>();
+			rMap = accountLogic.accountIns(pMap);
+			//중간계좌에 INSERT
+			logger.info("중간계좌 INSERT");
+			pMap.put("mem_id", "manager");
+			pMap.put("trade", "입금");
+			pMap.put("trade_target", pMap.get("bidder_id"));
+			pMap.put("trade_detail", "경매 낙찰");
+			accountLogic.accountIns(pMap);
+			}
 		return "redirect:/auction/endAuctionList.sf";				
 	}
 	

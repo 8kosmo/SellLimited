@@ -53,10 +53,13 @@ public class AccountLogic {
       //int charge_amount = Integer.parseInt(pMap.get("charge_amount").toString());
       //거래 종류에 따라  조회한 잔액(line:50)을 조작하여 pMap에 다시 넣어줌.=> SQL문으로 잔액을 계산할 필요가 없어짐(기존 방법으로는 차감도 불가능했음)
       logger.info("1 : "+acct_balance);
+      logger.info("1-1 trade_ammount : "+trade_ammount);
       if(trade.equals("입금")) {
+    	  logger.info("입금이다");
             acct_balance = acct_balance+trade_ammount;
          } 
          else if(trade.equals("출금")) {
+        	 logger.info("출금이다");
             acct_balance = acct_balance-trade_ammount;
          }
       logger.info("2 : "+acct_balance);

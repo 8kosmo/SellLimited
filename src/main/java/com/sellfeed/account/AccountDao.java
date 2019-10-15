@@ -21,7 +21,7 @@ public class AccountDao {
    public SqlSessionTemplate sqlSessionTemplate = null;
    
    public void accountMake(Map<String, Object> pMap) throws DataAccessException {
-      logger.info("=================>accountIns 호출 성공");
+      logger.info("=================>accountMake 호출 성공");
       sqlSessionTemplate.update("accountMake",pMap);
    }
    
@@ -40,7 +40,7 @@ public class AccountDao {
    public int accountIns(Map<String, Object> pMap) {
       logger.info("=================>accountIns 호출 성공");
       int result=0;
-      logger.info(""+pMap);
+      logger.info("accountIns : "+pMap);
       result = sqlSessionTemplate.update("accountIns",pMap);
       return result;
    }
