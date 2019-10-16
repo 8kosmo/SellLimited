@@ -78,26 +78,26 @@
             </colgroup>
             <tbody><tr>
                <td>회원관리
-                  <p><a href="/testview/memberUpd.jsp">회원 정보수정</a><br>
+                  <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
                      <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록
-                  <p><a href="/testview/favSeller.jsp">관심 회원 목록</a><br>
+                  <p><a href="/favorite/favSellerList.sf?mem_id=<%=mem_id%>">관심 회원 목록</a><br>
                      <a href="/testview/favProduct.jsp">관심 상품 목록</a><br>
                   </p>
                </td>
                <td>내 상품관리
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
-                     <a href="/testview/seedInsProduct.jsp">시드 모집 상품</a><br>
+                     <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
                      <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
                      <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
-                     <a href="/testview/productDelivery.jsp">상품 배송 정보</a></p>
+                     <a href="/product/productDelivery.sf?mem_id=<%=mem_id%>">상품 배송 정보</a></p>
                </td>
                <td>고객센터
                   <p><a href="/testview/notice.jsp">공 지 사 항</a><br>

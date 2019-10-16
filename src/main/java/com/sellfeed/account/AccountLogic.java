@@ -24,8 +24,6 @@ public class AccountLogic {
    int acct_balance = 0;
    @Autowired
    public AccountDao accountDao = null;
-   @Autowired
-   public ProductDao productDao = null;
    
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="execution(* com.sellfeed.account.*Logic.*(..)")
@@ -113,21 +111,47 @@ public class AccountLogic {
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="execution(* com.sellfeed.account.*Logic.*(..)")
    public int managerPermissionAccount(String charge_code, Map<String, Object> pMap) {
-	  int result = 0;
+      int nowPage = 0;
+      int pageSize = 0;
+      int start = 0;
+      int end = 0;
+      int total = accountDao.getMngPermissionTotal();
+      if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
+         nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+      }
+      if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+         pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+      }
+      if(nowPage>0) {
+         start = ((nowPage-1)*pageSize)+1;
+         end = nowPage*pageSize;
+         pMap.put("start", start);
+         if(end>=total) {
+            pMap.put("end", total);
+         } else {
+            pMap.put("end", end);
+         }
+      }
+      logger.info("시작 ROW : "+start);
+      logger.info("끝 ROW : "+end);
+      
+      
+     int result = 0;
       try {
-    	   result = accountDao.managerPermissionAccount(charge_code);
-    	   accountIns(pMap);
-	} catch (DataAccessException e) {
-		throw e;
-	}
+          result = accountDao.managerPermissionAccount(charge_code);
+          accountIns(pMap);
+   } catch (DataAccessException e) {
+      throw e;
+   }
       return result;
    }
 
-	public int managerRefuseAcct(String charge_code) {
-		int result=0;
-		result = accountDao.managerRefuseAcct(charge_code);
-		return result;
-	}
+   public int managerRefuseAcct(String charge_code) {
+      int result=0;
+      result = accountDao.managerRefuseAcct(charge_code);
+      return result;
+   }
+
 	
 	//종료된 경매의 낙찰자가 수취확인을 눌렀을 시 관리자-, 판매자+ 트랜잭션처리
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
