@@ -1,5 +1,23 @@
+<%@page import="com.sellfeed.util.PageBar"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	List<Map<String,Object>> deliveryList = 
+					(List<Map<String,Object>>)request.getAttribute("deliveryList");
+	int size = 0;
+	if(deliveryList != null && deliveryList.size() > 0){
+		size = deliveryList.size();
+	}
+	/* 페이지네이션 추가 */
+	int numPerPage = 10;
+	int nowPage = 0;
+	if(request.getParameter("nowPage")!=null){
+		nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,26 +60,26 @@
             </colgroup>
             <tbody><tr>
                <td>회원관리
-                  <p><a href="/testview/memberUpd.jsp">회원 정보수정</a><br>
+                  <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
                      <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록
-                  <p><a href="/testview/favSeller.jsp">관심 회원 목록</a><br>
+                  <p><a href="/favorite/favSellerList.sf?mem_id=<%=mem_id%>">관심 회원 목록</a><br>
                      <a href="/testview/favProduct.jsp">관심 상품 목록</a><br>
                   </p>
                </td>
                <td>내 상품관리
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
-                     <a href="/testview/seedInsProduct.jsp">시드 모집 상품</a><br>
+                     <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
                      <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
                      <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
-                     <a href="/testview/productDelivery.jsp">상품 배송 정보</a></p>
+                     <a href="/product/productDelivery.sf?mem_id=<%=mem_id%>">상품 배송 정보</a></p>
                </td>
                <td>고객센터
                   <p><a href="/testview/notice.jsp">공 지 사 항</a><br>
@@ -74,22 +92,11 @@
         <li>
       <table class="mypage_table_head">
          <caption>상품 배송 정보 <img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong>0</strong> 건의 자료가 조회되었습니다.
+            <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.
             <br><b>수취확인 시 꼭 버튼을 눌러주세요.</b></span>
-            <span class="mth_right">
-               <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
-                  <div id="select_boxview">
-                     <label for="color">30개씩 보기</label>
-                     <select name="search_limit" title="select color">
-                        <option value="30" selected="selected">30개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
-                        <option value="100">100개씩 보기</option>
-                     </select>
-                  </div>
-               </form>
-            </span>
          </caption>
          <colgroup>
+            <col width="100px">
             <col width="100px">
             <col width="100px">
             <col width="100px">
@@ -98,54 +105,17 @@
          </colgroup>
          <tbody>
             <tr>
-               <td>상픔 이름</td>
-               <td>배송 준비</td>
-               <td>배송 중</td>
-               <td>배송 도착</td>
+               <td>경매코드</td>
+               <td>경매제목</td>
+               <td>낙찰가격</td>
+               <td>경매종료시간</td>
+               <td>배송정보</td>
                <td>수취확인</td>
             </tr>
       </table>
-      <table class="mypage_table">
-         <colgroup>
-            <col width="100px">
-            <col width="100px">
-            <col width="100px">
-            <col width="100px">
-            <col width="100px">
-
-         </colgroup>
-            <tr>
-               <td style="text-align: left; padding-left: 20px;">2080칫솔</td>
-               <td><img src="/images/integ/20190919_1.png"></td>
-               <td></td>
-               <td></td>
-               <td><a href="#"></a></td>
-            </tr>
-            <tr>
-               <td style="text-align: left; padding-left: 20px;">스프링 퀵 스타트 도서</td>
-               <td></td>
-               <td></td>
-               <td><img src="/images/integ/20190919_2.png"></td>
-               <td><a href="#"></a></td>
-            </tr>
-            <tr>
-               <td style="text-align: left; padding-left: 20px;">건축학 개론 도서</td>
-               <td></td>
-               <td><img src="/images/integ/20190919_3.png"></td>
-               <td></td>
-               <td><a href="#"></a></td>
-            </tr>
-            <tr>
-               <td style="text-align: left; padding-left: 20px;">설현 SKT브로마이드</td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td><a href="#"><img src="/images/integ/20190919_4.png"></a></td>
-            </tr>
-         </tbody>
-      </table>
+<!-- DeliveryList 작성 -->
 <%
-
+	if(size == 0){
 %>
        <table class="mypage_table">
          <colgroup>
@@ -154,15 +124,58 @@
             <col width="100px">
             <col width="100px">
             <col width="100px">
+            <col width="100px">
          </colgroup>
          <tbody>
             <tr>
-               <td height="200" colspan="5">상품 배송 정보가 존재 하지 않습니다.</td>
+               <td height="200" colspan="6">상품 배송 정보가 존재 하지 않습니다.</td>
             </tr>
          </tbody>
       </table>
 <%
-
+	}else{
+		for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+			if(size==i) break;
+			Map<String,Object> rMap = deliveryList.get(i);
+%>
+      <table class="mypage_table">
+         <colgroup>
+            <col width="100px">
+            <col width="100px">
+            <col width="100px">
+            <col width="100px">
+            <col width="100px">
+            <col width="100px">
+         </colgroup>
+            <tr>
+               <td><%=rMap.get("BID_CODE") %></td>
+               <td><%=rMap.get("BID_TITLE") %></td>
+               <td><%=rMap.get("FINAL_PRICE") %></td>
+               <td><%=rMap.get("AUCT_ENDDATE") %></td>
+<%
+				if(rMap.get("STATUS").equals("배송준비중")){
+%>
+               <td><img width="30%" src="/images/integ/20190919_1.png"><br>배송준비중</td>
+               <td></td>
+<%
+				}else if(rMap.get("STATUS").equals("배송 중")){
+%>
+				<td><img width="30%" src="/images/integ/20190919_2.png"><br>배송 중</td>
+				<td></td>
+<%
+				}else if(rMap.get("STATUS").equals("배송도착")){
+%>
+				<td><img width="30%" src="/images/integ/20190919_3.png"><br>배송도착</td>
+   				<td><a href="/account/auctionConfirm.sf?manager=manager&mem_id=<%=mem_id%>&trade_ammount=<%=rMap.get("FINAL_PRICE")%>&bid_code=<%=rMap.get("BID_CODE") %>"><img src="/images/integ/20190919_4.png"><br>수취확인</a></td>
+<%
+				}
+		}//end of for
+%>
+            </tr>
+         </tbody>
+      </table>
+<%
+	}//end of else
 %>
    </li>
    <li class="paging"><table border="0" cellpadding="0"
@@ -170,13 +183,13 @@
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="#"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="#"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="#"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td>
+<%
+                  String pagePath = "/product/productDelivery.sf?mem_id="+mem_id+"&";
+                  PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
+                  String pagination = pb.getPageBar();
+                  out.print(pagination);
+%>
             </tr>
          </tbody>
       </table>

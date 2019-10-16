@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ page import= "java.util.Map, java.util.List" %>
+ <%@page import="com.sellfeed.util.PageBar"%>
+<%
+   List<Map<String,Object>> mySeedList = 
+   (List<Map<String,Object>>)request.getAttribute("mySeedList");
+   
+   int size = 0;
+   if(mySeedList!=null){
+      size=mySeedList.size();
+   }
+   /* 페이지네이션 추가 */
+   int numPerPage = 10;
+   int nowPage = 0;
+   if(request.getParameter("nowPage")!=null){
+      nowPage = Integer.parseInt(request.getParameter("nowPage"));
+   }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +48,7 @@
             </tr></tbody>
          </table>
       </li>
+
       <li>
          <table class="mypage_category">
             <colgroup>
@@ -42,20 +60,20 @@
             </colgroup>
             <tbody><tr>
                <td>회원관리
-                  <p><a href="/testview/memberUpd.jsp">회원 정보수정</a><br>
+                  <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
                      <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록
-                  <p><a href="/testview/favSeller.jsp">관심 회원 목록</a><br>
+                  <p><a href="/favorite/favSellerList.sf?mem_id=<%=mem_id%>">관심 회원 목록</a><br>
                      <a href="/testview/favProduct.jsp">관심 상품 목록</a><br>
                   </p>
                </td>
                <td>내 상품관리
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
-                     <a href="/testview/seedInsProduct.jsp">시드 모집 상품</a><br>
+                     <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
                      <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
@@ -74,26 +92,15 @@
          <li>
       <table class="mypage_table_head">
          <caption>시드 모집 상품 목록<img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong>0</strong> 건의 자료가 조회되었습니다.</span>
-            <span class="mth_right">
-               <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
-                  <div id="select_boxview">
-                     <label for="color">30개씩 보기</label>
-                     <select name="search_limit" title="select color">
-                        <option value="30" selected="selected">30개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
-                        <option value="100">100개씩 보기</option>
-                     </select>
-                  </div>
-               </form>
-            </span>
+            <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
+
          </caption>
          <colgroup>
-            <col width="200px;">
+            <col width="100px;">
             <col width="120px;">
-            <col width="120px;">
+            <col width="150px;">
             <col width="">
-            <col width="200px;">
+            <col width="80px;">
             <col width="200px;">
          </colgroup>
          <tbody>
@@ -102,62 +109,75 @@
                <td>상품 코드</td>
                <td>상품 이름</td>
                <td>상품 설명</td>
-               <td>현재시드참여인원</td>
-               <td>경매시작일</td>
+               <td>시드참여수</td>
+               <td>시드마감일</td>
             </tr>
       </table>
+<%
+         if(size>0){
+%>
       <table class="mypage_table">
          <colgroup>
-            <col width="200px;">
+            <col width="100px;">
             <col width="120px;">
-            <col width="120px;">
+            <col width="150px;">
             <col width="">
-            <col width="200px;">
+            <col width="80px;">
             <col width="200px;">
          </colgroup>
+<%
+          for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+           if(size==i) break;
+             Map<String,Object> rMap = mySeedList.get(i);
+%>
+         
             <tr>
-               <td>시드 모집 중</td>
-               <td>678N28</td>
-               <td>2028칫솔</td>
-               <td>kosmo 52th를 함께한 2080칫솔</td>
-               <td>40명</td>
-               <td>19-09-22</td>
+               <td><%=rMap.get("STATUS")%></td>
+               <td><%=rMap.get("ITEM_CODE") %></td>
+               <td><%=rMap.get("BID_TITLE") %></td>
+               <td><%=rMap.get("PRODUCT_DETAIL") %></td>
+               <td><%=rMap.get("CUR_SEED") %></td>
+               <td><%=rMap.get("END_SEED") %></td>
             </tr>
+<%
+         }
+%>
          </tbody>
       </table>
 <%
-
+      }else{
 %>
        <table class="mypage_table">
          <colgroup>
-            <col width="200px;">
+            <col width="100px;">
             <col width="120px;">
-            <col width="120px;">
+            <col width="150px;">
             <col width="">
-            <col width="120px;">
+            <col width="80px;">
+            <col width="200px;">
          </colgroup>
          <tbody>
             <tr>
-               <td height="200" colspan="5">관리자의 승인 대기 중 상품이 존재 하지 않습니다.</td>
+               <td height="200" colspan="5">현재 참여중인 시드 상품이 없습니다.</td>
             </tr>
          </tbody>
       </table>
-<%
-
-%>
    </li>
+<%
+       }
+%>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="#"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="#"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="#"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td>
+ <%
+                  String pagePath = "/seed/seedInsProduct.sf?mem_id="+mem_id+"&";
+                  PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
+                  String pagination = pb.getPageBar();
+                  out.print(pagination);
+%>              
             </tr>
          </tbody>
       </table>

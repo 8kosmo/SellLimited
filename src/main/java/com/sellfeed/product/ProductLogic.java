@@ -173,4 +173,33 @@ public class ProductLogic {
 		itemStatusAuctionList = productDao.itemStatusAuctionList(pMap);
 		return itemStatusAuctionList;
 	}
+
+	public List<Map<String, Object>> deliveryList(Map<String, Object> pMap) {
+		List<Map<String, Object>> deliveryList = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		int start = 0;
+		int end = 0;
+		int total = productDao.getPermissionTotal();
+		if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
+			nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+		}
+		if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+		}
+		if(nowPage>0) {
+			start = ((nowPage-1)*pageSize)+1;
+			end = nowPage*pageSize;
+			pMap.put("start", start);
+			if(end>=total) {
+				pMap.put("end", total);
+			} else {
+				pMap.put("end", end);
+			}
+		}
+		logger.info("시작 ROW : "+start);
+		logger.info("끝 ROW : "+end);
+		deliveryList = productDao.deliveryList(pMap);
+		return deliveryList;
+	}
 }

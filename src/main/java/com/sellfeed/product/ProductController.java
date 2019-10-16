@@ -313,4 +313,23 @@ public class ProductController {
 		mod.addAttribute("itemStatusAuctionList", itemStatusAuctionList);
 		return "forward:../testview/itemStatusAuctionList.jsp";
 	}
+	@GetMapping(value="productDelivery.sf")
+	public String productDelivery(@RequestParam Map<String, Object> pMap, Model mod) {
+		List<Map<String, Object>> deliveryList = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		 if(pMap.get("nowPage")!=null) {
+             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+         }
+         if(pMap.get("pageSize")!=null) {
+        	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+         }
+		logger.info("nowPage :"+nowPage);
+		logger.info("pageSize :"+pageSize);
+		pMap.put("nowPage",nowPage);
+		pMap.put("pageSize",pageSize);
+		deliveryList = productLogic.deliveryList(pMap);
+		mod.addAttribute("deliveryList", deliveryList);
+		return "forward:../testview/productDelivery.jsp";
+	}
 }

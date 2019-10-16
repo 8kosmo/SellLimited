@@ -60,7 +60,7 @@
    </select>
    
    <select id="accountList" parameterType="map" resultType="map" >
-      SELECT acct_balance, acct_dealdate, tr_ammount, tr
+      SELECT acct_balance, acct_dealdate, tr_ammount, trade
            ,tr_detail,tr_target
           FROM account
          WHERE mem_id=#{mem_id}
@@ -129,5 +129,68 @@
               ,deposit_date = '0'
               ,approval_date = (SELECT to_char(sysdate,('yyyy/mm/dd/hh24/mi/ss')) FROM dual)
       WHERE charge_code = #{charge_code}
+   </update>
+   
+	<select id="getMngPermissionTotal" resultType="int">
+         SELECT count(charge_code)
+          FROM acct_charge
+         WHERE status='대기'
+   </select>
+   
+   <insert id="auctionConfirmManagerIns" parameterType="map">
+	INSERT INTO account (acct_number
+						,r_num
+						,acct_balance
+						,acct_dealdate
+						,trade_ammount
+						,trade
+						,trade_detail
+						,trade_target
+						,mem_id
+						,hidden)
+	        VALUES(
+	        (SELECT acct_number FROM account WHERE mem_id = #{manager} GROUP BY acct_number)
+	       ,(SELECT max(r_num)+1 FROM account WHERE mem_id = #{manager})
+	       ,(#{managerBalance})-(#{trade_ammount})
+	       ,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd/hh24/mi/ss') FROM DUAL)
+	       ,#{trade_ammount}
+	       ,'출금'
+	       ,'수취확인 이체'
+	       ,#{mem_id}
+	       ,#{manager}
+	       ,'no')
+   </insert>
+   <insert id="auctionConfirmSellerIns" parameterType="map">
+	INSERT INTO account (acct_number
+						,r_num
+						,acct_balance
+						,acct_dealdate
+						,trade_ammount
+						,trade
+						,trade_detail
+						,trade_target
+						,mem_id
+						,hidden)
+	        VALUES(
+	        (SELECT acct_number FROM account WHERE mem_id = #{mem_id} GROUP BY acct_number)
+	       ,(SELECT max(r_num)+1 FROM account WHERE mem_id = #{mem_id})
+	       ,(#{sellerBalance})+(#{trade_ammount})
+	       ,(SELECT TO_CHAR(SYSDATE, 'yyyy/mm/dd/hh24/mi/ss') FROM DUAL)
+	       ,#{trade_ammount}
+	       ,'입금'
+	       ,'수취확인 이체'
+	       ,'SELLIMITED'
+	       ,#{mem_id}
+	       ,'no')
+   </insert>
+   <update id="auctionConfirmUpdate" parameterType="map">
+		UPDATE SALE_ITEM
+		SET STATUS = '거래종료'
+		WHERE ITEM_CODE = (
+		                    SELECT SALE_ITEM.ITEM_CODE FROM SALE_ITEM, AUCTION_INFO
+		                     WHERE SALE_ITEM.ITEM_CODE = AUCTION_INFO.ITEM_CODE
+		                       AND BID_CODE = #{bid_code}
+		                       AND STATUS = '배송도착'
+		                   )
    </update>
 </mapper> 

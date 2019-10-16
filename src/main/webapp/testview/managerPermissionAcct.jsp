@@ -8,13 +8,15 @@
    List<Map<String,Object>> acctStatusList = 
          (List<Map<String,Object>>)request.getAttribute("accountStatusList");
    int size = 0;
-   int nowPage = 0;
    if(acctStatusList != null && acctStatusList.size()>0){
       size = acctStatusList.size();
    }  
-/*    if(itemStatusList != null){
-      out.print(itemStatusList.get(0).get("MEM_ID"));
-   } */
+   /* 페이지네이션 추가 */
+   int numPerPage = 10;
+   int nowPage = 0;
+   if(request.getParameter("nowPage")!=null){
+      nowPage = Integer.parseInt(request.getParameter("nowPage"));
+   }
 
 %>
 
@@ -56,19 +58,19 @@
             </colgroup>
             <tbody><tr>
                <td>
-               		<p><a href="/product/itemStatusList.sf">시드등록 관리</a></p>
+                     <p><a href="/product/itemStatusList.sf">시드등록 관리</a></p>
                </td>
                <td>
-               		<p><a href="/auction/beforeAuctionList.sf">경매등록 관리</a></p>
+                     <p><a href="/auction/beforeAuctionList.sf">경매등록 관리</a></p>
                </td>
                <td>
-               		<p><a href="/account/accountStatusList.sf">충전 관리</a></p>
+                     <p><a href="/account/accountStatusList.sf">충전 관리</a></p>
                </td>
                <td>
-               		<p><a href="/auction/endAuctionList.sf">경매결산 관리</a></p>
+                     <p><a href="/auction/endAuctionList.sf">경매결산 관리</a></p>
                </td>
                <td>
-               		<p><a href="/testview/memberUpd.jsp">회원관리</a></p>
+                     <p><a href="/testview/memberUpd.jsp">회원관리</a></p>
                </td>
             </tr></tbody>
          </table>
@@ -125,8 +127,9 @@
             <col width="80px;">
          </colgroup>
 <%
-      for(int i=0;i<size;i++){
-         Map<String,Object> rMap = acctStatusList.get(i);
+      for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+          if(size==i) break;
+           Map<String,Object> rMap = acctStatusList.get(i);
 %>
             <tr>
                
@@ -183,7 +186,7 @@
             <tr>
                <td>
 <%
-                  String pagePath = "#";
+                  String pagePath = "/account/accountStatusList.sf?";
                   PageBar pb = new PageBar(10,size,nowPage,pagePath);
                   String pagination = pb.getPageBar();
                   out.print(pagination);

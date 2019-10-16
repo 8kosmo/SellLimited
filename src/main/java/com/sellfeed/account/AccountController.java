@@ -73,20 +73,47 @@ public class AccountController {
       }
    }
    
-	@GetMapping(value="/managerPermissionAcct.sf")
-	public String managerPermissionAccount(@RequestParam Map<String, Object> pMap, @RequestParam("charge_code") String charge_code) {
-		logger.info("managerPermissionAccount 호출 성공");
-		pMap.put("trade","입금");
-		pMap.put("trade_detail","충전");
-		pMap.put("trade_target","sellLimited");
-		accountLogic.managerPermissionAccount(charge_code,pMap);
-		return"redirect:../account/accountStatusList.sf";
-	}
-	@GetMapping(value="/managerRefuseAcct.sf")
-	public String managerRefuseAcct(@RequestParam("charge_code") String charge_code) {
-		logger.info("managerPermissionAccount 호출 성공");
-		accountLogic.managerRefuseAcct(charge_code);
-		return"redirect:../account/accountStatusList.sf";
-	}
-   
+   //관리자 충전 승인
+   @GetMapping(value="/managerPermissionAcct.sf")
+   public String managerPermissionAccount(@RequestParam Map<String, Object> pMap, @RequestParam("charge_code") String charge_code) {
+      logger.info("managerPermissionAccount 호출 성공");
+      int nowPage = 0;
+      int pageSize = 0;
+      if(pMap.get("nowPage")!=null) {
+            nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+       }
+       if(pMap.get("pageSize")!=null) {
+           pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+       }
+      logger.info("nowPage :"+nowPage);
+      logger.info("pageSize :"+pageSize);
+      pMap.put("nowPage",nowPage);
+      pMap.put("pageSize",pageSize);
+      pMap.put("trade","입금");
+      pMap.put("trade_detail","충전");
+      pMap.put("trade_target","sellLimited");
+      accountLogic.managerPermissionAccount(charge_code,pMap);
+      return"redirect:../account/accountStatusList.sf";
+   }
+   //관리자 승인 거절
+   @GetMapping(value="/managerRefuseAcct.sf")
+   public String managerRefuseAcct(@RequestParam("charge_code") String charge_code) {
+      logger.info("managerPermissionAccount 호출 성공");
+      accountLogic.managerRefuseAcct(charge_code);
+      return"redirect:../account/accountStatusList.sf";
+   }
+	//경매종료 , 수취확인
+   @GetMapping(value="/auctionConfirm.sf")
+   public String auctionConfirm(@RequestParam Map<String, Object> pMap) {
+	    String mem_id = null;
+	    if(pMap.get("mem_id")!=null) {
+	    	mem_id = pMap.get("mem_id").toString();
+	    }
+	    String bid_code = null;
+	    if(pMap.get("bid_code")!=null) {
+	    	bid_code = pMap.get("bid_code").toString();
+	    }
+	    accountLogic.auctionConfirm(pMap);
+	    return "redirect:../product/productDelivery.sf?mem_id="+mem_id;
+   }
 }

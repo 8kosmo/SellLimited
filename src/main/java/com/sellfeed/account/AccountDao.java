@@ -99,5 +99,26 @@ public class AccountDao {
 		int result = 0;
 		result = sqlSessionTemplate.insert("returnDeposit",looserList);
 	}
+		public int getMngPermissionTotal() {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getMngPermissionTotal");
+		return total;
+	}
+   
+	public int auctionConfirmManagerIns(Map<String, Object> pMap) {
+		int result = sqlSessionTemplate.insert("auctionConfirmManagerIns", pMap);
+		return result;
+	}
+
+	public int auctionConfirmSellerIns(Map<String, Object> pMap) {
+		int result = sqlSessionTemplate.insert("auctionConfirmSellerIns", pMap);
+		return result;
+	}
+	
+	public int auctionConfirmUpdate(Map<String, Object> pMap) {
+		int result = sqlSessionTemplate.update("auctionConfirmUpdate",pMap);
+		logger.info("CONFIRM UPDATE성공");
+		return result;
+	}
 
 }
