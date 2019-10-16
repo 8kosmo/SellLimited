@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Map, java.util.List" %>
 <%@ page import="java.util.StringTokenizer" %>
+<%@ page import="java.lang.Math" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -63,21 +64,20 @@ $(document).ready(function(){
             "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
 <%   }      
 }%>   //__________________________________________________________________end of for
-
-   //로그인 실패시
-   if(mem_name=='null'){
-      $("#logout").hide();
-      $("#login").show();
-   }else{
-      $("#login").hide();
-      $("#logout").show();
-   }
-   
- 
-   
-   
 });//_______________________________________________________________________end of ready
-
+//새 탭 열기
+function openInNewTab(url) {
+        var win = window.open(url, '_blank');
+        win.focus();
+    }
+//function buyNow
+function buyNow(){
+	if(confirm("<%=rMap.get("BUYNOW_PRICE")%>원에 상품을 즉시 구매하시겠습니까?")){
+		
+	}else{
+		
+	}
+}
 //_________________________________________타임
 function getTime() {
 	now = new Date();
@@ -139,7 +139,8 @@ function getTime() {
 		   increase_rate = 10000;
 	   }
 	   else if(500000<final_price){
-		   increase_rate = final_price/20
+			
+		   increase_rate = Math.round(final_price/20)
 	   }
 	   if(<%=rMap.get("CNTBID")%>==0){
 		   total = <%=rMap.get("START_PRICE")%>
@@ -150,7 +151,8 @@ function getTime() {
 		   console.log("increase_rate: "+increase_rate);
 	   }
 	   if(total><%=nowBalance%>){
-		   alert("잔액이 부족합니다 충전하시겠습니까? 필요금액: "+total+"현재 보유금액: "+<%=nowBalance%>);
+		   if(confirm("잔액이 부족해요. 충전하시겠어요?")){
+			   openInNewTab('/testview/cashCharge.jsp');
 	   }else{
 		   $.ajax({
 			   method:'GET'
@@ -309,7 +311,7 @@ function getTime() {
 											</td>
 										</tr>
 									</table>
-									<button type="button" class="btn_nigeria" style="width:360px;height:70px;margin-left:25px;margin-top:15px">캐시충전</button>
+									<button type="button" onclick="javascript:openInNewTab('/testview/cashCharge.jsp')" class="btn_nigeria" style="width:360px;height:70px;margin-left:25px;margin-top:15px">캐시충전</button>
 								</span>
 							    <!--  수량,반품가능여부,출품자정보 부분 -->
 								<span class="dotbot_all">
@@ -320,7 +322,7 @@ function getTime() {
 										<tr>
 											<button onclick="javascript:bid()" type="button" class="btn_algerie" style="width:360px;height:70px;margin-top:3px;">입찰하기</button>
 											<br>
-											<button type="button" class="btn_nigeria" style="width:360px;height:70px">즉시구매</button>
+											<button type="button" onclick="javascirpt:buyNow()" class="btn_nigeria" style="width:360px;height:70px">즉시구매</button>
 										</tr>
 									</table>
 								</span>
