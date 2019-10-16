@@ -21,8 +21,14 @@ public class AucLogDao {
 		aucList = sqlSessionTemplate.selectList("aucLogList",pMap);
 		return aucList;
 	}
+	public int aucLogFirstIns(Map<String, Object> pMap) {
+		logger.info("Dao| aucLogFristIns 호출성공");
+		int result = 0;
+		result = sqlSessionTemplate.update("aucLogFirstIns",pMap);
+		return result;
+	}
 	public int aucLogIns(Map<String, Object> pMap) {
-		logger.info("Dao| highPrice 호출성공");
+		logger.info("Dao| aucLogIns 호출성공");
 		int result = 0;
 		result = sqlSessionTemplate.update("aucLogIns",pMap);
 		return result;
@@ -36,6 +42,11 @@ public class AucLogDao {
 		looserList = sqlSessionTemplate.selectList("looserList",pMap);
 		logger.info("looserList : "+looserList);
 		return looserList;
+	}
+	public int myBid(Map<String, Object> pMap) {
+		int my_bid = 0;
+		my_bid =sqlSessionTemplate.selectOne("myBid",pMap);
+		return my_bid;
 	}
 
 }

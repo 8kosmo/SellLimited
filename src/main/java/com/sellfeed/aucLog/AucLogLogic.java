@@ -3,6 +3,7 @@ package com.sellfeed.aucLog;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,20 @@ public class AucLogLogic {
 	}
 	
 	public int aucLogIns(Map<String,Object> pMap) {
-		logger.info("Logic| aucLogIns 호출성공");
+		logger.info("Logic| aucLogIns 호출성공 parameter: "+pMap);
 		int result;
-		result = aucLogDao.aucLogIns(pMap);
+		logger.info("pMap : "+pMap);
+		if(Integer.parseInt(pMap.get("cnt_bid").toString())==0) {
+			result = aucLogDao.aucLogFirstIns(pMap);	
+		}else {
+			
+			result = aucLogDao.aucLogIns(pMap);
+		}
 		return result;
+	}
+
+	public int myBid(Map<String, Object> pMap) {
+		int my_Bid = aucLogDao.myBid(pMap); 
+		return my_Bid;
 	}
 }

@@ -141,15 +141,20 @@ function getTime() {
 	   else if(500000<final_price){
 		   increase_rate = final_price/20
 	   }
-	   total = final_price*1+increase_rate*1;
-	   alert("토탈: "+total);
-	   console.log("increase_rate: "+increase_rate);
+	   if(<%=rMap.get("CNTBID")%>==0){
+		   total = <%=rMap.get("START_PRICE")%>
+		   alert("토탈: "+total);
+	   }else{
+		   total = final_price*1+increase_rate*1;
+		   alert("토탈: "+total);
+		   console.log("increase_rate: "+increase_rate);
+	   }
 	   if(total><%=nowBalance%>){
 		   alert("잔액이 부족합니다 충전하시겠습니까? 필요금액: "+total+"현재 보유금액: "+<%=nowBalance%>);
 	   }else{
 		   $.ajax({
 			   method:'GET'
-			         ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+			         ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&cnt_bid=<%=rMap.get("CNTBID")%>&start_price=<%=rMap.get("START_PRICE")%>&mem_id=<%=mem_id%>&increase_rate='+increase_rate
 			         ,data:'data'
 			         ,success:function(data){
 			            $("#my_price").html(total);
@@ -227,7 +232,7 @@ function getTime() {
 														<p id="final_price" style="font-size:25px;margin-top:20px;"><%=rMap.get("FPRICE") %></p>
 													</td>
 													<td style="border-right:1px solid #E7E7E7;">
-														<p id="my_price" style="font-size:25px;margin-top:20px;text-align:center;">0</p>
+														<p id="my_price" style="font-size:25px;margin-top:20px;text-align:center;"><%=rMap.get("my_bid")%></p>
 													</td>
 												</tr>
 											</table>

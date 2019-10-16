@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,15 +77,18 @@ public class AuctionController {
 		return "redirect:/auction/beforeAuctionList.sf";
 	}
 	@GetMapping(value="AuctionningPage.sf")
-	public String AuctionningPage(String bid_code, Model mod) {
+	public String AuctionningPage(String bid_code, Model mod, HttpSession session) {
 		Map<String,Object> pMap = new HashMap<>();
 		Map<String,Object> rMap = new HashMap<>();
 		List<Map<String,Object>> detailList = new ArrayList<>();
 		List<String> photoNameList = new ArrayList<>();
 		List<Map<String,Object>> seedList = new  ArrayList<>();
 		pMap.put("bid_code",bid_code);
+		pMap.put("mem_id",session.getAttribute("mem_id"));
+		logger.info("AuctionningPage paramter : "+pMap);
 		detailList = productLogic.auctionDetail(pMap);
-          logger.info("_________________________________"+detailList);
+		int my_bid = aucLogLogic.myBid(pMap);
+          logger.info("detailList: "+detailList);
           for(int i=0; i<detailList.size();i++) {
              rMap = detailList.get(i);
              photoNameList.add(rMap.get("PHOTO_NAME").toString());
@@ -91,6 +96,7 @@ public class AuctionController {
           }
           rMap.put("PHOTO_NAME",photoNameList);
           logger.info("rMap==  "+rMap+"||| photoNameList== "+rMap.get("PHOTO_NAME"));
+          rMap.put("my_bid",my_bid);
 		mod.addAttribute("rMap",rMap);
 		return "forward:/testview/auctioningPage.jsp";
 	}

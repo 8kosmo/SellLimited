@@ -54,21 +54,23 @@ public class EchoHandler extends TextWebSocketHandler {
 		}
 	}
 
-	// 클라이언트와 연결을 끊었을 때 실행되는 메소드
-	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		run_start:
-		for(int i=0;i<sessionMap.size();i++) {
-			Object[] keys = sessionMap.keySet().toArray();
-			sessionList = sessionMap.get(keys[i]);
-			for(int j=0;j<sessionList.size();j++) {
-				if(session.equals(sessionList.get(j))) {
-					sessionList.remove(j);
-					logger.info("{} 연결 끊김", session.getId());
-					break run_start;
-				}
-			}
-		}
-		
-	}
+	   // 클라이언트와 연결을 끊었을 때 실행되는 메소드
+	   @Override
+	   public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+	      run_start:
+	      for(int i=0;i<sessionMap.size();i++) {
+	         Object[] keys = sessionMap.keySet().toArray();
+	         sessionList = sessionMap.get(keys[i]);
+	         for(int j=0;j<sessionList.size();j++) {
+	            if(session.equals(sessionList.get(j))) {
+	               sessionList.remove(j);
+	               for (WebSocketSession sess : sessionList) {
+	                  sess.sendMessage(new TextMessage(sessionList.size()+":"+"enterCnt"));
+	               }
+	               logger.info("{} 연결 끊김", session.getId());
+	               break run_start;
+	            }
+	         }
+	      }
+	   }
 }
