@@ -8,7 +8,8 @@
       WHERE ITEM_CODE = #{item_code}
    </select>
      <select id="auctionDetail" parameterType="map" resultType="map">
-      SELECT BID_TITLE, auction_info.bid_code, photo_name, start_price,
+      SELECT BID_TITLE, auction_info.bid_code, photo_name, 
+       NVL((SELECT (MAX(final_price)) FROM bid_log WHERE bid_code = #{bid_code}),start_price)start_price,
        auct_startdate, auct_enddate, nvl(seedCnt,0)seedCnt, nvl(cntBid,0)cntBid, NVL(fPrice,0)FPRICE,
        mem_id, product_detail, buynow_price ,sale_item.item_code,brand,model_name 
       FROM sale_item, item_photo, auct_progress, auction_info,
@@ -21,7 +22,7 @@
       AND AUCTION_INFO.ITEM_CODE = sale_item.item_code
       AND seed.bid_code(+) = auction_info.bid_code 
       AND auction_info.bid_code = a.bid_code(+)
-      AND auct_progress.bid_code =#{bid_code}
+      AND auct_progress.bid_code = #{bid_code}
    </select>
      
     

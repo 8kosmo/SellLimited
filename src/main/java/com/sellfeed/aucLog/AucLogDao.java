@@ -33,6 +33,14 @@ public class AucLogDao {
 		result = sqlSessionTemplate.update("aucLogIns",pMap);
 		return result;
 	}
+	
+	public int aucLogBuyNowIns(Map<String, Object> pMap) {
+		logger.info("Dao| aucLogIns2 호출성공");
+		int result = 0;
+		result = sqlSessionTemplate.update("aucLogBuyNowIns",pMap);
+		return result;
+		
+	}
 	public void aucWinner(Map<String, Object> pMap) {
 		logger.info("aucWinner 호출 성공 | pMap :"+pMap);
 		sqlSessionTemplate.selectOne("aucWinner", pMap);

@@ -78,4 +78,8 @@ public class AuctionLogic {
 		logger.info("AuctinoLogic endAuction 끝 | result= "+result);
 		return result;				
 	}
+	public void buyNow(Map<String, Object> pMap) {
+		logger.info("Logic | buyNow 호출 성공");
+			aucLogDao.aucLogBuyNowIns(pMap);		//BID_LOG에 즉시구매 INSERT | BID_LOG에 낙찰 패찰 UPDATE | AUCT_PROGRESS에 경매종료일 UPDATE
+	}
 }

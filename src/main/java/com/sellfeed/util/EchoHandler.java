@@ -49,8 +49,15 @@ public class EchoHandler extends TextWebSocketHandler {
 		String roomName = pullMessage.split("\\?")[0];
 		String realMessage = pullMessage.split("\\?")[1];
 		sessionList = sessionMap.get(roomName);
-		for (WebSocketSession sess : sessionList) {
-			sess.sendMessage(new TextMessage(realMessage+":"+roomName));
+		if("closeRoom".equals(realMessage)) {
+			for (WebSocketSession sess : sessionList) {
+				sess.sendMessage(new TextMessage(realMessage+":closeRoom"));
+			}
+		}
+		else {
+			for (WebSocketSession sess : sessionList) {
+				sess.sendMessage(new TextMessage(realMessage+":"+roomName));
+			}
 		}
 	}
 

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.Map, java.util.List" %>
+<%@ page import="java.util.Map, java.util.List, java.text.*" %>
 <%@ page import="java.util.StringTokenizer" %>
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,9 @@
 
    //_______________________________________________타임
    String T_EndTime = rMap.get("AUCT_ENDDATE").toString();
-
+   DecimalFormat formatter = new DecimalFormat("###,###");
+   int startPrice = Integer.parseInt(rMap.get("START_PRICE").toString());
+   String start_Price = formatter.format(startPrice);
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
    String MM = st.nextToken();
@@ -102,9 +104,9 @@ function getTime() {
 	}
 	
 	document.getElementById("counter0").innerHTML = daysRound;
-	document.getElementById("counter1").innerHTML = hoursRound;
-	document.getElementById("counter2").innerHTML = minutesRound;
-	document.getElementById("counter3").innerHTML = secondsRound;
+	document.getElementById("counter1").innerHTML = (hoursRound<10 ? "0"+hoursRound:hoursRound);
+	document.getElementById("counter2").innerHTML = (minutesRound<10 ? "0"+minutesRound:minutesRound);
+	document.getElementById("counter3").innerHTML = (secondsRound<10 ? "0"+secondsRound:secondsRound);	
 	newtime = window.setTimeout("getTime();", 1000);
 
    }
@@ -364,7 +366,7 @@ function getTime() {
                                 <%--  <%
                                  if(rMap.get(""))
                                  %> --%>
-                                 <td class="pprice"><%=rMap.get("START_PRICE")%>원
+                                 <td class="pprice"><%=start_Price%>원
                                  </td>
                               </tr>
                               <tr>

@@ -31,7 +31,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
 <script type="text/javascript">
 	function startAuction(bid_code, item_code, auct_period){
 		alert("startAuction 함수호출 성공"+bid_code+"/"+item_code+"/"+auct_period);
-		let sock = new SockJS('http://localhost:8000/echo?roomCreate:'+bid_code);
+		let sock = new SockJS('/echo?roomCreate:'+bid_code);
 		location.href="/auction/auctionIns.sf?bid_code="+bid_code+"&item_code="+item_code+"&auct_period="+auct_period;
 	};
 

@@ -45,7 +45,7 @@
                    		WHERE mem_id = #{mem_id})
                        ,(SELECT max(r_num)+1 FROM account WHERE mem_id=#{mem_id})
                        ,#{acct_balance}
-                       ,(SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD/HH/MI/SS') FROM DUAL)
+                       ,(SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD/HH24/MI/SS') FROM DUAL)
                        ,#{trade_ammount}
                        ,#{trade}
                        ,#{trade_detail}
