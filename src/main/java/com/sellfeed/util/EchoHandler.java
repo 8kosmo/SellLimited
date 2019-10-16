@@ -64,6 +64,9 @@ public class EchoHandler extends TextWebSocketHandler {
 			for(int j=0;j<sessionList.size();j++) {
 				if(session.equals(sessionList.get(j))) {
 					sessionList.remove(j);
+					for (WebSocketSession sess : sessionList) {
+						sess.sendMessage(new TextMessage(sessionList.size()+":"+"enterCnt"));
+					}
 					logger.info("{} 연결 끊김", session.getId());
 					break run_start;
 				}
