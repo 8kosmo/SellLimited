@@ -37,6 +37,8 @@ public class AuctionController {
 	@Autowired
 	public AccountDao accountDao = null;
 	
+	
+	
 	@GetMapping("/endAuction.sf")
 	public String endAuction(@RequestParam Map<String,Object> pMap) {
 		logger.info("Controller|endAuction 호출 성공");

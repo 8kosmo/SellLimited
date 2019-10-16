@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.sellfeed.account.AccountLogic;
 import com.sellfeed.aucLog.AucLogLogic;
+import com.sellfeed.auction.AuctionLogic;
 import com.sellfeed.favorite.FavoriteLogic;
 import com.sellfeed.member.MemberLogic;
-import com.sellfeed.product.ProductLogic;
 import com.sellfeed.seed.SeedLogic;
 
 @RestController
@@ -37,6 +37,18 @@ public class RestSellFeedController {
 	private SeedLogic seedLogic = null;
 	@Autowired
 	private AucLogLogic aucLogLogic = null;
+	@Autowired
+	private AuctionLogic auctionLogic = null;
+	
+	@GetMapping("/buyNow.sf")
+	public String buyNow(@RequestParam Map<String,Object> pMap) {
+		logger.info("Controller | buyNow 호출 성공");
+		pMap.put("trade", "출금");
+		pMap.put("trade_target", "SELLIMITED");
+		pMap.put("trade_detail", "경매 즉시구매");
+		auctionLogic.buyNow(pMap);
+		return "즉시구매가 완료되었습니다.";
+	}
 	
 	@GetMapping("/favSellerAdd.sf")
 	public String favSellerAdd(@RequestParam Map<String,Object> pMap) {
