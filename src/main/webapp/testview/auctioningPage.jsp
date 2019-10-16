@@ -165,7 +165,6 @@ function getTime() {
 		   });
 	   }
    }
-		
 </script>
 </head>
 <body>
