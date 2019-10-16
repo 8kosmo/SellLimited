@@ -34,7 +34,9 @@ public class MemberDao {
 	public String login(Map<String, Object> pMap) {
 		logger.info("================>login 호출 성공");
 		String mem_name = null;
-		mem_name = sqlSessionTemplate.selectOne("login",pMap);
+		sqlSessionTemplate.selectOne("login",pMap);
+		mem_name = pMap.get("mem_name").toString();
+		logger.info("mem_name=:"+mem_name);
 		return mem_name;
 	}
 

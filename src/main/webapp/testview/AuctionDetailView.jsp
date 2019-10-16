@@ -361,6 +361,9 @@ function getTime() {
                               </colgroup>
                               <tr>
                                  <th>현재가격</th>
+                                <%--  <%
+                                 if(rMap.get(""))
+                                 %> --%>
                                  <td class="pprice"><%=rMap.get("START_PRICE")%>원
                                  </td>
                               </tr>

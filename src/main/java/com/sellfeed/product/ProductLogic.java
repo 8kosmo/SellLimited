@@ -71,7 +71,7 @@ public class ProductLogic {
    }
    
    public List<Map<String, Object>> auctionDetail(Map<String, Object> pMap) {
-       logger.info("))))))))))))))))))))))))))))"+pMap);
+       logger.info("Logic | auctionDetail parameter:"+pMap);
        List<Map<String, Object>> productList = new ArrayList<>();
        productList = productDao.auctionDetail(pMap);
       return productList;

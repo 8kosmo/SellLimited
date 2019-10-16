@@ -51,7 +51,7 @@ public class ProductController {
      @GetMapping("/productDetail.sf")
      public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
        List<Map<String,Object>> productDetailList = new ArrayList<>();
-       logger.info("))))))))))))))))))))))))))))"+pMap);
+       logger.info("Controller | productDetail parameter : "+pMap);
        if(pMap.get("status").equals("auction")) {
           productDetailList = productLogic.auctionDetail(pMap);
        }

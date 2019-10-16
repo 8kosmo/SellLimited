@@ -133,7 +133,7 @@ public class RestSellFeedController {
 	   public String seedOverlapCheck(@RequestParam Map<String,Object> pMap) {
 	      logger.info("============>seedOverlapCheck 호출 성공");
 	      String result = null;
-	      logger.info("컨트롤러 피맵ㅂㅂㅂㅂㅂㅂㅂ=========="+pMap);
+	      logger.info("=========="+pMap);
 	      result=String.valueOf(seedLogic.seedOverlapCheck(pMap));
 	      return result;
 	   }

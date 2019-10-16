@@ -73,10 +73,12 @@ public class MemberLogic {
          mem_name = memberDao.login(pMap);
          logger.info(mem_name);
          mem_id = pMap.get("mem_id").toString();
-         acct_balance = accountDao.accountNowBalance(mem_id);
-         logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
-         acct_number = accountDao.acct_number(mem_id);
-         logger.info("acct_number===========>"+acct_number);
+         if(!"비밀번호를 잘못 입력하셨습니다.".equals(mem_name )&& !"아이디가 존재하지 않습니다.".equals(mem_name)) {
+        	 acct_balance = accountDao.accountNowBalance(mem_id);
+        	 logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
+        	 acct_number = accountDao.acct_number(mem_id);
+        	 logger.info("acct_number===========>"+acct_number);
+         }
          list.add(pMap.get("mem_name").toString());
          list.add(""+acct_balance);
          list.add(""+acct_number);

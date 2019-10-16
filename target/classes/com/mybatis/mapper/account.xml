@@ -68,7 +68,7 @@
    </select>
    
    <select id="accountNowBalance" parameterType="string" resultType="int" >
-      SELECT acct_balance FROM account d,
+      SELECT NVL(acct_balance,0) FROM account d,
       (SELECT mem_id, MAX(r_num) r_num FROM account GROUP BY mem_id) c
       WHERE d.mem_id = #{mem_id}
       AND d.mem_id = c.mem_id
