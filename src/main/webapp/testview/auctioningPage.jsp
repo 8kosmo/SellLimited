@@ -160,9 +160,11 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       total = final_price*1+increase_rate*1;
       alert("토탈: "+total);
       console.log("increase_rate: "+increase_rate);
+      
       if(total><%=nowBalance%>){
     	  if(confirm("잔액이 부족해요. 충전하시겠어요?")){
 			   openInNewTab('/testview/cashCharge.jsp');
+    	  }
       }else{
          $.ajax({
             method:'GET'
@@ -171,11 +173,10 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                   ,success:function(data){
                      $("#my_price").html(total);
                      sendMessage();
-                  }
-         });
+                  } 
+         });		//_______________________________________________________________| END OF AJAX
       }
-   }
-   }
+   }				//_______________________________________________________________| END OF bid()
       
 </script>
 </head>
