@@ -9,9 +9,9 @@
    </select>
      <select id="auctionDetail" parameterType="map" resultType="map">
       SELECT BID_TITLE, auction_info.bid_code, photo_name, 
-       NVL((SELECT (MAX(final_price)) FROM bid_log WHERE bid_code = #{bid_code}),start_price)start_price,
+       NVL((SELECT (MAX(final_price)) FROM bid_log WHERE bid_code = #{bid_code}),start_price)now_price,
        auct_startdate, auct_enddate, nvl(seedCnt,0)seedCnt, nvl(cntBid,0)cntBid, NVL(fPrice,0)FPRICE,
-       mem_id, product_detail, buynow_price ,sale_item.item_code,brand,model_name 
+       mem_id, product_detail, buynow_price ,sale_item.item_code,brand,model_name, start_price 
       FROM sale_item, item_photo, auct_progress, auction_info,
             (SELECT bid_code, COUNT(bidders_id) seedCnt FROM seed GROUP BY bid_code) seed, 
             (SELECT bid_code, MAX(final_price) fPrice FROM bid_log GROUP BY bid_code) bid_log , 

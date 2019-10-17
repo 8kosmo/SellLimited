@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.Map, java.util.List, java.text.*" %>
-<%@ page import="java.util.StringTokenizer" %>
+<%@ page import="java.util.Map, java.util.List,java.util.StringTokenizer, java.text.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,10 +28,12 @@
    request.setAttribute("photoList", photoNameList);
 
    //_______________________________________________타임
-   String T_EndTime = rMap.get("AUCT_ENDDATE").toString();
    DecimalFormat formatter = new DecimalFormat("###,###");
-   int startPrice = Integer.parseInt(rMap.get("START_PRICE").toString());
-   String start_Price = formatter.format(startPrice);
+   String now_price = formatter.format(Integer.parseInt(rMap.get("NOW_PRICE").toString()));
+   String start_price = formatter.format(Integer.parseInt(rMap.get("START_PRICE").toString()));
+   String buynow_price = formatter.format(Integer.parseInt(rMap.get("BUYNOW_PRICE").toString()));
+   
+   String T_EndTime = rMap.get("AUCT_ENDDATE").toString();
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
    String MM = st.nextToken();
@@ -44,6 +45,12 @@
    String photoName  = "";
    String onclickSub = "";
    String img_id     ="";
+   
+   String startArray[] = rMap.get("AUCT_STARTDATE").toString().split("/");
+   String endArray[] = rMap.get("AUCT_ENDDATE").toString().split("/");
+   String start_date = startArray[0]+"년 "+startArray[1]+"월 "+startArray[2]+"일";
+   String end_date = endArray[0]+"년 "+endArray[1]+"월 "+endArray[2]+"일";
+   
 %>
 <script>
 $(document).ready(function(){
@@ -343,13 +350,13 @@ function getTime() {
                                  <th>시작가격<br> 즉시구매가<br> 시작시간<br> 종료일
                                  </th>
                                  <!-- 시작가격 -->
-                                 <td><%=rMap.get("START_PRICE")%>원<br> 
+                                 <td><%=start_price%>원<br> 
                                  <!-- 바로구매가격 -->
-                                 <%=rMap.get("BUYNOW_PRICE")%>원<br> 
+                                 <%=buynow_price%>원<br> 
                                  <!-- 시작시간 -->    
-                                     <%=rMap.get("AUCT_STARTDATE")%><br>
+                                     <%=start_date%><br>
                                  <!-- 종료일 -->
-                                     <%=rMap.get("AUCT_ENDDATE")%><br>
+                                     <%=end_date%><br>
                                  </td>
                               </tr>
                            </table>
@@ -366,7 +373,7 @@ function getTime() {
                                 <%--  <%
                                  if(rMap.get(""))
                                  %> --%>
-                                 <td class="pprice"><%=start_Price%>원
+                                 <td class="pprice"><%=now_price%>원
                                  </td>
                               </tr>
                               <tr>
