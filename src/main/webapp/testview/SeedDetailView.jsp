@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.Map, java.util.List" %>
-<%@ page import="java.util.StringTokenizer" %>
+<%@ page import="java.util.Map, java.util.List,java.util.StringTokenizer, java.text.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,8 +27,11 @@
    request.setAttribute("photoList", photoNameList);
 
    //_______________________________________________타임
+   DecimalFormat formatter = new DecimalFormat("###,###");
+   String start_price = formatter.format(Integer.parseInt(rMap.get("START_PRICE").toString()));
+   String buynow_price = formatter.format(Integer.parseInt(rMap.get("BUYNOW_PRICE").toString()));
+   
    String T_EndTime = rMap.get("END_SEED").toString();
-
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
    String MM = st.nextToken();
@@ -41,6 +43,14 @@
    String photoName  = "";
    String onclickSub = "";
    String img_id     ="";
+   
+   String startArray[] = rMap.get("START_SEED").toString().split("/");
+   String endArray[] = rMap.get("END_SEED").toString().split("/");
+   String start_date = startArray[0]+"년 "+startArray[1]+"월 "+startArray[2]+"일";
+   String end_date = endArray[0]+"년 "+endArray[1]+"월 "+endArray[2]+"일";
+   
+
+   
 
 %>
 <script>
@@ -97,9 +107,9 @@ function getTime() {
    secondsRound = Math.round(seconds);
 
    document.getElementById("counter0").innerHTML = daysRound;
-   document.getElementById("counter1").innerHTML = hoursRound;
-   document.getElementById("counter2").innerHTML = minutesRound;
-   document.getElementById("counter3").innerHTML = secondsRound;
+   document.getElementById("counter1").innerHTML = (hoursRound<10 ? "0"+hoursRound:hoursRound);
+   document.getElementById("counter2").innerHTML = (minutesRound<10 ? "0"+minutesRound:minutesRound);
+   document.getElementById("counter3").innerHTML = (secondsRound<10 ? "0"+secondsRound:secondsRound);	
    newtime = window.setTimeout("getTime();", 1000);
 
    }
@@ -359,13 +369,13 @@ function getTime() {
                                  <th>시작가격<br> 즉시구매가<br> 시드모집 시작일<br> 시드모집 종료일
                                  </th>
                                  <!-- 시작가격 -->
-                                 <td><%=rMap.get("START_PRICE")%>원<br> 
+                                 <td><%=start_price%>원<br> 
                                  <!-- 시작가격 -->
-                                 <%=rMap.get("BUYNOW_PRICE")%>원<br> 
+                                 <%=buynow_price%>원<br> 
                                  <!-- 시작시간 -->    
-                               <%=rMap.get("START_SEED")%><br>
+                               <%=start_date%><br>
                                  <!-- 종료일 -->
-                                 <%=rMap.get("END_SEED")%><br>
+                                 <%=end_date%><br>
                                  </td>
                               </tr>
                            </table>
@@ -379,7 +389,7 @@ function getTime() {
                               </colgroup>
                               <tr>
                                  <th>현재가격</th>
-                                 <td class="pprice"><%=rMap.get("START_PRICE")%>원
+                                 <td class="pprice"><%=start_price%>원
                                  </td>
                               </tr>
                               <tr>

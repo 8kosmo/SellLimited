@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.Map, java.util.List" %>
-<%@ page import="java.util.StringTokenizer" %>
+<%@ page import="java.util.Map, java.util.List,java.util.StringTokenizer, java.text.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -34,8 +33,15 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
    request.setAttribute("photoList", photoNameList);
 
    //_______________________________________________타임
+   DecimalFormat formatter = new DecimalFormat("###,###");
+   String now_price = formatter.format(Integer.parseInt(rMap.get("NOW_PRICE").toString()));
+   String start_price = formatter.format(Integer.parseInt(rMap.get("START_PRICE").toString()));
+   String buynow_price = formatter.format(Integer.parseInt(rMap.get("BUYNOW_PRICE").toString()));
+   String strNowBalance = formatter.format(nowBalance);
+   String mybid = formatter.format(Integer.parseInt(rMap.get("my_bid").toString()));
+   String fprice = formatter.format(Integer.parseInt(rMap.get("FPRICE").toString()));
+   
    String T_EndTime = rMap.get("AUCT_ENDDATE").toString();
-
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
    String MM = st.nextToken();
@@ -47,6 +53,12 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
    String photoName  = "";
    String onclickSub = "";
    String img_id     ="";
+   
+   String startArray[] = rMap.get("AUCT_STARTDATE").toString().split("/");
+   String endArray[] = rMap.get("AUCT_ENDDATE").toString().split("/");
+   String start_date = startArray[0]+"년 "+startArray[1]+"월 "+startArray[2]+"일";
+   String end_date = endArray[0]+"년 "+endArray[1]+"월 "+endArray[2]+"일";
+   
 %>
 <script>
 $(document).ready(function(){
@@ -74,7 +86,7 @@ function openInNewTab(url) {
    if(confirm('<%=rMap.get("BUYNOW_PRICE")%>원에 상품을 즉시 구매하시겠습니까?')){
       if(<%=rMap.get("BUYNOW_PRICE")%> > <%=nowBalance%>){
     	 //잔액이 부족할 때
-    	 alert("즉시구매가는 :<%=rMap.get("BUYNOW_PRICE")%>  잔액은 : <%=nowBalance%> ");
+    	 alert("즉시구매가는 :<%=rMap.get("BUYNOW_PRICE")%>  잔액은 : <%=strNowBalance%> ");
     	  if(confirm("잔액이 부족해요. 충전하시겠어요?")){
 			   openInNewTab('/testview/cashCharge.jsp');
       }
@@ -160,22 +172,24 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       total = final_price*1+increase_rate*1;
       alert("토탈: "+total);
       console.log("increase_rate: "+increase_rate);
+      
       if(total><%=nowBalance%>){
     	  if(confirm("잔액이 부족해요. 충전하시겠어요?")){
 			   openInNewTab('/testview/cashCharge.jsp');
+    	  }
       }else{
          $.ajax({
             method:'GET'
-                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&cnt_bid=<%=rMap.get("CNTBID")%>&increase_rate='+increase_rate
                   ,data:'data'
                   ,success:function(data){
+                	  total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                      $("#my_price").html(total);
                      sendMessage();
-                  }
-         });
+                  } 
+         });		//_______________________________________________________________| END OF AJAX
       }
-   }
-   }
+   }				//_______________________________________________________________| END OF bid()
       
 </script>
 </head>
@@ -242,10 +256,10 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                                     </colgroup>
                                     <tr>
                                        <td style="border-right:1px solid #E7E7E7;height:90px;text-align:center;">
-                                          <p id="final_price" style="font-size:25px;margin-top:20px;"><%=rMap.get("FPRICE") %></p>
+                                          <p id="final_price" style="font-size:25px;margin-top:20px;"><%=fprice %></p>
                                        </td>
                                        <td style="border-right:1px solid #E7E7E7;">
-                                          <p id="my_price" style="font-size:25px;margin-top:20px;text-align:center;"><%=rMap.get("my_bid")%></p>
+                                          <p id="my_price" style="font-size:25px;margin-top:20px;text-align:center;"><%=mybid%></p>
                                        </td>
                                     </tr>
                                  </table>
@@ -285,13 +299,13 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                                       <th>시작가격<br> 즉시구매가<br> 시작시간<br> 종료일
                                       </th>
                                       <!-- 시작가격 -->
-                                      <td><%=rMap.get("START_PRICE")%>원<br> 
+                                      <td><%=start_price%>원<br> 
                                       <!-- 바로구매가격 -->
-                                      <%=rMap.get("BUYNOW_PRICE")%>원<br> 
+                                      <%=buynow_price%>원<br> 
                                       <!-- 시작시간 -->    
-                                          <%=rMap.get("AUCT_STARTDATE")%><br>
+                                          <%=start_date%><br>
                                       <!-- 종료일 -->
-                                          <%=rMap.get("AUCT_ENDDATE")%><br>
+                                          <%=end_date%><br>
                                       </td>
                                    </tr>
                                 </table>
@@ -312,13 +326,13 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                                      <strong>판매자정보</strong><br> 
                                      아이디<br><br>
                                      <strong>입찰자정보</strong><br>
-                                     잔액 
+                                     잔액
                                  </th>
                                  <td>
                                     <br>1 개<br> 
                                     반품불가<br><br><br><br>
                                     <%=rMap.get("MEM_ID") %><br><br><br>
-                                    <%=nowBalance%>
+                                    <%=strNowBalance%>원
                                  </td>
                               </tr>
                            </table>
@@ -386,6 +400,7 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                }
                else{
                   alert("입찰 시 "+result);
+                  result = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                    $("#final_price").text(result);
                }
         }
