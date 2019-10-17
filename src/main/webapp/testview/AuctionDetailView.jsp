@@ -33,6 +33,8 @@
    DecimalFormat formatter = new DecimalFormat("###,###");
    int startPrice = Integer.parseInt(rMap.get("START_PRICE").toString());
    String start_Price = formatter.format(startPrice);
+   int buy_Now_Price = Integer.parseInt(rMap.get("BUYNOW_PRICE").toString());
+   String buyNowPrice = formatter.format(buy_Now_Price);
    StringTokenizer st = new StringTokenizer(T_EndTime,"/");
    String YY = st.nextToken();
    String MM = st.nextToken();
@@ -343,9 +345,9 @@ function getTime() {
                                  <th>시작가격<br> 즉시구매가<br> 시작시간<br> 종료일
                                  </th>
                                  <!-- 시작가격 -->
-                                 <td><%=rMap.get("START_PRICE")%>원<br> 
+                                 <td><%=start_Price%>원<br> 
                                  <!-- 바로구매가격 -->
-                                 <%=rMap.get("BUYNOW_PRICE")%>원<br> 
+                                 <%=buyNowPrice%>원<br> 
                                  <!-- 시작시간 -->    
                                      <%=rMap.get("AUCT_STARTDATE")%><br>
                                  <!-- 종료일 -->
