@@ -25,12 +25,7 @@ public class AucLogLogic {
 		logger.info("Logic| aucLogIns 호출성공 parameter: "+pMap);
 		int result;
 		logger.info("pMap : "+pMap);
-		if(Integer.parseInt(pMap.get("cnt_bid").toString())==0) {
-			result = aucLogDao.aucLogFirstIns(pMap);	
-		}else {
-			
-			result = aucLogDao.aucLogIns(pMap);
-		}
+		result = aucLogDao.aucLogIns(pMap);
 		return result;
 	}
 

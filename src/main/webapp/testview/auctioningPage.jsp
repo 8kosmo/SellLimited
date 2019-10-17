@@ -159,8 +159,11 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       sub_img2.src=big_img_src;
    }
    function bid(){
-      var final_price = $("#final_price").html();
-      alert("값"+final_price);
+      var final_price = $("#h_final_price").html();
+      //첫 입찰인가?
+      if(0==<%=rMap.get("CNTBID")%>){
+    	  final_price = <%=rMap.get("START_PRICE")%>
+      }
       var increase_rate = 0;
       var total = 0;
       if(final_price<=500000){
@@ -180,15 +183,16 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       }else{
          $.ajax({
             method:'GET'
-                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&cnt_bid=<%=rMap.get("CNTBID")%>&increase_rate='+increase_rate
+                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
                   ,data:'data'
                   ,success:function(data){
+                     $("#h_my_price").html(total);
                 	  total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                      $("#my_price").html(total);
                      sendMessage();
                   } 
          });		//_______________________________________________________________| END OF AJAX
-      }
+    	  }
    }				//_______________________________________________________________| END OF bid()
       
 </script>
@@ -257,9 +261,11 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                                     <tr>
                                        <td style="border-right:1px solid #E7E7E7;height:90px;text-align:center;">
                                           <p id="final_price" style="font-size:25px;margin-top:20px;"><%=fprice %></p>
+                                          <p id="h_final_price" hidden="true"><%=rMap.get("FPRICE") %></p>
                                        </td>
                                        <td style="border-right:1px solid #E7E7E7;">
                                           <p id="my_price" style="font-size:25px;margin-top:20px;text-align:center;"><%=mybid%></p>
+                                          <p id="h_my_price" hidden="true"><%=rMap.get("my_bid")%></p>
                                        </td>
                                     </tr>
                                  </table>
@@ -383,7 +389,7 @@ function getTime(yy,mm,dd,hh,mi,ss) {
         function sendMessage() {
             alert("sendMessage");
             var bid_code = '<%=rMap.get("BID_CODE")%>';
-               sock.send(bid_code+'?'+$("#my_price").text());
+               sock.send(bid_code+'?'+$("#h_my_price").text());
         }
 
         // 서버로부터 메시지를 받았을 때
@@ -400,6 +406,7 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                }
                else{
                   alert("입찰 시 "+result);
+                   $("#h_final_price").text(result);
                   result = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                    $("#final_price").text(result);
                }
