@@ -140,5 +140,20 @@ public class ProductDao {
 		deliveryList = sqlSessionTemplate.selectList("deliveryList",pMap);
 		return deliveryList;
 	}
-
+	public List<Map<String, Object>> mainViewTOP(Map<String, Object> pMap) {
+		List<Map<String, Object>> TOP6List = new ArrayList<>();
+		TOP6List = sqlSessionTemplate.selectList("itemStatusSeedList", pMap);
+		return TOP6List;
+	}
+	public List<Map<String, Object>> auctionTOP6List(Map<String, Object> pMap) {
+		List<Map<String, Object>> auctionTOP6List = new ArrayList<>();
+		auctionTOP6List = sqlSessionTemplate.selectList("itemStatusAuctionList", pMap);
+		return auctionTOP6List;
+	}
+   public List<Map<String, Object>> authoritywaiting(Map<String, Object> pMap) {
+	   List<Map<String, Object>> authoritywaiting =
+			   	new ArrayList<Map<String,Object>>();
+	   authoritywaiting = sqlSessionTemplate.selectList("authoritywaiting", pMap);
+	   return authoritywaiting;
+   }
 }

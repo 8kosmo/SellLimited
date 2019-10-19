@@ -44,7 +44,7 @@
                <td>회원관리
                   <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
-                     <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
+                     <a href="/account/accountList.sf?mem_id=<%=mem_id%>">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록
@@ -54,7 +54,7 @@
                </td>
                <td>내 상품관리
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
-                     <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
+                     <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
                      <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
                </td>

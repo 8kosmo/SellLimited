@@ -3,5 +3,5 @@
 <!DOCTYPE html>
 <%
 			session.invalidate();
-			response.sendRedirect("/testview/mainView.jsp");
+			response.sendRedirect("/product/mainViewTOP6.sf");
 %>

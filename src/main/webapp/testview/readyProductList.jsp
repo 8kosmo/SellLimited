@@ -1,5 +1,23 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%> 
+<%@page import="com.sellfeed.util.PageBar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	List<Map<String, Object>> authoritywaiting = 
+			(List<Map<String, Object>>) request.getAttribute("authoritywaiting");
+	int totalsize = 0;
+	if (authoritywaiting != null && authoritywaiting.size() > 0) {
+		totalsize = authoritywaiting.size();
+	}
+	/* 페이지네이션 추가 */
+	int numPerPage = 15;
+	int nowPage = 0;
+	if (request.getParameter("nowPage") != null) {
+		nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,11 +58,11 @@
             <col width="20%;">
             <col width="">
             </colgroup>
-            <tbody><tr>
+           <tbody><tr>
                <td>회원관리
                   <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
-                     <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
+                     <a href="/account/accountList.sf?mem_id=<%=mem_id%>">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록
@@ -54,14 +72,14 @@
                </td>
                <td>내 상품관리
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
-                     <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
+                     <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
                      <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
                      <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
-                     <a href="/product/productDelivery.sf?mem_id=<%=mem_id%>">상품 배송 정보</a></p>
+                     <a href="/testview/productDelivery.jsp">상품 배송 정보</a></p>
                </td>
                <td>고객센터
                   <p><a href="/testview/notice.jsp">공 지 사 항</a><br>
@@ -74,19 +92,7 @@
         <li>
       <table class="mypage_table_head">
          <caption>승인 대기 상품 목록 <img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong>0</strong> 건의 자료가 조회되었습니다.</span>
-            <span class="mth_right">
-               <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
-                  <div id="select_boxview">
-                     <label for="color">30개씩 보기</label>
-                     <select name="search_limit" title="select color">
-                        <option value="30" selected="selected">30개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
-                        <option value="100">100개씩 보기</option>
-                     </select>
-                  </div>
-               </form>
-            </span>
+            <span class="mth_left">총 <strong><%=totalsize %></strong> 건의 자료가 조회되었습니다.</span>
          </caption>
          <colgroup>
             <col width="200px;">
@@ -101,9 +107,12 @@
                <td>상품 코드</td>
                <td>상품 이름</td>
                <td>상품 설명</td>
-               <td>품질보증서</td>
+               <td>등록일자</td>
             </tr>
       </table>
+<%
+   if(totalsize >0){
+%>      
       <table class="mypage_table">
          <colgroup>
             <col width="200px;">
@@ -112,17 +121,25 @@
             <col width="">
             <col width="120px;">
          </colgroup>
+<%
+   for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+       if(totalsize==i) break;
+       Map<String,Object> rMap = authoritywaiting.get(i);
+%>         
             <tr>
-               <td>승인 대기 중</td>
-               <td>678N28</td>
-               <td>2028칫솔</td>
-               <td>kosmo 52th를 함께한 2080칫솔</td>
-               <td>무</td>
+               <td><%=rMap.get("STATUS") %></td>
+               <td><%=rMap.get("ITEM_CODE") %></td>
+               <td><%=rMap.get("PRODUCT_NAME") %></td>
+               <td><%=rMap.get("PRODUCT_DETAIL") %></td>
+               <td><%=rMap.get("REGISTERTIME") %></td>
             </tr>
+<%
+   }
+%>               
          </tbody>
       </table>
 <%
-
+   } else {
 %>
        <table class="mypage_table">
          <colgroup>
@@ -139,7 +156,7 @@
          </tbody>
       </table>
 <%
-
+   }
 %>
    </li>
    <li class="paging"><table border="0" cellpadding="0"
@@ -147,13 +164,14 @@
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td>
+<%
+   String pagePath = "/product/authority.sf?mem_id="+mem_id+"&";
+   PageBar pb = new PageBar(numPerPage,totalsize,nowPage,pagePath);
+   String pagination = pb.getPageBar();
+   out.print(pagination);
+%>      
+            </td>
             </tr>
          </tbody>
       </table>

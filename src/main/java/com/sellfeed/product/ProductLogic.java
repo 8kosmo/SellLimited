@@ -1,6 +1,7 @@
 package com.sellfeed.product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -202,4 +203,54 @@ public class ProductLogic {
 		deliveryList = productDao.deliveryList(pMap);
 		return deliveryList;
 	}
+
+	public List<Map<String, Object>> mainViewTOP() {
+		List<Map<String, Object>> TOP6List = null;
+		int start = 1;
+		int end = 6;
+		Map<String, Object> pMap = new HashMap<>();
+		pMap.put("start", start);
+		pMap.put("end",end);
+		TOP6List = productDao.mainViewTOP(pMap);
+		return TOP6List;
+	}
+
+	public List<Map<String, Object>> auctionTOP6List() {
+		List<Map<String, Object>> auctionTOP6List = null;
+		int start = 1;
+		int end = 6;
+		Map<String, Object> pMap = new HashMap<>();
+		pMap.put("start", start);
+		pMap.put("end", end);
+		auctionTOP6List = productDao.auctionTOP6List(pMap);
+		return auctionTOP6List;
+	}
+	public List<Map<String, Object>> authoritywaiting(Map<String, Object> pMap) {
+		List<Map<String, Object>> authoritywaiting = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		int start = 0;
+		int end = 0;
+		int total = productDao.getPermissionTotal();
+		if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
+			nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+		}
+		if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+		}
+		if(nowPage>0) {
+			start = ((nowPage-1)*pageSize)+1;
+			end = nowPage*pageSize;
+			pMap.put("start", start);
+			if(end>=total) {
+				pMap.put("end", total);
+			} else {
+				pMap.put("end", end);
+			}
+		}
+		logger.info("시작 ROW : "+start);
+		logger.info("끝 ROW : "+end);
+		authoritywaiting = productDao.authoritywaiting(pMap);
+		return authoritywaiting;
+	   }
 }

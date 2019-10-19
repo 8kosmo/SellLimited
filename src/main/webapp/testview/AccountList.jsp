@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+ <%@page import="com.sellfeed.util.PageBar"%>
+ <%
+List<Map<String,Object>> rList = 
+      (List<Map<String,Object>>)request.getAttribute("rList");
+   int size=0;
+   if(rList!=null){
+    size = rList.size();
+   }
+      /* 페이지네이션 추가 */
+      int numPerPage = 10;
+      int nowPage = 0;
+      if(request.getParameter("nowPage")!=null){
+         nowPage = Integer.parseInt(request.getParameter("nowPage"));
+      }
+   
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +61,7 @@
                <td>회원관리
                   <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
-                     <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
+                     <a href="/account/accountList.sf?mem_id=<%=mem_id%>">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록
@@ -54,7 +71,7 @@
                </td>
                <td>내 상품관리
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
-                     <a href="/testview/readyProductList.jsp">승인 대기 상품</a><br>
+                     <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
                      <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
                </td>
@@ -74,22 +91,10 @@
          <li>
       <table class="mypage_table_head">
          <caption>계좌 거래내역 <img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong>0</strong> 건의 자료가 조회되었습니다.</span>
-            <span class="mth_right">
-               <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
-                  <div id="select_boxview">
-                     <label for="color">30개씩 보기</label>
-                     <select name="search_limit" title="select color">
-                        <option value="30" selected="selected">30개씩 보기</option>
-                        <option value="50">50개씩 보기</option>
-                        <option value="100">100개씩 보기</option>
-                     </select>
-                  </div>
-               </form>
-            </span>
+            <span class="mth_left">총 <strong><%= size %></strong> 건의 자료가 조회되었습니다.</span>
          </caption>
          <colgroup>
-            <col width="120px;">
+            <col width="180px;">
             <col width="">
             <col width="200px;">
             <col width="200px;">
@@ -105,23 +110,53 @@
       </table>
 <%
 
+if(size>0){
+   
 %>
       <table class="mypage_table_sec">
          <colgroup>
-            <col width="120px;">
+            <col width="180px;">
             <col width="">
             <col width="200px;">
             <col width="200px;">
          </colgroup>
          <tbody>
-            <tr>
+<%
+      for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+          if(size==i) break;
+         Map<String,Object> rMap = rList.get(i);
+
+%>
+         <tr>
+            <td><%= rMap.get("ACCT_DEALDATE") %></td>
+            <td><%= rMap.get("TRADE_DETAIL") %></td>
+            <td><%= rMap.get("TRADE") %></td>
+            <td><%= rMap.get("TRADE_AMMOUNT") %></td>
+         </tr>
+<%
+      }
+%>
+      </tbody>
+      </table>
+<%
+      }else{
+%>
+       <table class="mypage_table">
+               <colgroup>
+                  <col width="180px;">
+                  <col width="">
+                  <col width="200px;">
+                  <col width="200px;">
+               </colgroup>
+               <tbody>
+               <tr>
                <td height="200" colspan="8">결제내역이 존재 하지 않습니다.</td>
-            </tr>
+             </tr>
          </tbody>
       </table>
    </li>
 <%
-
+   }
 %>
       <table class="mypage_table_sec">
          <colgroup>
@@ -133,7 +168,7 @@
             <tr>
                <td></td>
                <td><b>현재 보유 잔액</b></td>
-               <td><b>100000원</b></td>
+               <td><b><%=nowBalance %>원</b></td>
             </tr>
          </tbody>
       </table>
@@ -142,13 +177,14 @@
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="http://japanstyle.co.kr/mypage/cash_list/1?search_type=&amp;st_date=&amp;end_date=&amp;search_limit=30"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td> 
+ <%
+                  String pagePath = "/account/accountList.sf?mem_id="+mem_id+"&";
+                  PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
+                  String pagination = pb.getPageBar();
+                  out.print(pagination);
+%>   
+
             </tr>
          </tbody>
       </table>
