@@ -99,12 +99,12 @@
 	<tbody>
 		<tr><td height="46"></td>
 		</tr>
-		<tr><td id="contents" style="background:black;"><span class="omahabeach">시드 모집 상품</span></td>
+		<tr><td id="contents"><span class="omahabeach" style="color: white;background:#614190;margin-left: 1px;">시드 모집 상품</span></td>
 		</tr>
 		<tr>
 			<!-- 실제 상품들 나오기 시작하는 부분 전체 -->
 			<td id="contents1" style="display: table-cell;">
-				<!-- 총 상품, 몇개씩 상품볼건지 콤보박스 부분 -->
+				<!-- 총 상품, 몇개씩 상품볼건지 콤보박스 부분 --><br>
 				총<strong><%=totalsize %></strong>개의 상품이 검색 되었습니다.
 				<!-- 상품박스들 전체-->
 				<!-- 여기안에 리스트들을 반복처리로 html코드로 찍어서 뿌려야 한다.-->
@@ -176,15 +176,18 @@
 				}//end of else
 %>
 					</ul>
-				<!-- 줄사이에 간격주는거 -->
-				<div style="height: 30px;"></div>
 			</div>
-
+<%
+				if(totalsize!=0){
+%>
 <!-- 페이지네이션 -->
+				<!-- 줄사이에 간격주는거 -->
 			<li class="paging">
 				<table border="0" cellpadding="0" cellspacing="0" class="paging_comm" align="center"
 			      style="margin: 0 auto;">
 					<tbody>
+						<tr><td height="30"/>
+						</tr>
 		   				<tr>
 			      			<td>
 <%
@@ -199,20 +202,24 @@
 			    	</tbody>
 				 </table>
 			 </li>
+<%
+				}
+%>
 			</td>
 		</tr>
-		<tr><td height="5">&nbsp;</td>
+		<tr><td height="60px">&nbsp;</td>
 		</tr>
 <!-- 경매진행 중 리스트 -->
-		<tr><td id="contents" style="background:black;"><span class="omahabeach">경매 모집 상품</span></td>
+		<tr><td id="contents"><span class="omahabeach" style="color: white;background:#614190;margin-left: 1px;">경매 진행 상품</span></td>
+		</tr>
 		<tr>
 			<!-- 실제 상품들 나오기 시작하는 부분 전체 -->
 			<td id="contents2" style="display: table-cell;">
-				<!-- 총 상품, 몇개씩 상품볼건지 콤보박스 부분 -->
+				<!-- 총 상품, 몇개씩 상품볼건지 콤보박스 부분 --><br>
 				총<strong><%=totalsize1 %></strong>개의 상품이 검색 되었습니다.
 				<!-- 상품박스들 전체-->
 				<!-- 여기안에 리스트들을 반복처리로 html코드로 찍어서 뿌려야 한다.-->
-				<div id="itemStatusSeedList" class="twice" style="text-align:left;">
+				<div id="itemStatusAuctionList" class="twice" style="text-align:left;">
 					<!-- 상품 한 줄 -->
 					<!-- 상품 5개에 한번씩 반복 -->
 					<ul>
@@ -280,15 +287,19 @@
 				}//end of else
 %>
 					</ul>
+			</div>
+<%
+				if(totalsize1!=0){
+%>
+<!-- 페이지네이션 -->
 				<!-- 줄사이에 간격주는거 -->
 				<div style="height: 30px;"></div>
-			</div>
-
-<!-- 페이지네이션 -->
 			<li class="paging">
 				<table border="0" cellpadding="0" cellspacing="0" class="paging_comm" align="center"
 			      style="margin: 0 auto;">
 					<tbody>
+						<tr><td height="30"/>
+						</tr>
 		   				<tr>
 			      			<td>
 <%
@@ -303,9 +314,12 @@
 			    	</tbody>
 				 </table>
 			 </li>
+<%
+				}
+%>
 			</td>
 		</tr>
-		<tr><td height="5">&nbsp;</td></tr>
+		<tr><td height="5px">&nbsp;</td></tr>
 	</tbody>
 </table> 
 </div>

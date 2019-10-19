@@ -59,14 +59,6 @@
       select seq_acct_number.nextval from dual
    </select>
    
-   <select id="accountList" parameterType="map" resultType="map" >
-      SELECT acct_balance, acct_dealdate, tr_ammount, trade
-           ,tr_detail,tr_target
-          FROM account
-         WHERE mem_id=#{mem_id}
-           AND hidden='no'
-   </select>
-   
    <select id="accountNowBalance" parameterType="string" resultType="int" >
       SELECT NVL(acct_balance,0) FROM account d,
       (SELECT mem_id, MAX(r_num) r_num FROM account GROUP BY mem_id) c
@@ -193,4 +185,19 @@
 		                       AND STATUS = '배송도착'
 		                   )
    </update>
+    <select id="getAccountList" parameterType="string" resultType="int">
+     SELECT COUNT(TRADE_DETAiL)
+          FROM account
+         WHERE mem_id= #{mem_id}
+           AND hidden = 'no'
+         ORDER BY acct_dealdate DESC
+   
+   </select>
+      <select id="accountList" parameterType="map" resultType="map">
+         SELECT acct_dealdate, trade_detail, trade, trade_ammount
+        FROM account
+       WHERE mem_id= #{mem_id}
+         AND hidden = 'no'
+       ORDER BY acct_dealdate DESC
+      </select>
 </mapper> 

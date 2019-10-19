@@ -25,11 +25,22 @@ public class AccountController {
    public AccountLogic accountLogic = null;
    
    @GetMapping(value="/accountList.sf")
-   public String accountList(@RequestParam Map<String, Object> pMap) {
+   public String accountList(@RequestParam Map<String, Object> pMap,Model mod) {
       logger.info("==========>accountList 호출 성공");
       List<Map<String,Object>> rList = null;
+      int nowPage = 0;
+      int pageSize = 0;
+      if(pMap.get("nowPage")!=null) {
+            nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+       }
+       if(pMap.get("pageSize")!=null) {
+           pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+       }
+     pMap.put("nowPage",nowPage);
+     pMap.put("pageSize",pageSize);
       rList=accountLogic.accountList(pMap);
-      return "redirect:../index.jsp";
+      mod.addAttribute("rList",rList);
+      return "forward:/testview/AccountList.jsp";
    }
    
    @GetMapping(value="/accountIns.sf")
@@ -116,4 +127,5 @@ public class AccountController {
 	    accountLogic.auctionConfirm(pMap);
 	    return "redirect:../product/productDelivery.sf?mem_id="+mem_id;
    }
+   
 }

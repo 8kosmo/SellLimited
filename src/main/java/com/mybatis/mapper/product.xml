@@ -396,5 +396,10 @@
       	  WHERE rno BETWEEN #{start} and #{end}
        </if>
    </select>
-
+   <select id="authoritywaiting" parameterType="map" resultType="map">
+	   SELECT status, item_code,product_name,product_detail,registertime
+	   FROM SALE_ITEM
+	   WHERE status = '승인대기'
+	   AND mem_id = #{mem_id}
+   </select>
 </mapper>

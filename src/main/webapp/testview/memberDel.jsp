@@ -44,7 +44,7 @@
                <td>회원관리
                   <p><a href="/member/memberList.sf?mem_id=<%=mem_id%>">회원 정보수정</a><br>
                      <a href="/testview/memberDel.jsp">회원 탈퇴</a><br>
-                     <a href="/testview/AccountList.jsp">계좌 거래내역</a><br>
+                     <a href="/account/accountList.sf?mem_id=<%=mem_id%>">계좌 거래내역</a><br>
                   </p>
                </td>
                <td>관심목록

@@ -51,7 +51,7 @@ public class MemberController {
 		logger.info("=================>login 호출 성공");
 		memberLogic.login(pMap);
 		mod.addAttribute("mem_name",pMap.get("mem_name"));
-		return "forward:/testview/mainView.jsp";
+		return "redirect:/product/authoritywaiting.sf";
 	}
 	
    @PostMapping(value="memberUpd.sf")

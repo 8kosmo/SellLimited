@@ -19,7 +19,7 @@
 		 	 <a href="#">고객불만 처리센터</a>
 		 <!-- 푸터 첫번째줄 밑에 몸통부분 살짝 회색부분 -->
 		 <li class="bm_body">
-		 	<span class="bb_left"><img src="/images/japanstyle_files/logo_black.png"></span>
+		 	<span class="bb_left"><img style="width:195px;margin-top:0px;" src="/images/banner/newlogo.png"></span>
 		 	<span class="bb_right" style="color:#b2b2b2;font-size:8pt;">
 		 		상호 : <strong>(주)SellLimited</strong> <span class="bmslash">|</span>
 		 		사업자등록번호 : 111-22-3333 <span class="bmslash">|</span>

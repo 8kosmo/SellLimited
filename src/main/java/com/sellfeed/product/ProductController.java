@@ -332,4 +332,34 @@ public class ProductController {
 		mod.addAttribute("deliveryList", deliveryList);
 		return "forward:../testview/productDelivery.jsp";
 	}
+	//mainView
+	@GetMapping(value="mainViewTOP6.sf")
+	public String mainViewTOP(Model mod) {
+		List<Map<String, Object>> TOP6List = null;
+		TOP6List = productLogic.mainViewTOP();
+		mod.addAttribute("TOP6List", TOP6List);
+		List<Map<String, Object>> auctionTOP6List = null;
+		auctionTOP6List = productLogic.auctionTOP6List();
+		mod.addAttribute("auctionTOP6List", auctionTOP6List);
+		return "forward:../testview/mainView.jsp";
+	}
+	@GetMapping(value="/authoritywaiting.sf") 
+	public String authoritywaiting(Model mod, @RequestParam Map<String,Object> pMap) {
+		List<Map<String,Object>> authoritywaiting = null;
+		int nowPage = 0;
+		int pageSize = 0;
+		if(pMap.get("nowPage")!=null) {
+			nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+		}
+		if(pMap.get("pageSize")!=null) {
+			pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+	     }
+		logger.info("nowPage :"+nowPage);
+		logger.info("pageSize :"+pageSize);
+		pMap.put("nowPage",nowPage);
+		pMap.put("pageSize",pageSize);
+		authoritywaiting = productLogic.authoritywaiting(pMap);
+		mod.addAttribute("authoritywaiting", authoritywaiting);
+		return "forward:../testview/readyProductList.jsp";
+   }
 }

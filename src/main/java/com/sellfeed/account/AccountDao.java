@@ -120,5 +120,9 @@ public class AccountDao {
 		logger.info("CONFIRM UPDATE성공");
 		return result;
 	}
-
+	public int getAccountList(String mem_id) {
+		int total = 0;
+		total = sqlSessionTemplate.selectOne("getAccountList", mem_id);
+		return total;
+	}
 }

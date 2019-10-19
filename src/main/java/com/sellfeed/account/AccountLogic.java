@@ -40,11 +40,34 @@ public class AccountLogic {
    }
    
    public List<Map<String, Object>> accountList(Map<String, Object> pMap) {
-      logger.info("=================>accountList 호출 성공");
-      List<Map<String,Object>> rList = null;
-      rList = accountDao.accountList(pMap);
-      return rList;
-   }
+	      logger.info("=================>accountList 호출 성공");
+	      List<Map<String,Object>> rList = null;
+	      int nowPage = 0;
+	      int pageSize = 0;
+	      int start = 0;
+	      int end = 0;
+	      String mem_id=pMap.get("mem_id").toString();
+	      logger.info("==========================>"+mem_id);
+	      int total = accountDao.getAccountList(mem_id);
+	      if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
+	         nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+	      }
+	      if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
+	         pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+	      }
+	      if(nowPage>0) {
+	         start = ((nowPage-1)*pageSize)+1;
+	         end = nowPage*pageSize;
+	         pMap.put("start", start);
+	         if(end>=total) {
+	            pMap.put("end", total);
+	         } else {
+	            pMap.put("end", end);
+	         }
+	      }
+	      rList = accountDao.accountList(pMap);
+	      return rList;
+	   }
    
    public Map<String, Object> accountIns(Map<String,Object> pMap) {
       int result=0;
