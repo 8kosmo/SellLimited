@@ -104,12 +104,7 @@ public class RestSellFeedController {
 		return result;
 		
 	}
-	@GetMapping("/nowPoint.sf")
-	   public String nowPoint(@RequestParam Map<String, Object> pMap) {
-	      String result="";
-	      result=accountLogic.nowPoint(pMap);
-	      return result;
-	   }
+	
 	@PostMapping(value="/login.sf")
 	public String login(@RequestParam Map<String,Object> pMap,HttpSession session) {
 		logger.info("=================>login 호출 성공");
@@ -154,8 +149,6 @@ public class RestSellFeedController {
 	public String accountNowBalance(@RequestParam String mem_id){
 		logger.info("==========>accountBalance 호출 성공");
 		int account_balance = accountLogic.accountNowBalance(mem_id);
-		logger.info("RestController"+account_balance+"원");
-		
 		logger.info("RestController"+account_balance+"원");
 		String result = Integer.toString(account_balance);
 		return result;

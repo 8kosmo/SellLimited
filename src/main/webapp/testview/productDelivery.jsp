@@ -166,7 +166,7 @@
 				}else if(rMap.get("STATUS").equals("배송도착")){
 %>
 				<td><img width="30%" src="/images/integ/20190919_3.png"><br>배송도착</td>
-   				<td><a href="/account/auctionConfirm.sf?manager=manager&mem_id=<%=mem_id%>&trade_ammount=<%=rMap.get("FINAL_PRICE")%>&bid_code=<%=rMap.get("BID_CODE") %>"><img src="/images/integ/20190919_4.png"><br>수취확인</a></td>
+   				<td><a href="/auction/auctionConfirm.sf?manager=manager&mem_id=<%=mem_id%>&trade_ammount=<%=rMap.get("FINAL_PRICE")%>&bid_code=<%=rMap.get("BID_CODE") %>"><img src="/images/integ/20190919_4.png"><br>수취확인</a></td>
 <%
 				}
 		}//end of for

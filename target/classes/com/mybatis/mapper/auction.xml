@@ -12,16 +12,16 @@
 		AND AUCTION_INFO.BID_CODE = SEED.BID_CODE(+)
 	</select> 
 	<select id="endAuctionList" resultType="map">
-	SELECT mem_id, status, start_price, auct_progress.bid_code, auct_startdate||'~'||auct_enddate auction_period, a.end_price, bidder_id
-    FROM sale_item, auct_progress, auction_info,
-        (SELECT bid_code, MAX(final_price) end_price FROM bid_log GROUP BY bid_code)a
-        ,(SELECT bidder_id, MAX(final_price) end_price FROM bid_log GROUP BY bidder_id)b
-    WHERE status = '경매진행중'
-    AND sale_item.item_code = auction_info.item_code
-    AND auction_info.bid_code = auct_progress.bid_code
-    AND auct_enddate <![CDATA[<]]> TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
-    AND auct_progress.bid_code = a.bid_code(+)
-    AND a.end_price = b.end_price(+)
+    SELECT sale_item.mem_id,bid_log.bid_code,start_price, bid_log.final_price, bid_log.bidder_id, bid_log.bid_w_bidder, auct_startdate||'~'||auct_enddate auction_period 
+    FROM bid_log,auct_progress,sale_item,(SELECT bid_code, MAX(final_price) end_price  
+                        FROM bid_log 
+                        WHERE bid_w_bidder is null 
+                        GROUP BY bid_code)a
+    WHERE bid_log.bid_code = auct_progress.bid_code
+    AND bid_w_bidder is null
+    AND SALE_ITEM.ITEM_CODE = auct_progress.bid_code
+    AND final_price in a.end_price
+    AND a.bid_code = bid_log.bid_code
 	</select>
 	<insert id="auctionIns" parameterType="map">
 		INSERT INTO AUCT_PROGRESS (bid_code, auct_startdate, auct_enddate)

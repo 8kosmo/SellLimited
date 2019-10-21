@@ -12,6 +12,5 @@
 		<mapper resource="com/mybatis/mapper/aucLog.xml" />
 		<mapper resource="com/mybatis/mapper/seed.xml" />
 		<mapper resource="com/mybatis/mapper/auction.xml" />
-		<mapper resource="com/mybatis/mapper/aucProc.xml" />
 	</mappers>
 </configuration>

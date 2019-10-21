@@ -36,7 +36,7 @@ public class AuctionLogic {
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
 	@Pointcut(value="excution(* com.sellfeed.auction.*Logic.*(..)")
 	public void auctionIns(Map<String, Object> pMap) {
-		logger.info("###########################################{auctions호출 성공///Logic}");
+		logger.info("auctionLogic auctionIns호출 성공");
 		int step1, step2 =0; 
 		try {
 			step1=auctionDao.auctionIns(pMap);
@@ -60,13 +60,11 @@ public class AuctionLogic {
 			//입찰 패찰 UPDATE
 			aucLogDao.aucWinner(pMap);
 			//루저 리스트
-			logger.info("패찰자 리스트가져요기");
 			looserList = aucLogDao.LooserList(pMap);
-			logger.info("패찰자 리스트 : "+looserList);
 			//패찰자 보증금봔환
-			logger.info("패찰자 보증금 반환");
+			logger.info("패찰자 리스트"+looserList);
 			accountDao.returnDeposit(looserList);
-			logger.info("성공");
+			logger.info("패찰자 보증금 반환 완료");
 			//경매진행중=> 배송준비중
 			productDao.auct_end(pMap);
 			result = 1;

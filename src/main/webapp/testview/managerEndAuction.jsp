@@ -146,10 +146,10 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
                <td><%=rMap.get("MEM_ID") %></td>
                <td><%=rMap.get("AUCTION_PERIOD") %></td>
                <td><%=rMap.get("START_PRICE") %></td>
-               <td><%=rMap.get("END_PRICE") %></td>
+               <td><%=rMap.get("FINAL_PRICE") %></td>
                <td><%=rMap.get("BIDDER_ID") %></td>
                <td>
-               <button onclick="javascript: endAuction('<%=rMap.get("BID_CODE")%>','<%=rMap.get("END_PRICE") %>','<%=rMap.get("BIDDER_ID") %>')" type="button">경매 종료</button>
+               <button onclick="javascript: endAuction('<%=rMap.get("BID_CODE")%>','<%=rMap.get("FINAL_PRICE") %>','<%=rMap.get("BIDDER_ID") %>')" type="button">경매 종료</button>
                </td>
             </tr>
 <%

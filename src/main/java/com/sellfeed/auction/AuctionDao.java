@@ -21,12 +21,10 @@ public class AuctionDao {
 		return rList;
 	}
 	public int auctionIns(Map<String, Object> pMap) {
-		logger.info("###########################################{auctionIns호출 성공}///DAO");
 		int result=sqlSessionTemplate.update("auctionIns",pMap);
 		return result;
 	}
 	public int statusAuction(Map<String,Object> pMap) {
-		logger.info("###########################################{statusAuction호출 성공}///DAO");
 		int result=sqlSessionTemplate.update("statusAuction",pMap);
 		return result;
 	}

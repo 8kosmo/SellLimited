@@ -34,12 +34,11 @@
       				#{bid_code, mode=IN, javaType=VARCHAR, javaType=java.lang.String}
       )}
    </select>
-   <select id="looserList" parameterType="map" resultType="map">
-   		SELECT bidder_id 
-   		FROM bid_log   
-   		WHERE bidder_id !=(SELECT bidder_id FROM bid_log WHERE bid_w_bidder = '낙찰' AND bid_code = #{bid_code}) 
-   		AND BID_CODE = #{bid_code}   
-   		GROUP BY bidder_id
+	<select id="looserList" parameterType="map" resultType="map">
+         SELECT bidders_id FROM seed
+      WHERE bidders_ID != (SELECT bidder_id FROM bid_log WHERE bid_w_bidder = '낙찰' AND bid_code = #{bid_code})
+      AND BID_CODE = #{bid_code}   
+      GROUP BY bidders_id
    </select>
    
    <select id="myBid" parameterType="map" resultType="int">

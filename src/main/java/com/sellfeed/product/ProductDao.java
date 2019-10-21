@@ -88,9 +88,7 @@ public class ProductDao {
    
    public List<Map<String, Object>> auctionDetail(Map<String, Object> pMap) {
          List<Map<String,Object>> prodDetailList = new ArrayList<>();
-            logger.info("Dao | productDetailList parameter: "+pMap);
          prodDetailList = sqlSessionTemplate.selectList("auctionDetail",pMap);
-         	logger.info("Dao | productDetailList return: "+prodDetailList);
          return prodDetailList;
          }
    

@@ -38,9 +38,8 @@ public class AccountDao {
    }
    
    public int accountIns(Map<String, Object> pMap) {
-      logger.info("=================>accountIns 호출 성공");
+      logger.info("=================> Dao accountIns 호출 성공");
       int result=0;
-      logger.info("accountIns : "+pMap);
       result = sqlSessionTemplate.update("accountIns",pMap);
       return result;
    }
@@ -50,20 +49,6 @@ public class AccountDao {
       String acct_number = "";
       acct_number = sqlSessionTemplate.selectOne("getAcct_number");
       return acct_number;
-   }
-
-   public int accountHidden(Map<String, Object> pMap) {
-      logger.info("=================>accountHidden 호출 성공");
-      int result=0;
-      result = sqlSessionTemplate.update("accountHidden",pMap);
-      return result;
-   }
-   
-   public String nowPoint(Map<String, Object> pMap) {
-       logger.info("===================>nowPoint 호출 성공");
-       String result = "";
-       result = sqlSessionTemplate.selectOne("nowPoint",pMap);
-       return result;
    }
 
    public int accountCharge(Map<String, Object> pMap) {
@@ -99,7 +84,7 @@ public class AccountDao {
 		int result = 0;
 		result = sqlSessionTemplate.insert("returnDeposit",looserList);
 	}
-		public int getMngPermissionTotal() {
+	public int getMngPermissionTotal() {
 		int total = 0;
 		total = sqlSessionTemplate.selectOne("getMngPermissionTotal");
 		return total;

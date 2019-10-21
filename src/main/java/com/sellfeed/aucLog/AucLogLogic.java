@@ -14,12 +14,6 @@ public class AucLogLogic {
 	Logger logger = LoggerFactory.getLogger(AucLogLogic.class);
 	@Autowired
 	public AucLogDao aucLogDao = null;
-	public List<Map<String, Object>> aucLogList(Map<String, Object> pMap) {
-		List<Map<String,Object>> aucList = null;
-		logger.info("Logic| aucLogList 호출성공");
-		aucList=aucLogDao.aucLogList(pMap);
-		return aucList;
-	}
 	
 	public int aucLogIns(Map<String,Object> pMap) {
 		logger.info("Logic| aucLogIns 호출성공 parameter: "+pMap);

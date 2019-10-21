@@ -75,19 +75,13 @@ public class AccountLogic {
       String trade = pMap.get("trade").toString();                           			// 입금 or 출금
       int acct_balance = accountDao.accountNowBalance(pMap.get("mem_id").toString());   // 현재 잔액
       int trade_ammount = Integer.parseInt(pMap.get("trade_ammount").toString());       // 거래할 금액
-      //int charge_amount = Integer.parseInt(pMap.get("charge_amount").toString());
       //거래 종류에 따라  조회한 잔액(line:50)을 조작하여 pMap에 다시 넣어줌.=> SQL문으로 잔액을 계산할 필요가 없어짐(기존 방법으로는 차감도 불가능했음)
-      logger.info("1 : "+acct_balance);
-      logger.info("1-1 trade_ammount : "+trade_ammount);
       if(trade.equals("입금")) {
-    	  logger.info("입금이다");
             acct_balance = acct_balance+trade_ammount;
          } 
          else if(trade.equals("출금")) {
-        	 logger.info("출금이다");
             acct_balance = acct_balance-trade_ammount;
          }
-      logger.info("2 : "+acct_balance);
       pMap.put("acct_balance",acct_balance);
       result=accountDao.accountIns(pMap);
       Map<String,Object> rMap = new HashMap<>();
@@ -96,19 +90,6 @@ public class AccountLogic {
       return rMap;
    }
    
-   public int accountHidden(Map<String, Object> pMap) {
-      logger.info("=================>accountHidden 호출 성공");
-      int result = 0;
-      result = accountDao.accountHidden(pMap);   
-      return result;
-   }
-   
-   public String nowPoint(Map<String, Object> pMap) {
-       logger.info("=================>nowPoint 호출 성공");
-        String result = accountDao.nowPoint(pMap);
-        return result;
-   }
-
    public int accountNowBalance(String mem_id) {
       logger.info("=================>NowBalance 호출 성공");
       int acct_balance = 0;
@@ -122,7 +103,6 @@ public class AccountLogic {
       logger.info("=================>accountCharge 호출 성공");
       logger.info(pMap.toString());
       int result = 0;
-      pMap.put("charge_code"," ");
       result = accountDao.accountCharge(pMap);
       return result;
    }
@@ -136,31 +116,6 @@ public class AccountLogic {
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="execution(* com.sellfeed.account.*Logic.*(..)")
    public int managerPermissionAccount(String charge_code, Map<String, Object> pMap) {
-      int nowPage = 0;
-      int pageSize = 0;
-      int start = 0;
-      int end = 0;
-      int total = accountDao.getMngPermissionTotal();
-      if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
-         nowPage = Integer.parseInt(pMap.get("nowPage").toString());
-      }
-      if(Integer.parseInt(pMap.get("pageSize").toString())>0) {
-         pageSize = Integer.parseInt(pMap.get("pageSize").toString());
-      }
-      if(nowPage>0) {
-         start = ((nowPage-1)*pageSize)+1;
-         end = nowPage*pageSize;
-         pMap.put("start", start);
-         if(end>=total) {
-            pMap.put("end", total);
-         } else {
-            pMap.put("end", end);
-         }
-      }
-      logger.info("시작 ROW : "+start);
-      logger.info("끝 ROW : "+end);
-      
-      
      int result = 0;
       try {
           result = accountDao.managerPermissionAccount(charge_code);
@@ -201,11 +156,8 @@ public class AccountLogic {
 		}
 		try {
 			step1 = accountDao.auctionConfirmManagerIns(pMap);
-			logger.info("관리자 인출성공여부 : "+step1);
 			step2 = accountDao.auctionConfirmSellerIns(pMap);
-			logger.info("판매자 입금성공여부 : "+step2);
 			step3 = accountDao.auctionConfirmUpdate(pMap);
-			logger.info("판매완료 경매물건 상태변경 수취완료 : "+step3);
 		} catch (DataAccessException e) {
 			throw e;
 		}
