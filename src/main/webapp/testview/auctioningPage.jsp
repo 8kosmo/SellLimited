@@ -77,6 +77,21 @@ $(document).ready(function(){
 }%>   //__________________________________________________________________end of for
 });//_______________________________________________________________________end of ready
 
+function balance(){
+    if(mem_name!='null'&&mem_name!='관리자'){
+       $.ajax({
+            method:'GET'
+           ,url:'/rest/accountBalance.sf?mem_id=<%=mem_id%>'
+           ,data:'data'
+           ,success:function(data){
+              if(<%=nowBalance%>!=data){
+                 location.reload();
+              }
+           }      
+        });
+    }
+ }
+
 function openInNewTab(url) {
         var win = window.open(url, '_blank');
         win.focus();
@@ -419,5 +434,6 @@ function getTime(yy,mm,dd,hh,mi,ss) {
 
 </script>
    <script>getTime(<%=YY%>,<%=MM%>,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>)</script>
+   <script>balance()</script>
 </body>
 </html>

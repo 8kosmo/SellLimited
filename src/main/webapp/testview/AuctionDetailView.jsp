@@ -86,11 +86,25 @@ $(document).ready(function(){
 	    $("#managerLogout").hide();
 	 }
 	});
+//_______________________________________________________________________end of ready
 	 function logout(){
 	    location.href="/common/sessionDel.jsp";   
 	}
+	 function balance(){
+         if(mem_name!='null'&&mem_name!='관리자'){
+            $.ajax({
+                 method:'GET'
+                ,url:'/rest/accountBalance.sf?mem_id=<%=mem_id%>'
+                ,data:'data'
+                ,success:function(data){
+                   if(<%=nowBalance%>!=data){
+                      location.reload();
+                   }
+                }      
+             });
+         }
+      }
 
-//_______________________________________________________________________end of ready
 
 //_________________________________________타임
 function getTime() {
@@ -457,5 +471,6 @@ function getTime() {
 </div>
 <%@ include file="/common/bottom.jsp" %>
    <script>getTime()</script>
+   <script>balance()</script>
 </body>
 </html>

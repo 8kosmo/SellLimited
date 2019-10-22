@@ -117,11 +117,12 @@ public class RestSellFeedController {
 	   }
 	
 	@GetMapping(value="/accountBalance.sf")
-	public String accountNowBalance(@RequestParam String mem_id){
+	public String accountNowBalance(@RequestParam String mem_id, HttpSession session){
 		logger.info("==========>accountBalance 호출 성공");
 		int account_balance = accountLogic.accountNowBalance(mem_id);
 		logger.info("RestController"+account_balance+"원");
 		String result = Integer.toString(account_balance);
+		session.setAttribute("nowBalance", account_balance);
 		return result;
 	}
 	@GetMapping(value="/seedIns.sf") //pMap에는 mem_id 

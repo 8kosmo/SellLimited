@@ -42,6 +42,20 @@
       function logout(){
          location.href="/common/sessionDel.jsp";   
    }
+      function balance(){
+    	  if(mem_name!='null'&&mem_name!='관리자'){
+	    	  $.ajax({
+	              method:'GET'
+	             ,url:'/rest/accountBalance.sf?mem_id=<%=mem_id%>'
+	             ,data:'data'
+	             ,success:function(data){
+	                if(<%=nowBalance%>!=data){
+	                	location.reload();
+	                }
+	             }      
+	          });
+    	  }
+      }
       function total_search() {
     	 var searchWord = $("#SearchWord").val();
     	 if(searchWord == ''){
@@ -162,5 +176,6 @@
       </li>
    </ul>   
 </div><!-- end of main_navi -->
+ <script>balance()</script>
 </body>
 </html>
