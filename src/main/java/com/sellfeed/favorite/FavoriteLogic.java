@@ -39,15 +39,12 @@ public class FavoriteLogic {
             pMap.put("end", end);
          }
       }
-      logger.info("시작 ROW : "+start);
-      logger.info("끝 ROW : "+end);
       favList = favoriteDao.favSellerList(pMap);
       return favList;
    }
-   public int favSellerDel(Map<String, Object> pMap) {
+   public void favSellerDel(Map<String, Object> pMap) {
       logger.info("Logic| favSellerDel 호출성공");
-      Ok = favoriteDao.favSellerDel(pMap);
-      return Ok ;
+      favoriteDao.favSellerDel(pMap);
    }
    public List<Map<String, Object>> favProductList(String mem_id) {
       logger.info("Logic| favProductList 호출성공");

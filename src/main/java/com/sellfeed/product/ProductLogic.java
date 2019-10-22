@@ -37,49 +37,34 @@ public class ProductLogic {
       return result;
    }
 
-   public int productUpd(Map<String, Object> pMap) {
-      logger.info("Logic| Call ProductUpd");
-      result = productDao.productUpd(pMap);
-      return result;
-   }
-   
    public int auct_end(Map<String,Object> pMap) {
 	   logger.info("Logic| Call auct_end");
 	   result = productDao.auct_end(pMap);
 	   return result;
    }
 
-   public int productDel(Map<String, Object> pMap) {
-      // TODO Auto-generated method stub
-      result = productDao.productDel(pMap);
-      return result;
-   }
-   
    @Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
    @Pointcut(value="excution(* com.sellfeed.product.*Logic.*(..)")
    public void managerPermission
    (String item_code, int auct_period) {
       logger.info("Logic| Call managerPermission");
-      int step1, step2 = 0;
       try {
-         step1 = productDao.managerPermission(item_code);//ts step1
-         logger.info("관리자 승인 결과 : "+step1);
-         step2 = productDao.auction_infoIn(item_code);//ts step2
-         logger.info("시드관리 INSERT 결과 : "+step2);
+         productDao.managerPermission(item_code);//ts step1
+         productDao.auction_infoIn(item_code);//ts step2
       } catch (DataAccessException e) {
          throw e;
       }
    }
    
    public List<Map<String, Object>> auctionDetail(Map<String, Object> pMap) {
-       logger.info("Logic | auctionDetail parameter:"+pMap);
+       logger.info("Logic | auctionDetail");
        List<Map<String, Object>> productList = new ArrayList<>();
        productList = productDao.auctionDetail(pMap);
       return productList;
    }
    
    public List<Map<String, Object>> seedDetail(Map<String, Object> pMap) {
-      logger.info("))))))))))))))))))))))))))))"+pMap);
+	   logger.info("Logic | seedDetail");
       List<Map<String, Object>> productList = new ArrayList<>();
       productList = productDao.seedDetail(pMap);
       return productList;
@@ -108,8 +93,6 @@ public class ProductLogic {
 				pMap.put("end", end);
 			}
 		}
-		logger.info("시작 ROW : "+start);
-		logger.info("끝 ROW : "+end);
 		itemStatusList = productDao.itemStatusList(pMap);
 		return itemStatusList;
 	}
@@ -140,8 +123,6 @@ public class ProductLogic {
 				pMap.put("end", end);
 			}
 		}
-		logger.info("시작 ROW : "+start);
-		logger.info("끝 ROW : "+end);
 		itemStatusSeedList = productDao.itemStatusSeedList(pMap);
 		return itemStatusSeedList;
 	}
@@ -169,8 +150,6 @@ public class ProductLogic {
 				pMap.put("end", end);
 			}
 		}
-		logger.info("시작 ROW : "+start);
-		logger.info("끝 ROW : "+end);
 		itemStatusAuctionList = productDao.itemStatusAuctionList(pMap);
 		return itemStatusAuctionList;
 	}
@@ -198,8 +177,6 @@ public class ProductLogic {
 				pMap.put("end", end);
 			}
 		}
-		logger.info("시작 ROW : "+start);
-		logger.info("끝 ROW : "+end);
 		deliveryList = productDao.deliveryList(pMap);
 		return deliveryList;
 	}

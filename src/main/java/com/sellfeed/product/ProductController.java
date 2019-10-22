@@ -36,22 +36,9 @@ public class ProductController {
    @Autowired
    public ProductLogic productLogic = null;
    
-   @GetMapping("/productTest.sf")
-   	 public String produdctTest(Model mod) {
-   		 Map<String,Object> tMap = new HashMap<>();
-   		 tMap.put("이름","유승기");
-   		 List<String> tList = new ArrayList<>();
-   		 tList.add("남자");
-   		 tList.add("20세");
-   		 tMap.put("정보",tList);
-   		 mod.addAttribute("tMap",tMap);
-         return "forward:/testview/collection.jsp";
-   	 }
-   
      @GetMapping("/productDetail.sf")
      public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
        List<Map<String,Object>> productDetailList = new ArrayList<>();
-       logger.info("Controller | productDetail parameter : "+pMap);
        if(pMap.get("status").equals("auction")) {
           productDetailList = productLogic.auctionDetail(pMap);
        }
@@ -60,20 +47,12 @@ public class ProductController {
        }
        Map<String,Object> rMap = new HashMap<>();
        List<String> photoNameList = new ArrayList<>();
-       logger.info("_________________________________"+productDetailList);
        for(int i=0; i<productDetailList.size();i++) {
           rMap = productDetailList.get(i);
           rMap.get("PHOTO_NAME");
           photoNameList.add(rMap.get("PHOTO_NAME").toString());
-          logger.info(")1111)))))))))))))))))))))))))))))"+photoNameList);
        }
        rMap.put("PHOTO_NAME",photoNameList);
-       if(photoNameList.size()>1) {
-          logger.info(")2222)))))))))))))))))))))))))))))"+rMap);
-          List<String> testL = (List)rMap.get("PHOTO_NAME");
-          logger.info(")))333333)))))))"+testL);
-       }
-       logger.info("rMap!!!!!!!!!!!!!!!!!!!!!!!!!!!!: "+rMap);
        mod.addAttribute("rMap",rMap);
        if(pMap.get("status").equals("auction")) {
           return "forward:/testview/AuctionDetailView.jsp";
@@ -96,7 +75,7 @@ public class ProductController {
       fileNullCheck(product_file2);
       fileNullCheck(product_file3);
       result = productLogic.productIns(pMap,itemList);
-      return "redirect:/testview/mainView.jsp";
+      return "redirect:/product/mainViewTOP6.sf";
    }
    public void fileNullCheck(MultipartFile mFile) {
       if(mFile!=null && !mFile.isEmpty()) {
@@ -118,31 +97,7 @@ public class ProductController {
          }
       }
    }
-   @PostMapping("/productUpd.sf")
-   public String productUpd(@RequestParam Map<String,Object> pMap) {
-      logger.info("Controller| Call productUpd");
-      result = productLogic.productUpd(pMap);
-      if(result==1) {
-         path = "정해야함";
-      }else {
-         path = "";         
-      }
-      return path;
-   }
-   
-   @GetMapping("/productDel.sf")
-   public String productDel(@RequestParam Map<String,Object> pMap) {
-      logger.info("Controller| Call productDel");
-      pMap.put("item_code","TUXV7614");
-      result = productLogic.productDel(pMap);
-      if(result==1) {
-         path = "정해야함";
-      }else {
-         path = "";         
-      }
-      return path;
-   }
-   
+
    //승인대기 -> 시드침여중, 트랜잭션 3step
    @GetMapping("/managerPermission.sf")
    public String managerPermission
@@ -186,19 +141,16 @@ public class ProductController {
 		if(pMap.get("sub_category_code")!=null) {
 			sub_category_code = pMap.get("sub_category_code").toString();
 			mod.addAttribute("sub_category_code", sub_category_code);
-			logger.info(sub_category_code);
 		}
 		String sub_category = null;
 		if(pMap.get("sub_category")!=null) {
 			sub_category = pMap.get("sub_category").toString();
 			mod.addAttribute("sub_category", sub_category);
-			logger.info(sub_category);
 		}
 		String keyword = null;
 		if(pMap.get("keyword")!=null) {
 			keyword = pMap.get("keyword").toString();
 			mod.addAttribute("keyword", keyword);
-			logger.info(keyword);
 		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
@@ -210,8 +162,6 @@ public class ProductController {
          if(pMap.get("pageSize")!=null) {
         	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
          }
-		logger.info("nowPage :"+nowPage);
-		logger.info("pageSize :"+pageSize);
 		pMap.put("nowPage",nowPage);
 		pMap.put("pageSize",pageSize);
 		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
@@ -226,8 +176,6 @@ public class ProductController {
          if(pMap.get("pageSize1")!=null) {
         	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
          }
-		logger.info("nowPage1 :"+nowPage1);
-		logger.info("pageSize1 :"+pageSize1);
 		pMap.put("nowPage1",nowPage1);
 		pMap.put("pageSize1",pageSize1);
 		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);
@@ -242,19 +190,16 @@ public class ProductController {
 		if(pMap.get("sub_category_code")!=null) {
 			sub_category_code = pMap.get("sub_category_code").toString();
 			mod.addAttribute("sub_category_code", sub_category_code);
-			logger.info(sub_category_code);
 		}
 		String sub_category = null;
 		if(pMap.get("sub_category")!=null) {
 			sub_category = pMap.get("sub_category").toString();
 			mod.addAttribute("sub_category", sub_category);
-			logger.info(sub_category);
 		}
 		String keyword = null;
 		if(pMap.get("keyword")!=null) {
 			keyword = pMap.get("keyword").toString();
 			mod.addAttribute("keyword", keyword);
-			logger.info(keyword);
 		}
 		/*시드참여중 리스트*/
 		List<Map<String, Object>> itemStatusSeedList = null;
@@ -266,8 +211,6 @@ public class ProductController {
          if(pMap.get("pageSize")!=null) {
         	 pageSize = Integer.parseInt(pMap.get("pageSize").toString());
          }
-		logger.info("nowPage :"+nowPage);
-		logger.info("pageSize :"+pageSize);
 		pMap.put("nowPage",nowPage);
 		pMap.put("pageSize",pageSize);
 		itemStatusSeedList = productLogic.itemStatusSeedList(pMap);
@@ -281,19 +224,16 @@ public class ProductController {
 		if(pMap.get("sub_category_code")!=null) {
 			sub_category_code = pMap.get("sub_category_code").toString();
 			mod.addAttribute("sub_category_code", sub_category_code);
-			logger.info(sub_category_code);
 		}
 		String sub_category = null;
 		if(pMap.get("sub_category")!=null) {
 			sub_category = pMap.get("sub_category").toString();
 			mod.addAttribute("sub_category", sub_category);
-			logger.info(sub_category);
 		}
 		String keyword = null;
 		if(pMap.get("keyword")!=null) {
 			keyword = pMap.get("keyword").toString();
 			mod.addAttribute("keyword", keyword);
-			logger.info(keyword);
 		}
 		/*경매진행중 리스트*/
 		List<Map<String, Object>> itemStatusAuctionList = null;
@@ -305,8 +245,6 @@ public class ProductController {
          if(pMap.get("pageSize1")!=null) {
         	 pageSize1 = Integer.parseInt(pMap.get("pageSize1").toString());
          }
-		logger.info("nowPage1 :"+nowPage1);
-		logger.info("pageSize1 :"+pageSize1);
 		pMap.put("nowPage1",nowPage1);
 		pMap.put("pageSize1",pageSize1);
 		itemStatusAuctionList = productLogic.itemStatusAuctionList(pMap);

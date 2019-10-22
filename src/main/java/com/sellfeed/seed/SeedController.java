@@ -27,27 +27,11 @@ public class SeedController {
    @GetMapping(value="seedList.sf")
    public String seedList(@RequestParam Map<String,Object> pMap) {
       logger.info("============>seedList 호출 성공");
-      
-      
       List<Map<String,Object>> rList = null;
       rList =seedLogic.seedList(pMap);
       return "redirect:../index.jsp";
    }
    
-   @GetMapping(value="seedIns.sf")
-   public String seedIns(@RequestParam Map<String,Object> pMap) {
-      logger.info("============>seedIns 호출 성공");
-      seedLogic.seedIns(pMap);
-      return "redirect:../index.jsp";
-   }
-   
-   @GetMapping(value="bidWin.sf")
-   public String bidWin(@RequestParam Map<String,Object> pMap) {
-      logger.info("============>seedIns 호출 성공");
-      seedLogic.bidWin(pMap);
-      return "redirect:../index.jsp";
-   }
-
    @GetMapping(value="seedInsProduct.sf")
    public String seedInsProduct(@RequestParam Map<String,Object> pMap,Model mod) {
       logger.info("========>seedInsProduct 호출성공");
@@ -60,13 +44,8 @@ public class SeedController {
         if(pMap.get("pageSize")!=null) {
            pageSize = Integer.parseInt(pMap.get("pageSize").toString());
         }
-      //String mem_id=pMap.get("mem_id").toString();
-        logger.info("nowPage :"+nowPage);
-      logger.info("pageSize :"+pageSize);
-      
       pMap.put("nowPage",nowPage);
       pMap.put("pageSize",pageSize);
-
       mySeedList = seedLogic.seedInsProduct(pMap);
       mod.addAttribute("mySeedList",mySeedList);
       return "forward:/testview/seedInsProduct.jsp";

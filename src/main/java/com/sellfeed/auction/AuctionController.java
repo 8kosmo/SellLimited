@@ -106,7 +106,6 @@ public class AuctionController {
 		logger.info("Controller| endAuctionList 호출 성공");
 		List<Map<String,Object>> rList = new ArrayList<>();
 		rList = auctionLogic.endAuctionList();
-		logger.info("rList"+rList);
 		mod.addAttribute("rList",rList);
 		return "forward:/testview/managerEndAuction.jsp";
 	}

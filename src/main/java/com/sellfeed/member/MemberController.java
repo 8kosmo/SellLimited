@@ -21,22 +21,12 @@ public class MemberController {
 	@Autowired
 	public MemberLogic memberLogic = null;
 	
-	@GetMapping(value="idInspection.sf")
-	public String idInspection(@RequestParam Map<String,Object> pMap) {
-		//logger.info("=================>idInspection 호출 성공");
-		//logger.info("=================>p_id"+p_id);
-		pMap.put("mem_id","test");
-		memberLogic.idInspection(pMap);
-		return "redirect:../index.jsp";
-	}
-	
 	@GetMapping(value="memberList.sf")
 	public String memberList(@RequestParam Map<String,Object> pMap, Model mod) {
 		logger.info("=================>memberList 호출 성공");
 		Map<String,Object> rMap = new HashMap<>();
 	    rMap = memberLogic.memberList(pMap);
 		mod.addAttribute("rMap",rMap);
-		logger.info("rrrrrrrr"+rMap);
 		return "forward:/testview/memberUpd.jsp";
 	}
 	@PostMapping(value="memberIns.sf")
@@ -44,14 +34,6 @@ public class MemberController {
 		logger.info("=================>memberIns 호출 성공");
 		memberLogic.memberIns(pMap);
 		return "redirect:/testview/memberIns3.jsp";//수정 예정
-	}
-	
-	@PostMapping(value="login.sf")
-	public String login(@RequestParam Map<String,Object> pMap,Model mod) {
-		logger.info("=================>login 호출 성공");
-		memberLogic.login(pMap);
-		mod.addAttribute("mem_name",pMap.get("mem_name"));
-		return "redirect:/product/authoritywaiting.sf";
 	}
 	
    @PostMapping(value="memberUpd.sf")

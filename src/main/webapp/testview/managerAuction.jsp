@@ -9,10 +9,15 @@
    List<Map<String,Object>> rList = 
          (List<Map<String,Object>>)request.getAttribute("rList");
    int size = 0;
-   int nowPage = 0;
    if(rList != null && rList.size()>0){
       size = rList.size();
-   }  
+   }
+   /* 페이지네이션 추가 */
+   int nowPage = 0;
+   int numPerPage = 10;
+   if(request.getParameter("nowPage")!=null){
+	      nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	   }
 %>
 <!DOCTYPE html>
 <html>
@@ -87,7 +92,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
       </li>
         <li>
       <table class="mypage_table_head">
-         <caption>충전 대기 회원 목록 <img src="/images/integ/20150918_10.png"> 
+         <caption>경매등록 관리 <img src="/images/integ/20150918_10.png"> 
             <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
          </caption>
          <colgroup>
@@ -143,8 +148,9 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
             <col width="100px;">
          </colgroup>
 <%
-      for(int i=0;i<size;i++){
-         Map<String,Object> rMap = rList.get(i);
+      for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+          if(size==i) break;
+           Map<String,Object> rMap = rList.get(i);
 %>
             <tr>
                
@@ -203,7 +209,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
             <tr>
                <td>
 <%
-                  String pagePath = "#";
+                  String pagePath = "/auction/beforeAuctionList.sf?";
                   PageBar pb = new PageBar(10,size,nowPage,pagePath);
                   String pagination = pb.getPageBar();
                   out.print(pagination);

@@ -125,7 +125,7 @@
          </tr>
          <tr>
             <th>이름</th>
-            <td><input type="text" class="input_name" name="realname" value="<%=mem_name%>"  maxlength="30">&nbsp;<span id="notice_name"></span></td>
+            <td><input type="text" class="input_name" disabled="disabled" name="realname" value="<%=mem_name%>"  maxlength="30">&nbsp;<span id="notice_name"></span></td>
          </tr>
          <tr>
             <th>닉네임</th>

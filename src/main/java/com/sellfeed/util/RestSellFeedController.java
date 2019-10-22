@@ -76,35 +76,6 @@ public class RestSellFeedController {
 			}
 		return result;
 	}
-	@GetMapping("/favSellerDel.sf")
-	public String favSellerDel(@RequestParam Map<String,Object> pMap) {
-		String result="";
-		int Ok = 0; 
-		pMap.put("fav_sellerid", "TestId1");
-		pMap.put("mem_id", "uh4ng");
-		Ok = favoriteLogic.favSellerDel(pMap);
-		if(Ok==0) {
-			
-		}else {
-			
-		}
-		return result;
-		
-	}
-	@GetMapping("/favProductDel.sf")
-	public String favProductDel(@RequestParam Map<String,Object> pMap) {
-		String result="";
-		int Ok = 0; 
-		pMap.put("mem_id", "TestId1");
-		pMap.put("prod_code", "YMUW5132");
-		Ok = favoriteLogic.favProductDel(pMap);
-		if(Ok==0) {
-		}else {
-		}
-		return result;
-		
-	}
-	
 	@PostMapping(value="/login.sf")
 	public String login(@RequestParam Map<String,Object> pMap,HttpSession session) {
 		logger.info("=================>login 호출 성공");

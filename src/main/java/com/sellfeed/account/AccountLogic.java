@@ -137,7 +137,6 @@ public class AccountLogic {
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
 	@Pointcut(value="excution(* com.sellfeed.account.*Logic.*(..)")
 	public void auctionConfirm(Map<String, Object> pMap) {
-		int step1, step2, step3 = 0;
 		long trade_ammount = 0;
 		int managerBalance = 0;
 		int sellerBalance = 0;
@@ -155,9 +154,9 @@ public class AccountLogic {
 			pMap.put("sellerBalance", sellerBalance);
 		}
 		try {
-			step1 = accountDao.auctionConfirmManagerIns(pMap);
-			step2 = accountDao.auctionConfirmSellerIns(pMap);
-			step3 = accountDao.auctionConfirmUpdate(pMap);
+			accountDao.auctionConfirmManagerIns(pMap);
+			accountDao.auctionConfirmSellerIns(pMap);
+			accountDao.auctionConfirmUpdate(pMap);
 		} catch (DataAccessException e) {
 			throw e;
 		}

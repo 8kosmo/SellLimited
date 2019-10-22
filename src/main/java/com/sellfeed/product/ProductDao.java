@@ -23,46 +23,26 @@ public class ProductDao {
       logger.info("ProductDao| Call productIns");
       sqlSessionTemplate.selectOne("productIns",pMap);
       String a = pMap.get("result").toString();
-      logger.info(a);
       return result;
    }
    public void fileNameIns(List<Map<String,Object>> itemList) {
       logger.info("ProductDao| Call fileNameIns");
       int i = sqlSessionTemplate.update("fileNameIns",itemList);
    }   
-//★   Update
-   public int productUpd(Map<String, Object> pMap) {
-      result = sqlSessionTemplate.update("productUpd",pMap);
-      return result;
-   }
    public int auct_end(Map<String,Object> pMap) {
 	   result = sqlSessionTemplate.update("auct_end",pMap);
 	   return result;
    }
-//★   Delete
-   public int productDel(Map<String, Object> pMap) {
-      logger.info("ProductDao| Call productDel");
-      Map<String,Object> DelResult = null;
-      DelResult = sqlSessionTemplate.selectOne("productDel",pMap);
-      if(DelResult!=null) {
-         result =1;
-      }
-      return result;
-   }
    
 //관리자 승인 이후 트랜잭션 처리 (String item_code, String mem_id, int auct_period)
-   public int managerPermission(String item_code) {
+   public void managerPermission(String item_code) {
       logger.info("ProductDao| Call managerPermission");
-      int result = 0;
-      result = sqlSessionTemplate.update("managerPermission",item_code);
-      return result;
+      sqlSessionTemplate.update("managerPermission",item_code);
       
    }
-   public int auction_infoIn(String item_code) {
+   public void auction_infoIn(String item_code) {
       logger.info("ProductDao| Call auction_infoIn");
-      int result = 0;
-      result = sqlSessionTemplate.insert("auction_infoIn", item_code);
-      return result;
+      sqlSessionTemplate.insert("auction_infoIn", item_code);
    }
    
    public int auct_progressIns(String item_code, int auct_period) {
@@ -94,14 +74,12 @@ public class ProductDao {
    
    public List<Map<String, Object>> seedDetail(Map<String, Object> pMap) {
       List<Map<String,Object>> prodDetailList = new ArrayList<>();
-      logger.info("))))))))))))))))))))))))))))"+pMap);
       prodDetailList = sqlSessionTemplate.selectList("seedDetail",pMap);
       return prodDetailList;
    }
    
    public List<Map<String,Object>> photoList(Map<String, Object> pMap){
       List<Map<String,Object>> photoList = new ArrayList<>();
-      logger.info("photoList"+photoList);
       photoList = sqlSessionTemplate.selectList("photoList",pMap);
       return photoList;
    }

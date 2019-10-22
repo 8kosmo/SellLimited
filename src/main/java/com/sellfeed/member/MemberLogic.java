@@ -29,15 +29,8 @@ public class MemberLogic {
 
    public String idInspection(Map<String,Object> pMap) {
       String inspectedId="";
-      //String u_id=p_id;
       inspectedId = memberDao.idInspection(pMap);
       logger.info("=================>inspectedId : "+inspectedId);
-      //logger.info("=================>u_id : "+u_id);
-      if(inspectedId.equals("_ok")) {
-         logger.info("==================>아이디 사용 불가");
-      }else {
-         logger.info("==============================>아이디 사용 가능");
-      }
       return inspectedId;
       
    }
@@ -75,9 +68,7 @@ public class MemberLogic {
          mem_id = pMap.get("mem_id").toString();
          if(!"비밀번호를 잘못 입력하셨습니다.".equals(mem_name )&& !"아이디가 존재하지 않습니다.".equals(mem_name)) {
         	 acct_balance = accountDao.accountNowBalance(mem_id);
-        	 logger.info("MembereLogic:login:잔액은?::::::: "+acct_balance);
         	 acct_number = accountDao.acct_number(mem_id);
-        	 logger.info("acct_number===========>"+acct_number);
          }
          list.add(pMap.get("mem_name").toString());
          list.add(""+acct_balance);

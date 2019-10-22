@@ -37,38 +37,26 @@ public class FavoriteController {
         if(pMap.get("pageSize")!=null) {
             pageSize = Integer.parseInt(pMap.get("pageSize").toString());
         }
-         
-      logger.info("nowPage :"+nowPage);
-      logger.info("pageSize :"+pageSize);
       
       pMap.put("nowPage",nowPage);
       pMap.put("pageSize",pageSize);
       pMap.put("mem_id",mem_id);
-      logger.info("아이디!!!!!!!!!============="+mem_id);
       favList = favoriteLogic.favSellerList(pMap);
       mod.addAttribute("favList",favList);
-      logger.info("....."+favList);
       return "forward:/testview/favSeller.jsp";
    }
    //관심 판매자 삭제
    @GetMapping("/favSellerDel.sf")
    public String favSellerDel(@RequestParam Map<String,Object> pMap) {
-      String result="";
-      int Ok = 0; 
       String fav_sellerid = pMap.get("fav_sellerid").toString();
-      logger.info(pMap.get("fav_sellerid").toString());
       String mem_id = pMap.get("mem_id").toString();
       pMap.put("fav_sellerid", fav_sellerid);
       pMap.put("mem_id", mem_id);
-      Ok = favoriteLogic.favSellerDel(pMap);
-      if(Ok==0) {
-         logger.info("fav Seller 삭제 실패"+Ok);
-      }else {
-         logger.info("fav Seller 삭제 성공"+Ok);
-      }
-      return "redirect:/testview/favSeller.jsp";
+      favoriteLogic.favSellerDel(pMap);
+      return "redirect:/favorite/favSellerList.sf?mem_id="+mem_id;
       
    }
+   //기능구현 해야해요
    @GetMapping("/favProductList.sf")
    public String favProductList(@RequestParam (required=false) String mem_id) {
       logger.info("Controller| favProductList 호출성공");

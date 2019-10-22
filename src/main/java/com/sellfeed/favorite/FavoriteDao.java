@@ -20,12 +20,11 @@ public class FavoriteDao {
    public List<Map<String, Object>> favSellerList(Map<String,Object> pMap) {
       logger.info("Dao| favSellerList 호출성공");
       favList = sqlSessionTemplate.selectList("favSellerList",pMap);
-      return    favList;
+      return favList;
    }
-   public int favSellerDel(Map<String, Object> pMap) {
+   public void favSellerDel(Map<String, Object> pMap) {
       logger.info("Dao| favSellerDel 호출성공");
-      Ok = sqlSessionTemplate.delete("favSellerDel",pMap);
-      return Ok;
+      sqlSessionTemplate.delete("favSellerDel",pMap);
    }
    public List<Map<String, Object>> favProductList(String mem_id) {
       logger.info("Dao| favProductList 호출성공");

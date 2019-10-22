@@ -36,7 +36,6 @@ public class MemberDao {
 		String mem_name = null;
 		sqlSessionTemplate.selectOne("login",pMap);
 		mem_name = pMap.get("mem_name").toString();
-		logger.info("mem_name=:"+mem_name);
 		return mem_name;
 	}
 

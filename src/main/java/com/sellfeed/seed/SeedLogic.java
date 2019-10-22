@@ -58,7 +58,6 @@ public class SeedLogic {
       int start = 0;
       int end = 0;
       int total = seedDao.getSeedInsProdTotal(pMap);
-      logger.info("total================>"+total);
       if(Integer.parseInt(pMap.get("nowPage").toString())>0) {
          nowPage = Integer.parseInt(pMap.get("nowPage").toString());
       }
@@ -75,8 +74,6 @@ public class SeedLogic {
             pMap.put("end", end);
          }
       }
-      logger.info("시작 ROW : "+start);
-      logger.info("끝 ROW : "+end);
       mySeedList=seedDao.seedInsProduct(pMap);
       return mySeedList;
    }

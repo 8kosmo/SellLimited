@@ -90,20 +90,16 @@ public class AccountDao {
 		return total;
 	}
    
-	public int auctionConfirmManagerIns(Map<String, Object> pMap) {
-		int result = sqlSessionTemplate.insert("auctionConfirmManagerIns", pMap);
-		return result;
+	public void auctionConfirmManagerIns(Map<String, Object> pMap) {
+		sqlSessionTemplate.insert("auctionConfirmManagerIns", pMap);
 	}
 
-	public int auctionConfirmSellerIns(Map<String, Object> pMap) {
-		int result = sqlSessionTemplate.insert("auctionConfirmSellerIns", pMap);
-		return result;
+	public void auctionConfirmSellerIns(Map<String, Object> pMap) {
+		sqlSessionTemplate.insert("auctionConfirmSellerIns", pMap);
 	}
 	
-	public int auctionConfirmUpdate(Map<String, Object> pMap) {
-		int result = sqlSessionTemplate.update("auctionConfirmUpdate",pMap);
-		logger.info("CONFIRM UPDATE성공");
-		return result;
+	public void auctionConfirmUpdate(Map<String, Object> pMap) {
+		sqlSessionTemplate.update("auctionConfirmUpdate",pMap);
 	}
 	public int getAccountList(String mem_id) {
 		int total = 0;
