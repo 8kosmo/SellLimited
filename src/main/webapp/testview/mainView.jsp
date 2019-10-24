@@ -77,22 +77,22 @@
          <img src="/images/banner/main_map_w.png" usemap="#Map4" style="margin-right:10px;">
             <map name="Map4">
                <area shape="rect" coords="0,0,284,180"
-                  href="http://localhost:8500/product/productList.sf?sub_category_code=0302">
+                  href="/product/productList.sf?sub_category_code=0302">
                <area shape="rect" coords="0,190,284,370"
-                  href="http://localhost:8500/product/productList.sf?sub_category_code=0103">
+                  href="/product/productList.sf?sub_category_code=0103">
             </map> 
          <!-- 제일 큰 사이즈 사진. 중앙 . 피규어 -->
-         <a href="http://localhost:8500/product/productList.sf?sub_category=%ED%82%A4%EB%8D%9C%ED%8A%B8"
+         <a href="/product/productList.sf?sub_category=%ED%82%A4%EB%8D%9C%ED%8A%B8"
             target="_self" banner-type="img" banner-idx="6">
             <img src="/images/banner/main_big.png" style="margin-right:10px;">
          </a>
          <!-- 신발 -->
-         <a id="aa" href="http://localhost:8500/product/productList.sf?sub_category_code=0101"
+         <a id="aa" href="/product/productList.sf?sub_category_code=0101"
             target="_self" banner-type="img" banner-idx="7">
             <img src="/images/banner/main_shoes_w10.png">
          </a> 
          <!-- 카메라 -->
-         <a href="http://localhost:8500/product/productList.sf?sub_category_code=0202"
+         <a href="/product/productList.sf?sub_category_code=0202"
             target="_self" banner-type="img" banner-idx="8">
             <img src="/images/banner/main_camera_w.png">
          </a>
