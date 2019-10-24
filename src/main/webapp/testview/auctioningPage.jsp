@@ -101,12 +101,10 @@ function openInNewTab(url) {
    if(confirm('<%=rMap.get("BUYNOW_PRICE")%>원에 상품을 즉시 구매하시겠습니까?')){
       if(<%=rMap.get("BUYNOW_PRICE")%> > <%=nowBalance%>){
     	 //잔액이 부족할 때
-    	 alert("즉시구매가는 :<%=rMap.get("BUYNOW_PRICE")%>  잔액은 : <%=strNowBalance%> ");
     	  if(confirm("잔액이 부족해요. 충전하시겠어요?")){
 			   openInNewTab('/testview/cashCharge.jsp');
       }
    }else{
-		alert("즉시구매 간다	");
 	   $.ajax({
 		   method:'GET'
                ,url:'/rest/buyNow.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&trade_ammount=<%=rMap.get("BUYNOW_PRICE")%>'
@@ -175,10 +173,6 @@ function getTime(yy,mm,dd,hh,mi,ss) {
    }
    function bid(){
 	      var final_price = $("#h_final_price").html();
-	      //첫 입찰인가?
-	      if(0==<%=rMap.get("CNTBID")%>){
-	         final_price = <%=rMap.get("START_PRICE")%>
-	      }
 	      var increase_rate = 0;
 	      var total = 0;
 	      if(final_price<=500000){
@@ -188,26 +182,28 @@ function getTime(yy,mm,dd,hh,mi,ss) {
 	         increase_rate = final_price/20
 	      }
 	      total = final_price*1+increase_rate*1;
-	      alert("토탈: "+total);
-	      console.log("increase_rate: "+increase_rate);
-	      
-	      if(total><%=nowBalance%>){
-	         if(confirm("잔액이 부족해요. 충전하시겠어요?")){
-	            openInNewTab('/testview/cashCharge.jsp');
-	         }
-	      }else{
-	         $.ajax({
-	            method:'GET'
-	                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
-	                  ,data:'data'
-	                  ,success:function(data){
-	                     $("#h_my_price").html(total);
-	                     total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	                     $("#my_price").html(total);
-	                     sendMessage();
-	                  } 
-	         });      //_______________________________________________________________| END OF AJAX
-	         }
+	      if(0==<%=rMap.get("CNTBID")%>){
+	    	  total = <%=rMap.get("START_PRICE")%>
+	      }
+	      if(confirm("입찰가: "+total+ "\n입찰 하시겠습니까?")){
+		      if(total><%=nowBalance%>){
+		         if(confirm("잔액이 부족해요. 충전하시겠어요?")){
+		            openInNewTab('/testview/cashCharge.jsp');
+		         }
+		      }else{
+		         $.ajax({
+		            method:'GET'
+		                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+		                  ,data:'data'
+		                  ,success:function(data){
+		                     $("#h_my_price").html(total);
+		                     total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		                     $("#my_price").html(total);
+		                     sendMessage();
+		                  } 
+		         });      //_______________________________________________________________| END OF AJAX
+		         }
+	      }
 	   }            //_______________________________________________________________| END OF bid()
       
 </script>
@@ -402,7 +398,6 @@ function getTime(yy,mm,dd,hh,mi,ss) {
 
         // 메시지 전송
         function sendMessage() {
-            alert("sendMessage");
             var bid_code = '<%=rMap.get("BID_CODE")%>';
                sock.send(bid_code+'?'+$("#h_my_price").text());
         }
@@ -413,14 +408,12 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                var result = data.split(':')[0];
                var status = data.split(':')[1];
                if(status=='enterCnt'){
-                  alert("방 입장시"+result);
                   $("#enterCnt").text(result);
                }else if(status=='closeRoom'){
             	   opener.location.href="/testview/mainView.jsp";
             	   window.close();
                }
                else{
-                  alert("입찰 시 "+result);
                    $("#h_final_price").text(result);
                   result = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                    $("#final_price").text(result);

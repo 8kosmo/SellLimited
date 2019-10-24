@@ -44,6 +44,7 @@
 		status = "keyword";
 		result = request.getParameter("keyword");
 	}
+	//시작가 null이면 0으로 바꿔주기
 %>
 <!DOCTYPE html>
 <html>
