@@ -22,7 +22,8 @@
     AND SALE_ITEM.ITEM_CODE = auct_progress.bid_code
     AND final_price in a.end_price
     AND a.bid_code = bid_log.bid_code
-	</select>
+    AND auct_enddate <![CDATA[<]]> TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+   </select>
 	<insert id="auctionIns" parameterType="map">
 		INSERT INTO AUCT_PROGRESS (bid_code, auct_startdate, auct_enddate)
 					VALUES (#{bid_code}, TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS'), TO_CHAR(SYSDATE+#{auct_period}/24,'YYYY/MM/DD/HH24/MI/SS'))

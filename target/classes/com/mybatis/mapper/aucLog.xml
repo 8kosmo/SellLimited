@@ -15,11 +15,10 @@
 	</insert>
 	
 	<insert id="aucLogIns" parameterType="map">
-		INSERT INTO BID_LOG (BID_CODE, bidder_id, final_price, r_num)
-             VALUES (#{bid_code}, #{mem_id}, 
-             (SELECT NVL(MAX(final_price),0) FROM bid_log WHERE bid_code=#{bid_code})+#{increase_rate},
+      INSERT INTO BID_LOG (BID_CODE, bidder_id, final_price, r_num)
+             VALUES (#{bid_code}, #{mem_id}, #{final_price},
              (SELECT NVL(MAX(r_num),0) FROM bid_log WHERE bid_code=#{bid_code})+1) 
-	</insert>
+   </insert>
 	
 	<select id="aucLogBuyNowIns" parameterType="map" statementType="CALLABLE">
 		{call proc_aucLogBuyNowIns(

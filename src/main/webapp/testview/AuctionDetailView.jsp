@@ -8,18 +8,18 @@
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
-	String mem_name = null;
-	int nowBalance = 0;
-	String mem_id = null;
-	String acct_number = null;
-	 if (session.getAttribute("mem_name") == null 
-	       ||session.getAttribute("nowBalance") == null) {
-	 }else{
-	     mem_name = (String)session.getAttribute("mem_name");
-	     nowBalance = (int)session.getAttribute("nowBalance");
-	     mem_id = (String)session.getAttribute("mem_id");
-	     acct_number = (String)session.getAttribute("acct_number");
-	 }
+   String mem_name = null;
+   int nowBalance = 0;
+   String mem_id = null;
+   String acct_number = null;
+    if (session.getAttribute("mem_name") == null 
+          ||session.getAttribute("nowBalance") == null) {
+    }else{
+        mem_name = (String)session.getAttribute("mem_name");
+        nowBalance = (int)session.getAttribute("nowBalance");
+        mem_id = (String)session.getAttribute("mem_id");
+        acct_number = (String)session.getAttribute("acct_number");
+    }
     
    int size = 0;
    Map<String,Object> rMap = 
@@ -60,75 +60,61 @@ $(document).ready(function(){
    img_id = "sub_img"+i;
       if(i==0){   
 %>
-      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
+      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>">';
 <%      }else{
 %>
          document.getElementById("d_small_img").innerHTML =
-            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
+            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>"
 <%   }      
 }%>   //__________________________________________________________________end of for
 
-	var mem_name = '<%=mem_name%>';
-	var nowBalance = '<%=nowBalance%>';
+   var mem_name = '<%=mem_name%>';
+   var nowBalance = '<%=nowBalance%>';
 
-	//로그인 실패시
-	if(mem_name=='null'){
-	    $("#login").show();
-	    $("#logout").hide();
-	    $("#managerLogout").hide();
-	 }else if(mem_name=='관리자'){
-	    $("#login").hide();
-	    $("#logout").hide();
-	    $("#managerLogout").show();
-	 }else {
-	    $("#login").hide();
-	    $("#logout").show();
-	    $("#managerLogout").hide();
-	 }
-	});
+   //로그인 실패시
+   if(mem_name=='null'){
+       $("#login").show();
+       $("#logout").hide();
+       $("#managerLogout").hide();
+    }else if(mem_name=='관리자'){
+       $("#login").hide();
+       $("#logout").hide();
+       $("#managerLogout").show();
+    }else {
+       $("#login").hide();
+       $("#logout").show();
+       $("#managerLogout").hide();
+    }
+   });
+    function logout(){
+       location.href="/common/sessionDel.jsp";   
+   }
+
 //_______________________________________________________________________end of ready
-	 function logout(){
-	    location.href="/common/sessionDel.jsp";   
-	}
-	 function balance(){
-         if(mem_name!='null'&&mem_name!='관리자'){
-            $.ajax({
-                 method:'GET'
-                ,url:'/rest/accountBalance.sf?mem_id=<%=mem_id%>'
-                ,data:'data'
-                ,success:function(data){
-                   if(<%=nowBalance%>!=data){
-                      location.reload();
-                   }
-                }      
-             });
-         }
-      }
-
 
 //_________________________________________타임
 function getTime() {
-	now = new Date();
-	dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
-	days = (dday - now) / 1000 / 60 / 60 / 24;
-	daysRound = Math.floor(days);
-	hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
-	hoursRound = Math.floor(hours);
-	minutes = (dday - now) / 1000 /60 - (24 * 60 * daysRound) - (60 * hoursRound);
-	minutesRound = Math.floor(minutes);
-	seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
-	secondsRound = Math.round(seconds);
-	
-	if(daysRound==-1 && hoursRound == 23 && minutesRound == 59 && secondsRound == 59){
-		alert("경매가 종료 되었습니다.");
-		location.href="/product/mainViewTOP6.sf";
-	}
-	
-	document.getElementById("counter0").innerHTML = daysRound;
-	document.getElementById("counter1").innerHTML = (hoursRound<10 ? "0"+hoursRound:hoursRound);
-	document.getElementById("counter2").innerHTML = (minutesRound<10 ? "0"+minutesRound:minutesRound);
-	document.getElementById("counter3").innerHTML = (secondsRound<10 ? "0"+secondsRound:secondsRound);	
-	newtime = window.setTimeout("getTime();", 1000);
+   now = new Date();
+   dday = new Date(<%=YY%>,<%=MM%>-1,<%=DD%>,<%=HH%>,<%=MI%>,<%=SS%>); // 원하는 날짜, 시간 정확하게 초단위까지 기입.
+   days = (dday - now) / 1000 / 60 / 60 / 24;
+   daysRound = Math.floor(days);
+   hours = (dday - now) / 1000 / 60 / 60 - (24 * daysRound);
+   hoursRound = Math.floor(hours);
+   minutes = (dday - now) / 1000 /60 - (24 * 60 * daysRound) - (60 * hoursRound);
+   minutesRound = Math.floor(minutes);
+   seconds = (dday - now) / 1000 - (24 * 60 * 60 * daysRound) - (60 * 60 * hoursRound) - (60 * minutesRound);
+   secondsRound = Math.round(seconds);
+   
+   if(daysRound==-1 && hoursRound == 23 && minutesRound == 59 && secondsRound == 59){
+      alert("경매가 종료 되었습니다.");
+      location.href="/testview/mainView.jsp";
+   }
+   
+   document.getElementById("counter0").innerHTML = daysRound;
+   document.getElementById("counter1").innerHTML = (hoursRound<10 ? "0"+hoursRound:hoursRound);
+   document.getElementById("counter2").innerHTML = (minutesRound<10 ? "0"+minutesRound:minutesRound);
+   document.getElementById("counter3").innerHTML = (secondsRound<10 ? "0"+secondsRound:secondsRound);   
+   newtime = window.setTimeout("getTime();", 1000);
 
    }
 
@@ -165,30 +151,30 @@ function getTime() {
       });
       };
     function addFavProduct(){
- 	   loginSessionCheck();
- 		$.ajax({
- 			 method:'GET'
- 			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
- 			,data:'data'
- 			,success:function(data){
- 				alert(data);
- 			}		
- 		});
- 	   };
+       loginSessionCheck();
+       $.ajax({
+           method:'GET'
+          ,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
+          ,data:'data'
+          ,success:function(data){
+             alert(data);
+          }      
+       });
+       };
     function loginSessionCheck(){
- 	   <%		
- 	   		if(mem_id==null){	
- 	   %>
- 	   			alert("로그인이 필요합니다");
- 	   			location.href="/testview/login.jsp";
- 	   <%
- 	   		}
- 	   %>
- 	      }
+       <%      
+             if(mem_id==null){   
+       %>
+                alert("로그인이 필요합니다");
+                location.href="/testview/login.jsp";
+       <%
+             }
+       %>
+          }
     
     function auctionStart(){
     
- 	   loginSessionCheck();
+       loginSessionCheck();
         $.ajax({
               method:'GET'
              ,url:'/rest/seedOverlapCheck.sf?bidders_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>'
@@ -197,7 +183,7 @@ function getTime() {
                 if(result=='0'){
                    alert("경매 가즈아");
                    window.open('/auction/AuctionningPage.sf?bid_code=<%=rMap.get("BID_CODE")%>'
-                		   ,'경매진행중','width=1200,height=900,fullscreen=no');
+                         ,'경매진행중','width=1200,height=900,fullscreen=no');
                 }else if(result=='1'){
                    alert("시드를 발급받지 않은 상품입니다");
                 }
@@ -253,7 +239,7 @@ function getTime() {
 <!-- 로고,검색창,검색버튼 있는부분 -->
 <ul class="logopart">
    <!-- 로고있는부분 -->
-   <li class="logopart_left"><a href="/product/mainViewTOP6.sf"><img style="width:195px;margin-top:34px;" src="/images/logo.png"></a></li>
+   <li class="logopart_left"><a href="/testview/mainView.jsp"><img style="width:195px;margin-top:34px;" src="/images/logo.png"></a></li>
    <!-- 검색창있는부분 -->
    <li class="logopart_center">
       <span class="searchbox_form">
@@ -471,6 +457,5 @@ function getTime() {
 </div>
 <%@ include file="/common/bottom.jsp" %>
    <script>getTime()</script>
-   <script>balance()</script>
 </body>
 </html>

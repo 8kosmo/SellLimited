@@ -129,7 +129,7 @@
 		Map<String, Object> firstMap = TOP6List.get(0);
 %>
 		  <div class="slide_content slide01 slide_active">
-            <img width="100%" height="100%" src="/itemPhoto/<%=firstMap.get("PHOTO_NAME")%>">
+            <img width="100%" height="100%" src="//192.168.0.187:8080/itemPhoto/<%=firstMap.get("PHOTO_NAME")%>">
           </div>
 <%		
 		if(TOP6List.size() > 1){
@@ -138,7 +138,7 @@
 				Map<String, Object> rMap = TOP6List.get(i);
 %>
           <div class="slide_content slide0<%=i+1%>">
-            <img width="100%" height="100%" src="/itemPhoto/<%=rMap.get("PHOTO_NAME")%>">
+            <img width="100%" height="100%" src="//192.168.0.187:8080/itemPhoto/<%=rMap.get("PHOTO_NAME")%>">
           </div>
 <%
 			}
@@ -193,7 +193,7 @@
 		Map<String, Object> firstMap = auctionTOP6List.get(0);
 %>
 		  <div class="slide_content1 slide01 slide_active">
-            <img width="100%" height="100%" src="/itemPhoto/<%=firstMap.get("PHOTO_NAME")%>">
+            <img width="100%" height="100%" src="//192.168.0.187:8080/itemPhoto/<%=firstMap.get("PHOTO_NAME")%>">
           </div>
 <%		
 		if(auctionTOP6List.size() > 1){
@@ -202,7 +202,7 @@
 				Map<String, Object> rMap = auctionTOP6List.get(i);
 %>
           <div class="slide_content1 slide0<%=i+1%>">
-            <img width="100%" height="100%" src="/itemPhoto/<%=rMap.get("PHOTO_NAME")%>">
+            <img width="100%" height="100%" src="//192.168.0.187:8080/itemPhoto/<%=rMap.get("PHOTO_NAME")%>">
           </div>
 <%
 			}

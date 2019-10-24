@@ -8,18 +8,18 @@
 <title>상세페이지</title>
 <%@ include file="/common/cssJs.jsp" %>
 <%  // 인증된 세션이 없는경우, 해당페이지를 볼 수 없게 함.
-	String mem_name = null;
-	int nowBalance = 0;
-	String mem_id = null;
-	String acct_number = null;
-	 if (session.getAttribute("mem_name") == null 
-	       ||session.getAttribute("nowBalance") == null) {
-	 }else{
-	     mem_name = (String)session.getAttribute("mem_name");
-	     nowBalance = (int)session.getAttribute("nowBalance");
-	     mem_id = (String)session.getAttribute("mem_id");
-	     acct_number = (String)session.getAttribute("acct_number");
-	 }
+   String mem_name = null;
+   int nowBalance = 0;
+   String mem_id = null;
+   String acct_number = null;
+    if (session.getAttribute("mem_name") == null 
+          ||session.getAttribute("nowBalance") == null) {
+    }else{
+        mem_name = (String)session.getAttribute("mem_name");
+        nowBalance = (int)session.getAttribute("nowBalance");
+        mem_id = (String)session.getAttribute("mem_id");
+        acct_number = (String)session.getAttribute("acct_number");
+    }
    int size = 0;
    Map<String,Object> rMap = 
          (Map<String,Object>)request.getAttribute("rMap");
@@ -61,11 +61,11 @@
       img_id = "sub_img"+i;
          if(i==0){   
    %>
-         document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>">';
+         document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>" style="vertical-align:middle">';
    <%      }else{
    %>
-            document.getElementById("d_small_img").innerHTML =
-               "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>"
+            document.getElementById("d_small_img"+<%=i%>).innerHTML =
+               "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>";
    <%   }      
    }%>   //__________________________________________________________________end of for
 
@@ -90,20 +90,6 @@
       function logout(){
          location.href="/common/sessionDel.jsp";   
    }
-      function balance(){
-          if(mem_name!='null'&&mem_name!='관리자'){
-             $.ajax({
-                  method:'GET'
-                 ,url:'/rest/accountBalance.sf?mem_id=<%=mem_id%>'
-                 ,data:'data'
-                 ,success:function(data){
-                    if(<%=nowBalance%>!=data){
-                       location.reload();
-                    }
-                 }      
-              });
-          }
-       }
    
 });//_______________________________________________________________________end of ready
 
@@ -123,7 +109,7 @@ function getTime() {
    document.getElementById("counter0").innerHTML = daysRound;
    document.getElementById("counter1").innerHTML = (hoursRound<10 ? "0"+hoursRound:hoursRound);
    document.getElementById("counter2").innerHTML = (minutesRound<10 ? "0"+minutesRound:minutesRound);
-   document.getElementById("counter3").innerHTML = (secondsRound<10 ? "0"+secondsRound:secondsRound);	
+   document.getElementById("counter3").innerHTML = (secondsRound<10 ? "0"+secondsRound:secondsRound);   
    newtime = window.setTimeout("getTime();", 1000);
 
    }
@@ -152,7 +138,7 @@ function getTime() {
    }
   
    function seedIns(){
-	   loginSessionCheck();
+      loginSessionCheck();
        $.ajax({
              method:'GET'
             ,url:'/rest/seedOverlapCheck.sf?bidders_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>'
@@ -167,21 +153,21 @@ function getTime() {
                      ,data:'data'
                      ,success:function(data){
                         if(data>=10000){
-                           if(confirm("잔액 : "+data+"원\n시드발급시 잔액에서 1만원 차감됩니다")){
-                        	   $.ajax({
-                        		   method:'GET'
-                        		  ,url:'/rest/seedIns.sf?mem_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>&bidders_id=<%=mem_id%>'
-                        		  ,data:'result'
-                        		  ,success:function(data){
-                  					location.reload();
-                        		  }
-                        	   });
+                           if(confirm("시드발급시 보증금 1만원 차감됩니다.\n 경매 패찰시 반환해드립니다")){
+                              $.ajax({
+                                 method:'GET'
+                                ,url:'/rest/seedIns.sf?mem_id=<%=mem_id%>&bid_code=<%=rMap.get("BID_CODE")%>&bidders_id=<%=mem_id%>'
+                                ,data:'result'
+                                ,success:function(data){
+                                 location.reload();
+                                }
+                              });
                            }else{
                               alert("시드발급 취소");
                            }
                         }else{
                            if(confirm("잔액이 부족합니다 충전하겠습니까?")){
-                        	   location.href="/testview/cashCharge.jsp"
+                              location.href="/testview/cashCharge.jsp"
                            }
                         }
                     }
@@ -192,7 +178,7 @@ function getTime() {
    } 
 
    function addFavSeller(){
-	  loginSessionCheck();
+     loginSessionCheck();
       $.ajax({
           method:'GET'
          ,url:'/rest/favSellerAdd.sf?fav_sellerid=<%=rMap.get("MEM_ID")%>&mem_id=<%=mem_id%>'
@@ -204,25 +190,25 @@ function getTime() {
    };
    
    function addFavProduct(){
-	   loginSessionCheck();
-		$.ajax({
-			 method:'GET'
-			,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
-			,data:'data'
-			,success:function(data){
-				alert(data);
-			}		
-		});
-	};
-	
+      loginSessionCheck();
+      $.ajax({
+          method:'GET'
+         ,url:'/rest/favProductAdd.sf?fav_bidcode=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>'
+         ,data:'data'
+         ,success:function(data){
+            alert(data);
+         }      
+      });
+   };
+   
    function loginSessionCheck(){
-	   <%		if(mem_id==null){	
-	   %>
-	   			alert("로그인이 필요합니다");
-	   			location.href="/testview/login.jsp";
-	   <%}
-	   %>
-	      }
+      <%      if(mem_id==null){   
+      %>
+               alert("로그인이 필요합니다");
+               location.href="/testview/login.jsp";
+      <%}
+      %>
+         }
    function total_search() {
        var searchWord = $("#SearchWord").val();
        if(searchWord == ''){
@@ -272,7 +258,7 @@ function getTime() {
 <!-- 로고,검색창,검색버튼 있는부분 -->
 <ul class="logopart">
    <!-- 로고있는부분 -->
-   <li class="logopart_left" ><a href="/product/mainViewTOP6.sf"><img style="width:195px;margin-top:34px;" src="/images/logo.png"/></a></li>
+   <li class="logopart_left" ><a href="/testview/mainView.jsp"><img style="width:195px;margin-top:34px;" src="/images/logo.png"/></a></li>
    <!-- 검색창있는부분 -->
    <li class="logopart_center">
       <span class="searchbox_form">
@@ -324,10 +310,12 @@ function getTime() {
                            <tr>
                               <td class="dotl_in_thumb">
                                  <!-- 제일 큰 메인사진 -->
-                                 <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)">
+                                 <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="line-height: 500px;">
                                  </div>
                                  <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                 <div class="ditsmallthumb" id="d_small_img">
+                                 <div class="ditsmallthumb" id="d_small_img1">
+                                 </div>
+                                 <div class="ditsmallthumb" id="d_small_img2">
                                  </div>
                               </td>
                            </tr>
@@ -487,6 +475,5 @@ function getTime() {
 </div>
 <%@ include file="/common/bottom.jsp" %>
    <script>getTime()</script>
-   <script>balance()</script>
 </body>
 </html>

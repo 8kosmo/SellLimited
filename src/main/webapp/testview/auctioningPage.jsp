@@ -68,11 +68,11 @@ $(document).ready(function(){
    img_id = "sub_img"+i;
       if(i==0){   
 %>
-      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="/itemPhoto/<%=photoName%>">';
+      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>">';
 <%      }else{
 %>
          document.getElementById("d_small_img").innerHTML =
-            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='/itemPhoto/<%=photoName%>'> </a></span>"
+            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>"
 <%   }      
 }%>   //__________________________________________________________________end of for
 });//_______________________________________________________________________end of ready
@@ -174,41 +174,41 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       sub_img2.src=big_img_src;
    }
    function bid(){
-      var final_price = $("#h_final_price").html();
-      //첫 입찰인가?
-      if(0==<%=rMap.get("CNTBID")%>){
-    	  final_price = <%=rMap.get("START_PRICE")%>
-      }
-      var increase_rate = 0;
-      var total = 0;
-      if(final_price<=500000){
-         increase_rate = 10000;
-      }
-      else if(500000<final_price){
-         increase_rate = final_price/20
-      }
-      total = final_price*1+increase_rate*1;
-      alert("토탈: "+total);
-      console.log("increase_rate: "+increase_rate);
-      
-      if(total><%=nowBalance%>){
-    	  if(confirm("잔액이 부족해요. 충전하시겠어요?")){
-			   openInNewTab('/testview/cashCharge.jsp');
-    	  }
-      }else{
-         $.ajax({
-            method:'GET'
-                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
-                  ,data:'data'
-                  ,success:function(data){
-                     $("#h_my_price").html(total);
-                	  total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                     $("#my_price").html(total);
-                     sendMessage();
-                  } 
-         });		//_______________________________________________________________| END OF AJAX
-    	  }
-   }				//_______________________________________________________________| END OF bid()
+	      var final_price = $("#h_final_price").html();
+	      //첫 입찰인가?
+	      if(0==<%=rMap.get("CNTBID")%>){
+	         final_price = <%=rMap.get("START_PRICE")%>
+	      }
+	      var increase_rate = 0;
+	      var total = 0;
+	      if(final_price<=500000){
+	         increase_rate = 10000;
+	      }
+	      else if(500000<final_price){
+	         increase_rate = final_price/20
+	      }
+	      total = final_price*1+increase_rate*1;
+	      alert("토탈: "+total);
+	      console.log("increase_rate: "+increase_rate);
+	      
+	      if(total><%=nowBalance%>){
+	         if(confirm("잔액이 부족해요. 충전하시겠어요?")){
+	            openInNewTab('/testview/cashCharge.jsp');
+	         }
+	      }else{
+	         $.ajax({
+	            method:'GET'
+	                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+	                  ,data:'data'
+	                  ,success:function(data){
+	                     $("#h_my_price").html(total);
+	                     total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	                     $("#my_price").html(total);
+	                     sendMessage();
+	                  } 
+	         });      //_______________________________________________________________| END OF AJAX
+	         }
+	   }            //_______________________________________________________________| END OF bid()
       
 </script>
 </head>

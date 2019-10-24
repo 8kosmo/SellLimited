@@ -51,31 +51,32 @@ public class AuctionLogic {
 		return rList;
 	}
 	@Transactional(propagation=Propagation.REQUIRES_NEW, rollbackFor= {DataAccessException.class})
-	@Pointcut(value="excution(* com.sellfeed.auction.*Logic.*(..)")
-	public int endAuction(Map<String,Object> pMap) {
-		logger.info("Logic| endAuctino 호출 성공");
-		List<Map<String,Object>> looserList = new ArrayList<>();
-		int result = 0;
-		try {
-			//입찰 패찰 UPDATE
-			aucLogDao.aucWinner(pMap);
-			//루저 리스트
-			looserList = aucLogDao.LooserList(pMap);
-			//패찰자 보증금봔환
-			logger.info("패찰자 리스트"+looserList);
-			accountDao.returnDeposit(looserList);
-			logger.info("패찰자 보증금 반환 완료");
-			//경매진행중=> 배송준비중
-			productDao.auct_end(pMap);
-			result = 1;
-			
-		} catch (Exception e) {
-			result = 0;
-			throw e;
-		}
-		logger.info("AuctinoLogic endAuction 끝 | result= "+result);
-		return result;				
-	}
+	   @Pointcut(value="excution(* com.sellfeed.auction.*Logic.*(..)")
+	   public int endAuction(Map<String,Object> pMap) {
+	      logger.info("Logic| endAuctino 호출 성공");
+	      List<Map<String,Object>> looserList = new ArrayList<>();
+	      int result = 0;
+	      try {
+	         //입찰 패찰 UPDATE
+	         aucLogDao.aucWinner(pMap);
+	         //루저 리스트
+	         looserList = aucLogDao.LooserList(pMap);
+	         if(looserList.size()!=0 && looserList!=null) {
+	            logger.info("패찰자 보증금 반환");
+	            //패찰자 보증금봔환
+	            accountDao.returnDeposit(looserList);
+	         }
+	         //경매진행중=> 배송준비중
+	         productDao.auct_end(pMap);
+	         result = 1;
+	         
+	      } catch (Exception e) {
+	         result = 0;
+	         throw e;
+	      }
+	      logger.info("AuctinoLogic endAuction 끝 | result= "+result);
+	      return result;            
+	   }
 	public void buyNow(Map<String, Object> pMap) {
 		logger.info("Logic | buyNow 호출 성공");
 			aucLogDao.aucLogBuyNowIns(pMap);		//BID_LOG에 즉시구매 INSERT | BID_LOG에 낙찰 패찰 UPDATE | AUCT_PROGRESS에 경매종료일 UPDATE
