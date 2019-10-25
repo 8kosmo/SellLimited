@@ -82,7 +82,7 @@
 									<a href="javascript:quick_switch('3', 0)"><img src="/images/quick_tab1.gif" width="73" height="65" alt="관심상품"></a>
 								</li>
 								<li>
-									<a href="javascript:quick_switch('4', 0)"><img src="/images/quick_tab2.gif" width="73" height="64" alt="관심판매자"></a>
+									<a href="/favorite/favSellerList.sf?mem_id=<%=mem_id%>"><img src="/images/quick_tab2.gif" width="73" height="64" alt="관심판매자"></a>
 								</li>
 								<li>
 									<a href="javascript:quick_switch('5', 0)"><img src="/images/quick_tab3_new.gif" width="73" height="64" alt="관심카테고리"></a>

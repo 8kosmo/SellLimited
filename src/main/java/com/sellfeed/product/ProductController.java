@@ -53,6 +53,7 @@ public class ProductController {
           photoNameList.add(rMap.get("PHOTO_NAME").toString());
        }
        rMap.put("PHOTO_NAME",photoNameList);
+       logger.info("rMap:: "+rMap);
        mod.addAttribute("rMap",rMap);
        if(pMap.get("status").equals("auction")) {
           return "forward:/testview/AuctionDetailView.jsp";

@@ -63,18 +63,18 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
 <script>
 $(document).ready(function(){
 <%   for(int i=0; i<photoNameList.size();i++){
-   photoName = photoNameList.get(i).toString();
-   onclickSub = "clickSub"+i+"()";
-   img_id = "sub_img"+i;
-      if(i==0){   
-%>
-      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>">';
-<%      }else{
-%>
-         document.getElementById("d_small_img").innerHTML =
-            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>"
-<%   }      
-}%>   //__________________________________________________________________end of for
+      photoName = photoNameList.get(i).toString();
+      onclickSub = "clickSub"+i+"()";
+      img_id = "sub_img"+i;
+         if(i==0){   
+   %>
+         document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>" style="vertical-align:middle">';
+   <%      }else{
+   %>
+            document.getElementById("d_small_img"+<%=i%>).innerHTML =
+               "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>";
+   <%   }      
+   }%>   //__________________________________________________________________end of for
 });//_______________________________________________________________________end of ready
 
 function balance(){
@@ -235,11 +235,13 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                            <tr>
                               <td class="dotl_in_thumb">
                                  <!-- 제일 큰 메인사진 -->
-                                 <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="height: 400px">
-                                          </div>
-                                         <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                         <div class="ditsmallthumb" id="d_small_img" style="height: 100px">
-                                         </div>
+								 <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="line-height: 400px;">
+								 </div>
+                                 <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
+                                 <div class="ditsmallthumb" id="d_small_img1">
+                                 </div>
+                                 <div class="ditsmallthumb" id="d_small_img2">
+                                 </div>
                               </td>
                            </tr>
                            <tr style="height:10px;">
