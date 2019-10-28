@@ -132,7 +132,6 @@
            Map<String,Object> rMap = acctStatusList.get(i);
 %>
             <tr>
-               
                <td><%=rMap.get("CHARGE_CODE") %></td>
                <td><%=rMap.get("MEM_ID") %></td>
                <td><%=rMap.get("TRADE_AMMOUNT") %></td>
@@ -142,9 +141,13 @@
                <td><%=rMap.get("DEPOSIT_DATE") %></td>
                <td><%=rMap.get("APPROVAL_DATE") %></td>
                <td><%=rMap.get("STATUS") %></td>
-               <td><a href="/account/managerPermissionAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>&mem_id=<%=rMap.get("MEM_ID") %>&trade_ammount=<%=rMap.get("TRADE_AMMOUNT") %>">
-               <button type="button">충전승인</button></a></td>
-               <td><a href="/account/managerRefuseAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>"><button type="button">충전거절</button></a></td>
+               <td>
+               <button
+               onclick="location.href='/account/managerPermissionAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>&mem_id=<%=rMap.get("MEM_ID") %>&trade_ammount=<%=rMap.get("TRADE_AMMOUNT") %>'">충전승인
+               </button>
+               </td>
+               <td>
+               <button onclick="location.href='/account/managerRefuseAcct.sf?charge_code=<%=rMap.get("CHARGE_CODE") %>'">충전거절</button></td>
             </tr>
 <%
       }

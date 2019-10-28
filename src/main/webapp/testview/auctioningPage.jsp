@@ -63,18 +63,18 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
 <script>
 $(document).ready(function(){
 <%   for(int i=0; i<photoNameList.size();i++){
-   photoName = photoNameList.get(i).toString();
-   onclickSub = "clickSub"+i+"()";
-   img_id = "sub_img"+i;
-      if(i==0){   
-%>
-      document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>">';
-<%      }else{
-%>
-         document.getElementById("d_small_img").innerHTML =
-            "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>"
-<%   }      
-}%>   //__________________________________________________________________end of for
+      photoName = photoNameList.get(i).toString();
+      onclickSub = "clickSub"+i+"()";
+      img_id = "sub_img"+i;
+         if(i==0){   
+   %>
+         document.getElementById("d_big_img").innerHTML = '<img id="big_img" src="//192.168.0.187:8080/itemPhoto/<%=photoName%>" style="vertical-align:middle">';
+   <%      }else{
+   %>
+            document.getElementById("d_small_img"+<%=i%>).innerHTML =
+               "<span><a onclick='javascript:<%=onclickSub%>'><img id='<%=img_id%>' src='//192.168.0.187:8080/itemPhoto/<%=photoName%>'> </a></span>";
+   <%   }      
+   }%>   //__________________________________________________________________end of for
 });//_______________________________________________________________________end of ready
 
 function balance(){
@@ -100,22 +100,22 @@ function openInNewTab(url) {
  function buyNow(){
    if(confirm('<%=rMap.get("BUYNOW_PRICE")%>원에 상품을 즉시 구매하시겠습니까?')){
       if(<%=rMap.get("BUYNOW_PRICE")%> > <%=nowBalance%>){
-    	 //잔액이 부족할 때
-    	  if(confirm("잔액이 부족해요. 충전하시겠어요?")){
-			   openInNewTab('/testview/cashCharge.jsp');
+        //잔액이 부족할 때
+         if(confirm("잔액이 부족해요. 충전하시겠어요?")){
+            openInNewTab('/testview/cashCharge.jsp');
       }
    }else{
-	   $.ajax({
-		   method:'GET'
+      $.ajax({
+         method:'GET'
                ,url:'/rest/buyNow.sf?bid_code=<%=rMap.get("BID_CODE")%>&mem_id=<%=mem_id%>&trade_ammount=<%=rMap.get("BUYNOW_PRICE")%>'
                ,data:'data'
                ,success:function(data){
-					alert(data);
-					var bid_code = '<%=rMap.get("BID_CODE")%>';
-					sock.send(bid_code+'?closeRoom');
+               alert(data);
+               var bid_code = '<%=rMap.get("BID_CODE")%>';
+               sock.send(bid_code+'?closeRoom');
                }
-	   });
-	   }
+      });
+      }
    }
 }
 
@@ -172,39 +172,39 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       sub_img2.src=big_img_src;
    }
    function bid(){
-	      var final_price = $("#h_final_price").html();
-	      var increase_rate = 0;
-	      var total = 0;
-	      if(final_price<=500000){
-	         increase_rate = 10000;
-	      }
-	      else if(500000<final_price){
-	         increase_rate = final_price/20
-	      }
-	      total = final_price*1+increase_rate*1;
-	      if(0==<%=rMap.get("CNTBID")%>){
-	    	  total = <%=rMap.get("START_PRICE")%>
-	      }
-	      if(confirm("입찰가: "+total+ "\n입찰 하시겠습니까?")){
-		      if(total><%=nowBalance%>){
-		         if(confirm("잔액이 부족해요. 충전하시겠어요?")){
-		            openInNewTab('/testview/cashCharge.jsp');
-		         }
-		      }else{
-		         $.ajax({
-		            method:'GET'
-		                  ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
-		                  ,data:'data'
-		                  ,success:function(data){
-		                     $("#h_my_price").html(total);
-		                     total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		                     $("#my_price").html(total);
-		                     sendMessage();
-		                  } 
-		         });      //_______________________________________________________________| END OF AJAX
-		         }
-	      }
-	   }            //_______________________________________________________________| END OF bid()
+         var final_price = $("#h_final_price").html();
+         var increase_rate = 0;
+         var total = 0;
+         if(final_price<=500000){
+            increase_rate = 10000;
+         }
+         else if(500000<final_price){
+            increase_rate = final_price/20
+         }
+         total = final_price*1+increase_rate*1;
+         if(0==<%=rMap.get("CNTBID")%>){
+            total = <%=rMap.get("START_PRICE")%>
+         }
+         if(confirm("입찰가: "+total+ "\n입찰 하시겠습니까?")){
+            if(total><%=nowBalance%>){
+               if(confirm("잔액이 부족해요. 충전하시겠어요?")){
+                  openInNewTab('/testview/cashCharge.jsp');
+               }
+            }else{
+               $.ajax({
+                  method:'GET'
+                        ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+                        ,data:'data'
+                        ,success:function(data){
+                           $("#h_my_price").html(total);
+                           total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                           $("#my_price").html(total);
+                           sendMessage();
+                        } 
+               });      //_______________________________________________________________| END OF AJAX
+               }
+         }
+      }            //_______________________________________________________________| END OF bid()
       
 </script>
 </head>
@@ -235,11 +235,13 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                            <tr>
                               <td class="dotl_in_thumb">
                                  <!-- 제일 큰 메인사진 -->
-                                 <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="height: 400px">
-                                          </div>
-                                         <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                         <div class="ditsmallthumb" id="d_small_img" style="height: 100px">
-                                         </div>
+                         <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="line-height: 400px;">
+                         </div>
+                                 <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
+                                 <div class="ditsmallthumb" id="d_small_img1">
+                                 </div>
+                                 <div class="ditsmallthumb" id="d_small_img2">
+                                 </div>
                               </td>
                            </tr>
                            <tr style="height:10px;">
@@ -410,14 +412,15 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                if(status=='enterCnt'){
                   $("#enterCnt").text(result);
                }else if(status=='closeRoom'){
-            	   opener.location.href="/testview/mainView.jsp";
-            	   window.close();
+                  opener.location.href="/testview/mainView.jsp";
+                  window.close();
                }
                else{
                    $("#h_final_price").text(result);
                   result = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                    $("#final_price").text(result);
                }
+               
         }
 
         // 서버와 연결을 끊었을 때

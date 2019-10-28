@@ -118,64 +118,14 @@
    <li class="logopart_right"><a href="#"><img src="/images/japanstyle_files/20181113_01.png"></a></li>
 </ul>
 <!-- 대분류  -->
-<ul class="gnb">
-   <li class="gnb_left">
-      <a href="/product/productList.sf?sub_category=패션"><span>패션</span></a>
-      <a href="/product/productList.sf?sub_category=카메라"><span>카메라</span></a>
-      <a href="/product/productList.sf?sub_category=악기"><span>악기</span></a>
-      <a href="/product/productList.sf?sub_category=키덜트"><span>키덜트</span></a>
-      <a href="/product/productList.sf?sub_category=연예인굿즈"><span>연예인 굿즈</span></a>
-      <a href="/product/productList.sf?sub_category=골동품"><span>골동품</span></a>
-      <a href="/product/productList.sf?sub_category=게임"><span>게임</span></a>
-      <a href="/product/productList.sf?sub_category=음반"><span>음반</span></a>
-   </li>
-</ul>
+<div id="bigCategory"></div>
+<script src="/js/react/bigCat.bundle.js"></script>
+
 </div><!-- end of div top -->
-<!-- 소분류 부분 -->
-<div id="main_navi">
-   <ul>
-      <li style="margin-left:10px;">
-         <a href="/product/productList.sf?sub_category_code=0101">신발</a>
-         <a href="/product/productList.sf?sub_category_code=0102">모자</a>
-         <a href="/product/productList.sf?sub_category_code=0103">시계</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0201">필름카메라</a>
-         <a href="/product/productList.sf?sub_category_code=0202">DSLR</a>
-         <a href="/product/productList.sf?sub_category_code=0203">미러리스</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0301">바이올린</a>
-         <a href="/product/productList.sf?sub_category_code=0302">피아노</a>
-         <a href="/product/productList.sf?sub_category_code=0303">일렉 기타</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0401">피규어</a>
-         <a href="/product/productList.sf?sub_category_code=0402">프라모델</a>
-         <a href="/product/productList.sf?sub_category_code=0403">만화책</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0501">사인물품</a>
-         <a href="/product/productList.sf?sub_category_code=0502">애장품</a>
-         <a href="/product/productList.sf?sub_category_code=0503">기타</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0601">동전</a>
-         <a href="/product/productList.sf?sub_category_code=0602">우표</a>
-         <a href="/product/productList.sf?sub_category_code=0603">기타</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0701">게임기</a>
-         <a href="/product/productList.sf?sub_category_code=0702">게임팩</a>
-         <a href="/product/productList.sf?sub_category_code=0703">기타</a>
-      </li>
-      <li>
-         <a href="/product/productList.sf?sub_category_code=0801">국내</a>
-         <a href="/product/productList.sf?sub_category_code=0802">해외</a>
-         <a href="/product/productList.sf?sub_category_code=0803">기타</a>
-      </li>
-   </ul>   
-</div><!-- end of main_navi -->
+
+<div id="smallCategory"></div>
+<script src="/js/react/smallCat.bundle.js"></script>
+	
  <script>balance()</script>
 </body>
 </html>

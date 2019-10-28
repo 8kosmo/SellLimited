@@ -14,8 +14,7 @@
 <script type="text/javascript" src="http://wcs.naver.net/wcslog.js"> </script>
 <script type="text/javascript" src="/newjs/placeholders.min.js"></script>
 <script type="text/javascript" src="/newjs/mosaic.1.0.1.min.js"></script>
-<<script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
-
+<script type="text/javascript" src="/js/jquery.bxslider.min.js"></script>
 <link rel="stylesheet" href="/css/jquery.ui.css" type="text/css" />
 <style>
 .mosaic-block {
