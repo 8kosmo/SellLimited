@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import= "java.util.Map, java.util.List" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@page import="com.sellfeed.util.PageBar"%>
+
 <%
-   List<Map<String,Object>> favList = 
-      (List<Map<String,Object>>)request.getAttribute("favList");
+   /* List<Map<String,Object>> favList = (List<Map<String,Object>>)request.getAttribute("favList"); */
+   String favList = (String)request.getAttribute("favInfo");
+   out.print(favList); 
    
-   int size = 0;
-   if(favList!=null){
-      size=favList.size();
-   }
+ 	String Str = null;
+	Gson g = new Gson();
+	Str = g.toJson(favList);
+
    /* 페이지네이션 추가 */
    int numPerPage = 10;
    int nowPage = 0;
@@ -27,6 +30,39 @@
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
+ <script>
+function favSellerList(umem_id){
+    var mem_id = umem_id;
+	alert(mem_id);
+    $.ajax({
+        type:'GET'
+       ,url:'/rest/favSellerList.sf?mem_id='+mem_id
+       ,success:function(data){
+             //alert(data);
+             var jsonStr = JSON.parse(data);
+             //alert(jsonStr.length);
+             var cntbid=jsonStr[0].FAV_SELLERID;
+             //alert(cntbid);
+             if(jsonStr.length>0){
+            	 for(var i=0; i<jsonStr.length; i++){
+                      var cntbid=jsonStr[i].CNTBID;
+                      $("#cntbid").html(cntbid);
+                 
+                      var fav_sellerid=jsonStr[i].FAV_SELLERID;
+                      $("#fav_sellerid").html(fav_sellerid);
+                      
+                      var mem_jdate=jsonStr[i].MEM_JDATE;
+                      $("#mem_jdate").html(mem_jdate);
+                   
+                      var min_date=jsonStr[i].MIN_DATE;
+                      $("#min_date").html(min_date);
+                      //href.location="/favorite.favSeller.sf"
+            	 	}//end of for
+             }//end of if
+        }//end of success
+    });//end of ajax
+ }// end of function
+</script>
 <div id="mypage">
    <ul class="mypage_title">
       <li>
@@ -66,7 +102,7 @@
                   </p>
                </td>
                <td>관심목록
-                  <p><a href="/favorite/favSellerList.sf?mem_id=<%=mem_id%>">관심 회원 목록</a><br>
+               	  <p><a href="javascript:favSellerList('<%=mem_id%>')">관심 회원 목록</a><br>
                      <a href="/testview/favProduct.jsp">관심 상품 목록</a><br>
                   </p>
                </td>
@@ -90,11 +126,14 @@
          </table>
       </li>
          <li>
-      <table class="mypage_table_head">
          <caption>관심 회원 목록 <img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
-      
+         <span class="mth_left">총 <strong><%-- <%= size %> --%></strong> 건의 자료가 조회되었습니다.</span> 
          </caption>
+<div id="favSeller"></div>
+<script src="/js/react/favSellerList.bundle.js"></script>
+
+<%--  table class="mypage_table_head">
+ <td><a href="/favorite/favSellerDel.sf?fav_sellerid=<%= rMap.get("FAV_SELLERID")%>&mem_id=<%=mem_id%>"><button type="button">제외</button></a></td>
          <colgroup>
             <col width="180px;">
             <col width="180px;">
@@ -123,27 +162,27 @@
             <col width="120px;">
          </colgroup>
          
-         <%
+          <%
             for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
                 if(size==i) break;
                 Map<String,Object> rMap = favList.get(i);
             
-         %>
+         %> 
             <tr>
-               <td ><a href="#" ><%= rMap.get("FAV_SELLERID")%></a></td>
-               <td><%= rMap.get("MEM_JDATE")%></td>
-               <td><%= rMap.get("CNTBID")%></td>
-               <td><%= rMap.get("MIN_DATE")%></td>
+               <td id="fav_sellerid"> </td>
+               <td id="mem_jdate"> </td>
+               <td id="cntbid"> </td>
+               <td id="min_date"> </td>
                <td><a href="/favorite/favSellerDel.sf?fav_sellerid=<%= rMap.get("FAV_SELLERID")%>&mem_id=<%=mem_id%>"><button type="button">제외</button></a></td>
-               <%
+                <%
             }
-               %>
+               %> 
             </tr>
          </tbody>
-      </table>
-<%
-            }else{
-%>
+      </table> --%>
+<%--  <%
+            if(size==0){
+%> --%> 
        <table class="mypage_table">
          <colgroup>
             <col width="120px;">
@@ -160,9 +199,9 @@
             </tr>
          </tbody>
       </table>
-<%
+<%--  <%
             }
-%>
+%>  --%>
    </li>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"
@@ -170,12 +209,12 @@
          <tbody>
             <tr>
                <td>
-<%
+<%-- <%
                   String pagePath = "/favorite/favSellerList.sf?mem_id="+mem_id+"&";
                   PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
                   String pagination = pb.getPageBar();
                   out.print(pagination);
-%>
+%> --%>
             </tr>
          </tbody>
       </table></li>

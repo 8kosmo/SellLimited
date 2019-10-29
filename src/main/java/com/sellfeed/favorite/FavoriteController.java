@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.gson.Gson;
+
 
 @Controller
 @RequestMapping(value="/favorite")
@@ -24,27 +26,31 @@ public class FavoriteController {
    public FavoriteLogic favoriteLogic = null;
    
    //관심 판매자 리스트
-   @GetMapping("/favSellerList.sf")
-   public String favSellerList(@RequestParam("mem_id") String mem_id,Model mod, Map<String,Object> pMap) {
-      logger.info("Controller| favSellerList 호출성공");
-      List<Map<String,Object>> favList = null;
-      int nowPage = 0;
-      int pageSize = 0;
-      
-      if(pMap.get("nowPage")!=null) {
-             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
-        }
-        if(pMap.get("pageSize")!=null) {
-            pageSize = Integer.parseInt(pMap.get("pageSize").toString());
-        }
-      
-      pMap.put("nowPage",nowPage);
-      pMap.put("pageSize",pageSize);
-      pMap.put("mem_id",mem_id);
-      favList = favoriteLogic.favSellerList(pMap);
-      mod.addAttribute("favList",favList);
-      return "forward:/testview/favSeller.jsp";
-   }
+//   @GetMapping("/favSellerList.sf")
+//   public String favSellerList(@RequestParam("mem_id") String mem_id,Model mod, Map<String,Object> pMap) {
+//      logger.info("Controller| favSellerList 호출성공");
+//      List<Map<String,Object>> favList = null;
+//      int nowPage = 0;
+//      int pageSize = 0;
+//      
+//      if(pMap.get("nowPage")!=null) {
+//             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+//        }
+//        if(pMap.get("pageSize")!=null) {
+//            pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+//        }
+//      pMap.put("nowPage",nowPage);
+//      pMap.put("pageSize",pageSize);
+//      pMap.put("mem_id",mem_id);
+//      favList = favoriteLogic.favSellerList(pMap);
+//      String favInfo = null;
+//      Gson g = new Gson();
+//      favInfo = g.toJson(favList);
+//      logger.info("컨트롤러타니ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ"+favInfo);
+//      mod.addAttribute("favInfo",favInfo);
+//      //mod.addAttribute("favList",favList);
+//      return "forward:/testview/favSeller3.jsp";
+//   }
    //관심 판매자 삭제
    @GetMapping("/favSellerDel.sf")
    public String favSellerDel(@RequestParam Map<String,Object> pMap) {

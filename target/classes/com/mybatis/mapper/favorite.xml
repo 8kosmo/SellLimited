@@ -3,7 +3,7 @@
 <mapper namespace="com.mybatis.mapper.favMapper">
    
    <select id="favSellerList" parameterType="map" resultType="map">
-         SELECT fav_sellerid, mem_jdate, cntBid, min_date
+         SELECT fav_seller.mem_id,fav_sellerid, mem_jdate, cntBid, min_date
               FROM (SELECT min(auct_startdate) min_date, count(bid_code) cntBid
                         FROM (
                               SELECT auct_progress.bid_code,auct_startdate
