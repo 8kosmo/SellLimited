@@ -230,4 +230,9 @@ public class ProductLogic {
 		authoritywaiting = productDao.authoritywaiting(pMap);
 		return authoritywaiting;
 	   }
+
+	public List<Map<String, Object>> auctionInsProduct(String mem_name) {
+		List<Map<String, Object>> apList = productDao.auctionInsProduct(mem_name);
+		return apList;
+	}
 }

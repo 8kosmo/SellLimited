@@ -56,7 +56,7 @@
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
-                     <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
+                      <a href="/product/auctionInsProduct.sf?mem_id=<%=mem_id%>">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>

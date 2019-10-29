@@ -353,7 +353,7 @@ function getTime() {
                                     <p style="font-size:20px; margin-top:5px;" id="cur_seed"><%=rMap.get("CUR_SEED")%></p>
                                  </td>
                                  <td>남은시간
-             <p style="font-size:20px; margin-top:5px; ">
+            	 <p style="font-size:20px; margin-top:5px; ">
                   <SPAN id=counter0></SPAN>일+
                   <SPAN id=counter1></SPAN>:<SPAN id=counter2></SPAN>:<SPAN id=counter3></SPAN></p>
                                  </td>

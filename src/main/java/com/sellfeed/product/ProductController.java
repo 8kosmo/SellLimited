@@ -36,32 +36,31 @@ public class ProductController {
    @Autowired
    public ProductLogic productLogic = null;
    
-     @GetMapping("/productDetail.sf")
-     public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
-       List<Map<String,Object>> productDetailList = new ArrayList<>();
-       if(pMap.get("status").equals("auction")) {
-          productDetailList = productLogic.auctionDetail(pMap);
-       }
-       else if(pMap.get("status").equals("seed")) {
-          productDetailList = productLogic.seedDetail(pMap);
-       }
-       Map<String,Object> rMap = new HashMap<>();
-       List<String> photoNameList = new ArrayList<>();
-       for(int i=0; i<productDetailList.size();i++) {
-          rMap = productDetailList.get(i);
-          rMap.get("PHOTO_NAME");
-          photoNameList.add(rMap.get("PHOTO_NAME").toString());
-       }
-       rMap.put("PHOTO_NAME",photoNameList);
-       logger.info("rMap:: "+rMap);
-       mod.addAttribute("rMap",rMap);
-       if(pMap.get("status").equals("auction")) {
-          return "forward:/testview/AuctionDetailView.jsp";
-       }else {
-          return "forward:/testview/SeedDetailView.jsp";
-       }
-    }
-  
+	@GetMapping("/productDetail.sf")
+	public String productList(@RequestParam Map<String,Object> pMap, Model mod) {
+	  List<Map<String,Object>> productDetailList = new ArrayList<>();
+	  if(pMap.get("status").equals("auction")) {
+	     productDetailList = productLogic.auctionDetail(pMap);
+	  }
+	  else if(pMap.get("status").equals("seed")) {
+	     productDetailList = productLogic.seedDetail(pMap);
+	  }
+	  Map<String,Object> rMap = new HashMap<>();
+	  List<String> photoNameList = new ArrayList<>();
+	  for(int i=0; i<productDetailList.size();i++) {
+	     rMap = productDetailList.get(i);
+	     rMap.get("PHOTO_NAME");
+	     photoNameList.add(rMap.get("PHOTO_NAME").toString());
+	  }
+	  rMap.put("PHOTO_NAME",photoNameList);
+	  logger.info("rMap:: "+rMap);
+	  mod.addAttribute("rMap",rMap);
+	  if(pMap.get("status").equals("auction")) {
+	     return "forward:/testview/AuctionDetailView.jsp";
+	  }else {
+	     return "forward:/testview/SeedDetailView.jsp";
+	  }
+	}
    
    @PostMapping("/productIns.sf")
    public String productIns(@RequestParam Map<String, Object> pMap
@@ -301,4 +300,11 @@ public class ProductController {
 		mod.addAttribute("authoritywaiting", authoritywaiting);
 		return "forward:../testview/readyProductList.jsp";
    }
+	@GetMapping(value="/auctionInsProduct.sf")
+	public String auctionInsProduct(Model mod, @RequestParam String mem_id) {
+		List<Map<String,Object>> apList = productLogic.auctionInsProduct(mem_id);
+		mod.addAttribute("apList", apList);
+		logger.info(""+apList.toString());
+		return "forward:../testview/auctionInsProduct.jsp";
+	}
 }

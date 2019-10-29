@@ -387,4 +387,14 @@
 	   WHERE status = '승인대기'
 	   AND mem_id = #{mem_id}
    </select>
+   
+   <select id="auctionInsProduct" parameterType="string" resultType="map">
+		SELECT 
+		    status, sl.item_code, product_name, product_detail, auct_enddate, NVL(high_price,0) HIGH_PRICE
+		    FROM sale_item sl,auction_info ai, auct_progress ap,(SELECT bid_code, MAX(final_price) high_price FROM bid_log GROUP BY bid_code) fp
+		WHERE sl.item_code = ai.item_code
+		AND ai.bid_code = ap.bid_code
+		AND ai.bid_code = fp.bid_code(+)
+		AND mem_id = #{mem_id}   	
+   </select>
 </mapper>

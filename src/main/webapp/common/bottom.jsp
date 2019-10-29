@@ -73,7 +73,7 @@
 							<ul>
 								<li height="45">&nbsp;</li>
 								<li>
-									<a href="javascript:quick_open_top()" id="toggle" value='1'><img src="/images/quick_open.png" width="73" height="35" alt="open" id="quick_arrow"></a>
+									<a href="#" id="toggle" value='1'><img src="/images/quickbold.png" width="73" height="35" alt="open" id="quick_arrow"></a>
 								</li>
 								<li>
 									<a href="javascript:quick_switch('8', 0)"><img src="/images/quick_tab7.gif" width="73" height="64" alt="입찰중경매"></a>

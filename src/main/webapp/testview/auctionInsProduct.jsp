@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import= "java.util.Map, java.util.List" %>
+<%@page import="com.sellfeed.util.PageBar"%>
+<%
+	List<Map<String,Object>> apList = (List)request.getAttribute("apList");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +61,7 @@
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
-                     <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
+                     <a href="/product/auctionInsProduct.sf?mem_id=<%=mem_id%>">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
@@ -103,7 +108,7 @@
                <td>상품 코드</td>
                <td>상품 이름</td>
                <td>상품 설명</td>
-               <td>시드참여인원</td>
+               <td>최고 입찰가</td>
                <td>경매종료시간</td>
                <td>바로가기</td>
             </tr>
@@ -118,19 +123,23 @@
             <col width="100px;">
             <col width="100px;">
          </colgroup>
+<%
+	for(int i=0;i<apList.size();i++) {
+		Map<String,Object> apMap = apList.get(i);
+%>         
             <tr>
-               <td>경매 중</td>
-               <td>678N28</td>
-               <td>2028칫솔</td>
-               <td>kosmo 52th를 함께한 2080칫솔   </td>
-               <td>40명</td>
+               <td><%=apMap.get("STATUS") %></td>
+               <td><%=apMap.get("ITEM_CODE") %></td>
+               <td><%=apMap.get("PRODUCT_NAME") %></td>
+               <td><%=apMap.get("PRODUCT_DETAIL") %></td>
+               <td><%=apMap.get("HIGH_PRICE") %></td>
                <td>19-09-22<br>(22:03)</td>
                <td><a href="#"><button type="button">바로가기</button></a></td>
             </tr>
          </tbody>
       </table>
 <%
-
+	}
 %>
        <table class="mypage_table">
          <colgroup>
