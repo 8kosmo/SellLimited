@@ -4,6 +4,12 @@
 <%@page import="com.sellfeed.util.PageBar"%>
 <%
 	List<Map<String,Object>> apList = (List)request.getAttribute("apList");
+	int size = 0;
+	if(apList != null && apList.size()>0){
+	   size = apList.size();
+	}  
+	int nowPage = 0;
+	int numPerPage = 10;
 %>
 <!DOCTYPE html>
 <html>
@@ -136,11 +142,14 @@
                <td>19-09-22<br>(22:03)</td>
                <td><a href="#"><button type="button">바로가기</button></a></td>
             </tr>
-         </tbody>
-      </table>
 <%
 	}
 %>
+         </tbody>
+      </table>
+<%
+   if(size > 0){
+%>      
        <table class="mypage_table">
          <colgroup>
             <col width="80px;">
@@ -156,10 +165,8 @@
                <td height="200" colspan="7">경매진행 중 상품이 존재 하지 않습니다.</td>
             </tr>
          </tbody>
+<%} %>         
       </table>
-<%
-
-%>
    </li>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"

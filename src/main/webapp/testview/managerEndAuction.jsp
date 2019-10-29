@@ -14,9 +14,6 @@
    }  
    int nowPage = 0;
    int numPerPage = 10;
-   if(request.getParameter("nowPage")!=null){
-	      nowPage = Integer.parseInt(request.getParameter("nowPage"));
-	   }
 %>
 <!DOCTYPE html>
 <html>

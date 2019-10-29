@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import= "java.util.Map, java.util.List" %>
+<%@page import="com.sellfeed.util.PageBar"%>
+<%
+	List<Map<String,Object>> imInList = (List)request.getAttribute("imInList");
+	int size = 0;
+	if(imInList != null && imInList.size()>0){
+	   size = imInList.size();
+	}  
+	int nowPage = 0;
+	int numPerPage = 10;
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,10 +67,10 @@
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
-                     <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
+                     <a href="/product/auctionInsProduct.sf?mem_id=<%=mem_id%>">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
-                  <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
+                  <p><a href="/product/seedImIn.sf?mem_id=<%=mem_id%>">시드 참여 상품</a><br>
                      <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
                      <a href="/product/productDelivery.sf?mem_id=<%=mem_id%>">상품 배송 정보</a></p>
                </td>
@@ -105,7 +116,7 @@
                <td>시작가</td>
                <td>즉시구매가</td>
                <td>참가자수</td>
-               <td>경매 시작</td>
+               <td>시드발급 종료</td>
             </tr>
       </table>
       <table class="mypage_table">
@@ -118,20 +129,27 @@
             <col width="130px;">
             <col width="130px;">
          </colgroup>
-            <tr>
-               <td>시드 모집 중</td>
-               <td>johnhyeon</td>
-               <td><a href="#">2080칫솔</a></td>
-               <td>1,000원</td>
-               <td>200,000원</td>
-               <td>40명</td>
-               <td>19-09-22<br>(22:20)</td>
-            </tr>
-         </tbody>
-      </table>
 <%
-
+	for(int i=0;i<imInList.size();i++) {
+		Map<String,Object> imInMap = imInList.get(i);		
+%>         
+            <tr>
+               <td><%=imInMap.get("STATUS") %></td>
+               <td><%=imInMap.get("MEM_ID") %></td>
+               <td><%=imInMap.get("PRODUCT_NAME") %></td>
+               <td><%=imInMap.get("START_PRICE") %></td>
+               <td><%=imInMap.get("BUYNOW_PRICE") %></td>
+               <td><%=imInMap.get("CNT_SEED") %>명</td>
+               <td><%=imInMap.get("END_SEED") %></td>
+            </tr>
+<%
+	}
 %>
+         </tbody>
+<%
+   if(size < 0){
+%>         
+      </table>
        <table class="mypage_table">
          <colgroup>
             <col width="110px;">
@@ -147,10 +165,8 @@
                <td height="200" colspan="7">시드 발급한 상품이 존재 하지 않습니다.</td>
             </tr>
          </tbody>
+<% } %>         
       </table>
-<%
-
-%>
    </li>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"

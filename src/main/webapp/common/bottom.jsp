@@ -5,6 +5,24 @@
 <head>
 <meta charset="UTF-8">
 <title>공통부분 - Bottom, 퀵바</title>
+<script type="text/javascript">
+	function loginSessionCheck(path){
+	    <%      
+	          if(mem_id==null){   
+	    %>
+	             location.href="/testview/login.jsp";
+	    <%
+	          }else{
+	    %> 
+	    		 location.href=path
+	    <%
+	          }
+	    %>
+	       }
+	function favSeller(){
+		var result = loginSessionCheck("/favorite/favSellerList.sf?mem_id=<%=mem_id%>'");
+	}
+</script>
 </head>
 <body>
 <!-- 페이지 하단에 푸터 -->
@@ -82,7 +100,7 @@
 									<a href="javascript:quick_switch('3', 0)"><img src="/images/quick_tab1.gif" width="73" height="65" alt="관심상품"></a>
 								</li>
 								<li>
-									<a href="/favorite/favSellerList.sf?mem_id=<%=mem_id%>"><img src="/images/quick_tab2.gif" width="73" height="64" alt="관심판매자"></a>
+									<a href="javascript:favSeller()"><img src="/images/quick_tab2.gif" width="73" height="64" alt="관심판매자"></a>
 								</li>
 								<li>
 									<a href="javascript:quick_switch('5', 0)"><img src="/images/quick_tab3_new.gif" width="73" height="64" alt="관심카테고리"></a>

@@ -307,4 +307,11 @@ public class ProductController {
 		logger.info(""+apList.toString());
 		return "forward:../testview/auctionInsProduct.jsp";
 	}
+	@GetMapping(value="/seedImIn.sf")
+	public String seedImIn(Model mod, @RequestParam String mem_id) {
+		List<Map<String,Object>> imInList = productLogic.seedImIn(mem_id);
+		mod.addAttribute("imInList", imInList);
+		logger.info(""+imInList.toString());
+		return "forward:../testview/seedImIn.jsp";
+	}
 }

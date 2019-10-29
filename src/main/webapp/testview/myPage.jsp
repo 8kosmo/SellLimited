@@ -59,7 +59,7 @@
                       <a href="/product/auctionInsProduct.sf?mem_id=<%=mem_id%>">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
-                  <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
+                  <p><a href="/product/seedImIn.sf?mem_id=<%=mem_id%>">시드 참여 상품</a><br>
                      <a href="/testview/auctionImIn.jsp">경매 참여 상품</a><br>
                      <a href="/product/productDelivery.sf?mem_id=<%=mem_id%>">상품 배송 정보</a></p>
                </td>

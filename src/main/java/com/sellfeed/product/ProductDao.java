@@ -132,8 +132,12 @@ public class ProductDao {
 	   authoritywaiting = sqlSessionTemplate.selectList("authoritywaiting", pMap);
 	   return authoritywaiting;
    }
-public List<Map<String, Object>> auctionInsProduct(String mem_name) {
-	List<Map<String, Object>> apList = sqlSessionTemplate.selectList("auctionInsProduct",mem_name);
+public List<Map<String, Object>> auctionInsProduct(String mem_id) {
+	List<Map<String, Object>> apList = sqlSessionTemplate.selectList("auctionInsProduct",mem_id);
 	return apList;
+}
+public List<Map<String, Object>> seedImIn(String mem_id) {
+	List<Map<String, Object>> imInList = sqlSessionTemplate.selectList("seedImIn",mem_id);
+	return imInList;
 }
 }

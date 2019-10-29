@@ -397,4 +397,12 @@
 		AND ai.bid_code = fp.bid_code(+)
 		AND mem_id = #{mem_id}   	
    </select>
+   <select id="seedImIn" parameterType="string" resultType="map">
+		SELECT status, mem_id, product_name, start_price, buynow_price, cnt_seed, end_seed 
+		    FROM sale_item si,(SELECT bid_code ,count(bidders_id) cnt_seed FROM seed GROUP BY  bid_code) cs, auction_info ai
+		WHERE si.item_code = ai.item_code
+		AND ai.bid_code = cs.bid_code
+		AND cs.bid_code IN (SELECT bid_code FROM seed WHERE bidders_id = #{mem_id})
+		AND status = '시드참여중'		   
+   </select>
 </mapper>
