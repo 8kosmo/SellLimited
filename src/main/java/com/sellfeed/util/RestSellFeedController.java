@@ -190,29 +190,5 @@ public class RestSellFeedController {
 	      logger.info("컨트롤러타니ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ"+favInfo);
 	      return favInfo;
 	   }
-	   //react 테스트용
-	   @GetMapping(value="/accountList.sf")
-	   public String accountList(@RequestParam Map<String, Object> pMap,Model mod,HttpSession session) {
-	      logger.info("==========>accountList 호출 성공");
-	      List<Map<String,Object>> rList = null;
-	      String mem_id = session.getAttribute("mem_id").toString();
-	      int nowPage = 0;
-	      int pageSize = 0;
-	      if(pMap.get("nowPage")!=null) {
-	            nowPage = Integer.parseInt(pMap.get("nowPage").toString());
-	       }
-	       if(pMap.get("pageSize")!=null) {
-	           pageSize = Integer.parseInt(pMap.get("pageSize").toString());
-	       }
-	      pMap.put("nowPage",nowPage);
-	      pMap.put("pageSize",pageSize);
-	      pMap.put("mem_id",mem_id);
-	      rList=accountLogic.accountList(pMap);
-	      String acctInfo = null;
-	      Gson g = new Gson();
-	      acctInfo = g.toJson(rList);
-	      mod.addAttribute("rList",rList);
-	      logger.info("컨트롤러타니ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ"+acctInfo);
-	      return acctInfo;
-	   }
+
 }
