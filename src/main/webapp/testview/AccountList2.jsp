@@ -1,31 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import= "java.util.Map, java.util.List" %>
-<%@page import="com.sellfeed.util.PageBar"%>
-<%
-   List<Map<String,Object>> favList = 
-      (List<Map<String,Object>>)request.getAttribute("favList");
-   
-   int size = 0;
-   if(favList!=null){
-      size=favList.size();
+<%@ page import="java.util.*" %>
+ <%@page import="com.sellfeed.util.PageBar"%>
+ <%
+List<Map<String,Object>> rList = 
+      (List<Map<String,Object>>)request.getAttribute("rList");
+   int size=0;
+   if(rList!=null){
+    size = rList.size();
    }
+      /* 페이지네이션 추가 */
+      int numPerPage = 10;
+      int nowPage = 0;
+      if(request.getParameter("nowPage")!=null){
+         nowPage = Integer.parseInt(request.getParameter("nowPage"));
+      }
    
-   /* 페이지네이션 추가 */
-   int numPerPage = 10;
-   int nowPage = 0;
-   if(request.getParameter("nowPage")!=null){
-      nowPage = Integer.parseInt(request.getParameter("nowPage"));
-   }
 %>
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
-<title>관심판매자목록</title>
+<title>계좌내역리스트</title>
 <%@ include file="/common/cssJs.jsp" %>
-
 </head>
 <body>
 <%@ include file="/common/top.jsp" %>
@@ -41,7 +38,7 @@
             <tbody><tr>
                <td class="mtt_left"><img src="/images/integ/20150918_01.png"></td>
                <td class="mtt_center">마이페이지
-                 <p>아이디 : <span class="mttid"><%=mem_id%></span><br>
+                                 <p>아이디 : <span class="mttid"><%=mem_id%></span><br>
                      보유캐시 : <span class="mttcash"><a href="/mypage/cash_list"><%=nowBalance%> 원</a></span>
                   </p>
                </td>
@@ -93,69 +90,104 @@
       </li>
          <li>
       <table class="mypage_table_head">
-         <caption>관심 회원 목록 <img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
-      
+         <caption>계좌 거래내역 <img src="/images/integ/20150918_10.png"> 
+            <span class="mth_left">총 <strong><%= size %></strong> 건의 자료가 조회되었습니다.</span>
          </caption>
          <colgroup>
-        	<col width="166px;">
-            <col width="225px;">
-            <col width="94px;">
-            <col width="380px;">
-            <col width="152px;">
+            <col width="180px;">
+            <col width="">
+            <col width="200px;">
+            <col width="200px;">
          </colgroup>
          <tbody>
             <tr>
-               <td>판매자 아이디</td>
-               <td>가입 일자</td>
-               <td>등록 상품 갯수</td>
-               <td>가장 빠른 경매 진행날짜</td>
-               <td>관심제외하기</td>
-            </tr>
-      </table>
-      <%
-         if(size>0){
-      %>
-            <div id="d_favSeller"></div>
-<%
-            }else{
-%>
-       <table class="mypage_table">
-         <colgroup>
-        	<col width="166px;">
-            <col width="225px;">
-            <col width="94px;">
-            <col width="380px;">
-            <col width="152px;">
-         </colgroup>
-         <tbody>
-            <tr>
-               <td height="200" colspan="7">관심 등록 된 회원이 존재 하지 않습니다.</td>
+               <td>거래일</td>
+               <td>거래 내용 상세</td>
+               <td>입금/출금</td>
+               <td>거래액</td>
             </tr>
          </tbody>
       </table>
 <%
-            }
+
+if(size>0){
+   
 %>
+      <table class="mypage_table_sec">
+         <colgroup>
+            <col width="180px;">
+            <col width="">
+            <col width="200px;">
+            <col width="200px;">
+         </colgroup>
+         <tbody>
+<%
+      for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++){
+          if(size==i) break;
+         Map<String,Object> rMap = rList.get(i);
+
+%>
+		<!-- 리액트 테스트중 -->
+		<div id="d_acctList"></div>
+<%
+      }
+%>
+      </tbody>
+      </table>
+<%
+      }else{
+%>
+       <table class="mypage_table">
+               <colgroup>
+                  <col width="180px;">
+                  <col width="">
+                  <col width="200px;">
+                  <col width="200px;">
+               </colgroup>
+               <tbody>
+               <tr>
+               <td height="200" colspan="8">결제내역이 존재 하지 않습니다.</td>
+             </tr>
+         </tbody>
+      </table>
    </li>
+<%
+   }
+%>
+      <table class="mypage_table_sec">
+         <colgroup>
+            <col width="">
+            <col width="200px;">
+            <col width="200px;">
+         </colgroup>
+         <tbody>
+            <tr>
+               <td></td>
+               <td><b>현재 보유 잔액</b></td>
+               <td><b><%=nowBalance %>원</b></td>
+            </tr>
+         </tbody>
+      </table>
    <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td>
-<%
-                  String pagePath = "/favorite/favSellerList.sf?mem_id="+mem_id+"&";
+               <td> 
+ <%
+                  String pagePath = "/account/accountList.sf?mem_id="+mem_id+"&";
                   PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
                   String pagination = pb.getPageBar();
                   out.print(pagination);
-%>
+%>   
+
             </tr>
          </tbody>
-      </table></li>
+      </table>
+      </li>
      </ul>
     </div>
 <%@ include file="/common/bottom.jsp" %>
-<script type="text/javascript" src="/js/react/favSellerList2.bundle.js"></script>
+<script type="text/javascript" src="/js/react/acctList.bundle.js"></script>
 </body>
 </html>

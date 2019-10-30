@@ -394,6 +394,7 @@ function getTime(yy,mm,dd,hh,mi,ss) {
         });
 
         // 웹소켓을 지정한 url로 연결한다.
+        // 콜백함수 (커스텀)
         let sock = new SockJS('/echo?roomIn:<%=rMap.get("BID_CODE")%>');
         sock.onmessage = onMessage;
         sock.onclose = onClose;
@@ -409,18 +410,20 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                var data = msg.data;
                var result = data.split(':')[0];
                var status = data.split(':')[1];
+               //몇명인지
                if(status=='enterCnt'){
                   $("#enterCnt").text(result);
+               //문닫을떄
                }else if(status=='closeRoom'){
                   opener.location.href="/testview/mainView.jsp";
                   window.close();
                }
+               //현재 가격 
                else{
                    $("#h_final_price").text(result);
                   result = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                    $("#final_price").text(result);
                }
-               
         }
 
         // 서버와 연결을 끊었을 때

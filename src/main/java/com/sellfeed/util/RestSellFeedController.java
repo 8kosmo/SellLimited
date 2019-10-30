@@ -166,11 +166,13 @@ public class RestSellFeedController {
 	
 	//관심 판매자 리스트
 	   @GetMapping("/favSellerList.sf")
-	   public String favSellerList(@RequestParam("mem_id") String mem_id,Model mod, Map<String,Object> pMap) {
+	   public String favSellerList(Model mod, Map<String,Object> pMap,HttpSession session) {
 	      logger.info("Controller| favSellerList 호출성공");
 	      List<Map<String,Object>> favList = null;
 	      int nowPage = 0;
 	      int pageSize = 0;
+	      String mem_id = session.getAttribute("mem_id").toString();
+	      logger.info("아이디 찍히니?========================="+mem_id);
 	      
 	      if(pMap.get("nowPage")!=null) {
 	             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
@@ -186,9 +188,31 @@ public class RestSellFeedController {
 	      Gson g = new Gson();
 	      favInfo = g.toJson(favList);
 	      logger.info("컨트롤러타니ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ"+favInfo);
-	      //mod.addAttribute("favList",favList);
 	      return favInfo;
 	   }
-	
-
+	   //react 테스트용
+	   @GetMapping(value="/accountList.sf")
+	   public String accountList(@RequestParam Map<String, Object> pMap,Model mod,HttpSession session) {
+	      logger.info("==========>accountList 호출 성공");
+	      List<Map<String,Object>> rList = null;
+	      String mem_id = session.getAttribute("mem_id").toString();
+	      int nowPage = 0;
+	      int pageSize = 0;
+	      if(pMap.get("nowPage")!=null) {
+	            nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+	       }
+	       if(pMap.get("pageSize")!=null) {
+	           pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+	       }
+	      pMap.put("nowPage",nowPage);
+	      pMap.put("pageSize",pageSize);
+	      pMap.put("mem_id",mem_id);
+	      rList=accountLogic.accountList(pMap);
+	      String acctInfo = null;
+	      Gson g = new Gson();
+	      acctInfo = g.toJson(rList);
+	      mod.addAttribute("rList",rList);
+	      logger.info("컨트롤러타니ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ"+acctInfo);
+	      return acctInfo;
+	   }
 }

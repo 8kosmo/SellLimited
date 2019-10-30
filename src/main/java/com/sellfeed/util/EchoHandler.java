@@ -18,6 +18,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	private List<WebSocketSession> sessionList = null;
 
 	// 클라이언트와 연결 이후에 실행되는 메서드
+	// 세션 자동 생성
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		String sessionUri = session.getUri().toString();
@@ -26,13 +27,16 @@ public class EchoHandler extends TextWebSocketHandler {
 		String status = real.split("\\:")[0];
 		String roomName = real.split("\\:")[1];
 		logger.info(status+", "+roomName);
+		// 방 생성만
 		if("roomCreate".equals(status)) {
 			sessionList = new ArrayList<>();
 			sessionMap.put(roomName, sessionList);
 			logger.info(roomName+" 방을 생성");
 		}
+		// 방 입장
 		else {
 			sessionList = sessionMap.get(roomName);
+			//session 자동 생성 (let sock)
 			sessionList.add(session);
 			logger.info("{} 연결됨", session.getId());
 			for (WebSocketSession sess : sessionList) {
@@ -46,6 +50,7 @@ public class EchoHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload());
 		String pullMessage = message.getPayload();
+		//roomName = bid_code
 		String roomName = pullMessage.split("\\?")[0];
 		String realMessage = pullMessage.split("\\?")[1];
 		sessionList = sessionMap.get(roomName);
