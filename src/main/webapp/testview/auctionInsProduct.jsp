@@ -1,5 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import= "java.util.Map, java.util.List" %>
+<%@page import="com.sellfeed.util.PageBar"%>
+<%
+   List<Map<String,Object>> apList = (List)request.getAttribute("apList");
+   int size = 0;
+   if(apList != null && apList.size()>0){
+      size = apList.size();
+   }  
+   int nowPage = 0;
+   int numPerPage = 10;
+   if(request.getParameter("nowPage")!=null){
+        nowPage = Integer.parseInt(request.getParameter("nowPage"));
+     }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +70,7 @@
                   <p><a href="/testview/ProductIns.jsp">상품 등록</a><br>
                      <a href="/product/authoritywaiting.sf?mem_id=<%=mem_id%>">승인 대기 상품</a><br>
                      <a href="/seed/seedInsProduct.sf?mem_id=<%=mem_id%>">시드 모집 상품</a><br>
-                     <a href="/testview/auctionInsProduct.jsp">경매 진행 상품</a><br>
+                     <a href="/product/auctionInsProduct.sf?mem_id=<%=mem_id%>">경매 진행 상품</a><br>
                </td>
                <td>참여 상품목록
                   <p><a href="/testview/seedImIn.jsp">시드 참여 상품</a><br>
@@ -74,7 +88,7 @@
    <li>
       <table class="mypage_table_head">
          <caption>경매 진행 상품 목록<img src="/images/integ/20150918_10.png"> 
-            <span class="mth_left">총 <strong>0</strong> 건의 자료가 조회되었습니다.</span>
+            <span class="mth_left">총 <strong><%=size %></strong> 건의 자료가 조회되었습니다.</span>
             <span class="mth_right">
                <form action="#" accept-charset="utf-8" method="get" id="frm" name="frm">
                   <div id="select_boxview">
@@ -103,7 +117,7 @@
                <td>상품 코드</td>
                <td>상품 이름</td>
                <td>상품 설명</td>
-               <td>시드참여인원</td>
+               <td>최고 입찰가</td>
                <td>경매종료시간</td>
                <td>바로가기</td>
             </tr>
@@ -118,20 +132,28 @@
             <col width="100px;">
             <col width="100px;">
          </colgroup>
+<%
+   for(int i=nowPage*numPerPage;i<(nowPage*numPerPage)+numPerPage;i++) {
+        if(size==i) break;
+      Map<String,Object> apMap = apList.get(i);
+%>         
             <tr>
-               <td>경매 중</td>
-               <td>678N28</td>
-               <td>2028칫솔</td>
-               <td>kosmo 52th를 함께한 2080칫솔   </td>
-               <td>40명</td>
+               <td><%=apMap.get("STATUS") %></td>
+               <td><%=apMap.get("ITEM_CODE") %></td>
+               <td><%=apMap.get("PRODUCT_NAME") %></td>
+               <td><%=apMap.get("PRODUCT_DETAIL") %></td>
+               <td><%=apMap.get("HIGH_PRICE") %></td>
                <td>19-09-22<br>(22:03)</td>
                <td><a href="#"><button type="button">바로가기</button></a></td>
             </tr>
+<%
+   }
+%>
          </tbody>
       </table>
 <%
-
-%>
+   if(size == 0){
+%>      
        <table class="mypage_table">
          <colgroup>
             <col width="80px;">
@@ -147,23 +169,21 @@
                <td height="200" colspan="7">경매진행 중 상품이 존재 하지 않습니다.</td>
             </tr>
          </tbody>
+<%} %>         
       </table>
-<%
-
-%>
    </li>
-   <li class="paging"><table border="0" cellpadding="0"
+  <li class="paging"><table border="0" cellpadding="0"
          cellspacing="0" class="paging_comm" align="center"
          style="margin: 0 auto;">
          <tbody>
             <tr>
-               <td><a
-                  href="#"
-                  title="이전" class="btn_page btn_prev"> </a> <a
-                  href="#"
-                  title="page 1" class="btn_page _current">1</a> <a
-                  href="#"
-                  title="다음" class="btn_page btn_next"> </a></td>
+               <td>
+<%
+                  String pagePath = "/product/auctionInsProduct.sf?mem_id="+mem_id+"&";
+                  PageBar pb = new PageBar(numPerPage,size,nowPage,pagePath);
+                  String pagination = pb.getPageBar();
+                  out.print(pagination);
+%>
             </tr>
          </tbody>
       </table>

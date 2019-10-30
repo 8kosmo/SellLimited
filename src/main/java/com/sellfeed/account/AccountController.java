@@ -33,9 +33,11 @@ public class AccountController {
       int pageSize = 0;
       if(pMap.get("nowPage")!=null) {
             nowPage = Integer.parseInt(pMap.get("nowPage").toString());
+            logger.info("나우페이지"+nowPage+"");
        }
        if(pMap.get("pageSize")!=null) {
            pageSize = Integer.parseInt(pMap.get("pageSize").toString());
+           logger.info("페이지사이즈"+pageSize+"");
        }
      pMap.put("nowPage",nowPage);
      pMap.put("pageSize",pageSize);

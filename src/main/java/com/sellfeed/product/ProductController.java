@@ -300,4 +300,25 @@ public class ProductController {
 		mod.addAttribute("authoritywaiting", authoritywaiting);
 		return "forward:../testview/readyProductList.jsp";
    }
+	@GetMapping(value="/auctionInsProduct.sf")
+	   public String auctionInsProduct(Model mod, @RequestParam String mem_id) {
+	      List<Map<String,Object>> apList = productLogic.auctionInsProduct(mem_id);
+	      mod.addAttribute("apList", apList);
+	      logger.info(""+apList.toString());
+	      return "forward:../testview/auctionInsProduct.jsp";
+	   }
+	   @GetMapping(value="/seedImIn.sf")
+	   public String seedImIn(Model mod, @RequestParam String mem_id) {
+	      List<Map<String,Object>> imInList = productLogic.seedImIn(mem_id);
+	      mod.addAttribute("imInList", imInList);
+	      logger.info(""+imInList.toString());
+	      return "forward:../testview/seedImIn.jsp";
+	   }
+	   @GetMapping(value="/auctionImIn.sf")
+	   public String auctionImIn(Model mod, @RequestParam String mem_id) {
+	      List<Map<String,Object>> imInList = productLogic.auctionImIn(mem_id);
+	      mod.addAttribute("imInList", imInList);
+	      logger.info(""+imInList.toString());
+	      return "forward:../testview/auctionImIn.jsp";
+	   }
 }

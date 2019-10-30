@@ -387,4 +387,31 @@
 	   WHERE status = '승인대기'
 	   AND mem_id = #{mem_id}
    </select>
+   <select id="auctionInsProduct" parameterType="string" resultType="map">
+      SELECT 
+          status, sl.item_code, product_name, product_detail, auct_enddate, NVL(high_price,0) HIGH_PRICE
+          FROM sale_item sl,auction_info ai, auct_progress ap,(SELECT bid_code, MAX(final_price) high_price FROM bid_log GROUP BY bid_code) fp
+      WHERE sl.item_code = ai.item_code
+      AND ai.bid_code = ap.bid_code
+      AND ai.bid_code = fp.bid_code(+)
+      AND mem_id = #{mem_id}      
+   </select>
+   <select id="seedImIn" parameterType="string" resultType="map">
+      SELECT status, mem_id, product_name, start_price, buynow_price, cnt_seed, end_seed 
+          FROM sale_item si,(SELECT bid_code ,count(bidders_id) cnt_seed FROM seed GROUP BY  bid_code) cs, auction_info ai
+      WHERE si.item_code = ai.item_code
+      AND ai.bid_code = cs.bid_code
+      AND cs.bid_code IN (SELECT bid_code FROM seed WHERE bidders_id = #{mem_id})
+      AND end_seed <![CDATA[>]]> TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+      AND status = '시드참여중'         
+   </select>
+   <select id="auctionImIn" parameterType="string" resultType="map">
+   SELECT status, mem_id, product_name, buynow_price, cnt_seed, auct_enddate 
+   FROM sale_item, auct_progress, auction_info, 
+       (SELECT bid_code, COUNT(bidders_id) cnt_seed FROM seed WHERE bidders_id = #{mem_id} GROUP BY bid_code ) cs
+   WHERE sale_item.item_code = auction_info.item_code
+   AND auction_info.bid_code = auct_progress.bid_code
+   AND auct_progress.bid_code = cs.bid_code
+   AND AUCT_ENDDATE <![CDATA[>]]> TO_CHAR(SYSDATE,'YYYY/MM/DD/HH24/MI/SS')
+   </select>
 </mapper>

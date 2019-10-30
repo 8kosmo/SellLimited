@@ -50,6 +50,17 @@ public class FavoriteController {
      mod.addAttribute("favList",favList);
      return "forward:/testview/favSeller3.jsp";
   }
+  //관심상품
+  @GetMapping("/favProductList.sf")
+  public String favProductList(@RequestParam (required=false) String mem_id) {
+     logger.info("Controller| favProductList 호출성공");
+     List<Map<String,Object>> favList = null;
+     mem_id = "uh4ng";
+     favList = favoriteLogic.favProductList(mem_id);
+     logger.info(".."+favList);
+     return "";
+  }
+
    //관심 판매자 삭제
    @GetMapping("/favSellerDel.sf")
    public String favSellerDel(@RequestParam Map<String,Object> pMap) {
@@ -60,16 +71,6 @@ public class FavoriteController {
       favoriteLogic.favSellerDel(pMap);
       return "redirect:/favorite/favSellerList.sf?mem_id="+mem_id;
       
-   }
-   //기능구현 해야해요
-   @GetMapping("/favProductList.sf")
-   public String favProductList(@RequestParam (required=false) String mem_id) {
-      logger.info("Controller| favProductList 호출성공");
-      List<Map<String,Object>> favList = null;
-      mem_id = "uh4ng";
-      favList = favoriteLogic.favProductList(mem_id);
-      logger.info(".."+favList);
-      return "";
    }
 
 }

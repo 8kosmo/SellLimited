@@ -5,6 +5,103 @@
 <head>
 <meta charset="UTF-8">
 <title>공통부분 - Bottom, 퀵바</title>
+<script type="text/javascript">
+   //main
+   function open(){
+	    		  location.href='/product/mainViewTOP6.sf'
+   }
+
+  
+   //입찰중경매
+   function auctionInsProduct(){
+       <%      
+             if(mem_id==null){   
+       %>
+                location.href="/testview/login.jsp";
+       <%
+             }else{
+       %> 
+       		  location.href='/product/auctionInsProduct.sf?mem_id=<%=mem_id%>'
+       <%
+             }
+       %>
+          }
+   //관심판매자
+   function favSeller(){
+       <%      
+             if(mem_id==null){   
+       %>
+                location.href="/testview/login.jsp";
+       <%
+             }else{
+       %> 
+       		  location.href='/favorite/favSellerList.sf?mem_id=<%=mem_id%>'
+       <%
+             }
+       %>
+          }
+   //관심상품
+   function favProduct(){
+       <%      
+             if(mem_id==null){   
+       %>
+                location.href="/testview/login.jsp";
+       <%
+             }else{
+       %> 
+       		  location.href='/favorite/favSellerList.sf?mem_id=<%=mem_id%>'
+       <%
+             }
+       %>
+          }
+   //상품등록
+   function productIns(){
+       <%      
+             if(mem_id==null){   
+       %>
+                location.href="/testview/login.jsp";
+       <%
+             }else{
+       %> 
+       		  location.href='/testview/ProductIns.jsp'
+       <%
+             }
+       %>
+          }
+   //시드참여중
+   function seedImIn(){
+       <%      
+             if(mem_id==null){   
+       %>
+                location.href="/testview/login.jsp";
+       <%
+             }else{
+       %> 
+       		  location.href='/product/seedImIn.sf?mem_id=<%=mem_id%>'
+       <%
+             }
+       %>
+          }
+   //배송현황
+   function productDelivery(){
+       <%      
+             if(mem_id==null){   
+       %>
+                location.href="/testview/login.jsp";
+       <%
+             }else{
+       %> 
+       		  location.href='/product/productDelivery.sf?mem_id=<%=mem_id%>'
+       <%
+             }
+       %>
+          }
+   //TOP
+   function goTop(){
+       		  location.href='#';
+          }
+
+</script>
 </head>
 <body>
 <!-- 페이지 하단에 푸터 -->
@@ -54,6 +151,7 @@
    }
    function wooribank(){
       window.open("/pop/wooribank_guarantee.html", "woori_safety_service", "width=630, height=797, resizable=no, scrollbars=no, toolbars=no");
+   
    }
 </script>
 <!-- </div>end of div wrap -->

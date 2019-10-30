@@ -3,18 +3,19 @@
 <mapper namespace="com.mybatis.mapper.favMapper">
    
    <select id="favSellerList" parameterType="map" resultType="map">
-         SELECT fav_seller.mem_id,fav_sellerid, mem_jdate, cntBid, min_date
+      SELECT fav_seller.mem_id,fav_sellerid, mem_jdate, cntBid, min_date
               FROM (SELECT min(auct_startdate) min_date, count(bid_code) cntBid
                         FROM (
                               SELECT auct_progress.bid_code,auct_startdate
                                 FROM sale_item, auction_info, auct_progress
                                WHERE sale_item.item_code=auction_info.item_code
-                                 AND auction_info.bid_code=auct_progress.bid_code        
+                                 AND auction_info.bid_code=auct_progress.bid_code
+                                   AND sale_item.mem_id=#{mem_id}       
                              )
                     )
                    ,member, fav_seller
             WHERE member.mem_id=fav_sellerid
-            AND fav_seller.mem_id=#{mem_id}
+            AND fav_seller.mem_id=#{mem_id}  
    </select>
    <select id="getFavSellerList" parameterType="map" resultType="int">
             SELECT count(fav_sellerid)
