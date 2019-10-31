@@ -292,9 +292,9 @@ function getTime() {
                                  <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="line-height: 500px;">
                                  </div>
                                  <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                 <div class="ditsmallthumb" id="d_small_img1">
+                                 <div class="ditsmallthumb" id="d_small_img1" style="height: 100px">
                                  </div>
-                                 <div class="ditsmallthumb" id="d_small_img2">
+                                 <div class="ditsmallthumb" id="d_small_img2" style="height: 100px">
                                  </div>
                               </td>
                            </tr>

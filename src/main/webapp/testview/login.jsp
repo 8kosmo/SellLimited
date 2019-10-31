@@ -199,7 +199,7 @@
                         <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="mem_id" id="mem_id" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
                      </tr>
                      <tr>
-                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="mem_password" id="mem_password" tabindex="2" maxlength="20"></td>
+                        <td><input type="password" onkeydown="javascript: if (event.keyCode == 13) {login()}" class="input_login2" placeholder="비밀번호를 입력하세요" name="mem_password" id="mem_password" tabindex="2" maxlength="20"></td>
                      </tr>
                      <tr style="height:5px;"><td></td></tr><tr>
                      </tr><tr>

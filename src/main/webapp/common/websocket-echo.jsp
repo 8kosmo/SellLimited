@@ -38,7 +38,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"><
         });
 
         // 웹소켓을 지정한 url로 연결한다.
-        let sock = new SockJS('http://localhost:8080/echo?roomCreate:WZRG3649');
+        let sock = new SockJS('http://localhost:8000/echo?roomCreate:WXEV6005');
         sock.onmessage = onMessage;
         sock.onclose = onClose;
 

@@ -6,12 +6,6 @@
 <meta charset="UTF-8">
 <title>공통부분 - Bottom, 퀵바</title>
 <script type="text/javascript">
-   //main
-   function open(){
-	    		  location.href='/product/mainViewTOP6.sf'
-   }
-
-  
    //입찰중경매
    function auctionInsProduct(){
        <%      
