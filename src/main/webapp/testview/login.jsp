@@ -58,15 +58,15 @@
           }
        }
       function total_search() {
-    	 var searchWord = $("#SearchWord").val();
-    	 if(searchWord == ''){
-	    	alert('검색 할 상품을 입력 해주세요');
-	    	$("#SearchWord").focus();
-	    	return false;
-    	 }else{    		 
-    	 	location.href="/product/productList.sf?keyword="+searchWord;
-    	 }
-	}
+        var searchWord = $("#SearchWord").val();
+        if(searchWord == ''){
+          alert('검색 할 상품을 입력 해주세요');
+          $("#SearchWord").focus();
+          return false;
+        }else{           
+           location.href="/product/productList.sf?keyword="+searchWord;
+        }
+   }
       function login(){
           var mem_id = $("#mem_id").val();
           var mem_password = $("#mem_password").val();
@@ -199,7 +199,7 @@
                         <td><input type="text" class="input_login" placeholder="아이디를 입력하세요" name="mem_id" id="mem_id" tabindex="1" value="" style="IME-MODE:disabled;" onkeydown="alnum_check(event,this);"></td>
                      </tr>
                      <tr>
-                        <td><input type="password" class="input_login2" placeholder="비밀번호를 입력하세요" name="mem_password" id="mem_password" tabindex="2" maxlength="20"></td>
+                        <td><input type="password" onkeydown="javascript: if (event.keyCode == 13) {login()}" class="input_login2" placeholder="비밀번호를 입력하세요" name="mem_password" id="mem_password" tabindex="2" maxlength="20"></td>
                      </tr>
                      <tr style="height:5px;"><td></td></tr><tr>
                      </tr><tr>

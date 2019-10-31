@@ -106,7 +106,7 @@ function getTime() {
    
    if(daysRound==-1 && hoursRound == 23 && minutesRound == 59 && secondsRound == 59){
       alert("경매가 종료 되었습니다.");
-      location.href="/testview/mainView.jsp";
+      location.href="/product/mainViewTOP6.sf";
    }
    
    document.getElementById("counter0").innerHTML = daysRound;
@@ -237,7 +237,7 @@ function getTime() {
 <!-- 로고,검색창,검색버튼 있는부분 -->
 <ul class="logopart">
    <!-- 로고있는부분 -->
-   <li class="logopart_left"><a href="/testview/mainView.jsp"><img style="width:195px;margin-top:34px;" src="/images/logo.png"></a></li>
+   <li class="logopart_left"><a href="/product/mainViewTOP6.sf"><img style="width:195px;margin-top:34px;" src="/images/logo.png"></a></li>
    <!-- 검색창있는부분 -->
    <li class="logopart_center">
       <span class="searchbox_form">
@@ -292,9 +292,9 @@ function getTime() {
                                  <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="line-height: 500px;">
                                  </div>
                                  <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                 <div class="ditsmallthumb" id="d_small_img1">
+                                 <div class="ditsmallthumb" id="d_small_img1" style="height: 100px">
                                  </div>
-                                 <div class="ditsmallthumb" id="d_small_img2">
+                                 <div class="ditsmallthumb" id="d_small_img2" style="height: 100px">
                                  </div>
                               </td>
                            </tr>

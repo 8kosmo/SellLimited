@@ -171,39 +171,43 @@ function getTime(yy,mm,dd,hh,mi,ss) {
       big_img.src=sub_img2_src;
       sub_img2.src=big_img_src;
    }
+   var cnt_bid = <%=rMap.get("CNTBID")%>;
    function bid(){
-         var final_price = $("#h_final_price").html();
-         var increase_rate = 0;
-         var total = 0;
-         if(final_price<=500000){
-            increase_rate = 10000;
-         }
-         else if(500000<final_price){
-            increase_rate = final_price/20
-         }
+      var final_price = $("#h_final_price").html();
+      var increase_rate = 0;
+      var total = 0;
+      if(final_price<=500000){
+         increase_rate = 10000;
+      }
+      else if(500000<final_price){
+         increase_rate = final_price/20
+      }
+      if(0==cnt_bid){
+         total = <%=rMap.get("START_PRICE")%>;
+         cnt_bid = 1;
+      }else{
          total = final_price*1+increase_rate*1;
-         if(0==<%=rMap.get("CNTBID")%>){
-            total = <%=rMap.get("START_PRICE")%>
-         }
-         if(confirm("입찰가: "+total+ "\n입찰 하시겠습니까?")){
-            if(total><%=nowBalance%>){
-               if(confirm("잔액이 부족해요. 충전하시겠어요?")){
-                  openInNewTab('/testview/cashCharge.jsp');
-               }
-            }else{
-               $.ajax({
-                  method:'GET'
-                        ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
-                        ,data:'data'
-                        ,success:function(data){
-                           $("#h_my_price").html(total);
-                           total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                           $("#my_price").html(total);
-                           sendMessage();
-                        } 
-               });      //_______________________________________________________________| END OF AJAX
-               }
-         }
+      }
+         
+       if(confirm("입찰가: "+total+ "\n입찰 하시겠습니까?")){
+         if(total><%=nowBalance%>){
+            if(confirm("잔액이 부족해요. 충전하시겠어요?")){
+                openInNewTab('/testview/cashCharge.jsp');
+             }
+          }else{
+             $.ajax({
+                method:'GET'
+                      ,url:'/rest/aucLogIns.sf?bid_code=<%=rMap.get("BID_CODE")%>&final_price='+total+'&mem_id=<%=mem_id%>&increase_rate='+increase_rate
+                      ,data:'data'
+                      ,success:function(data){
+                         $("#h_my_price").html(total);
+                         total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                         $("#my_price").html(total);
+                         sendMessage();
+                      } 
+             });      //_______________________________________________________________| END OF AJAX
+             }
+       }
       }            //_______________________________________________________________| END OF bid()
       
 </script>
@@ -238,9 +242,9 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                          <div class="ditbigthumb" id="d_big_img" onclick="javascript:changePhoto(big_img)" style="line-height: 400px;">
                          </div>
                                  <!-- 밑에 조그만한 서브사진 클릭하면 메인되게 하기 -->
-                                 <div class="ditsmallthumb" id="d_small_img1">
+                                 <div class="ditsmallthumb" id="d_small_img1" style="height: 100px">
                                  </div>
-                                 <div class="ditsmallthumb" id="d_small_img2">
+                                 <div class="ditsmallthumb" id="d_small_img2" style="height: 100px">
                                  </div>
                               </td>
                            </tr>
@@ -415,7 +419,7 @@ function getTime(yy,mm,dd,hh,mi,ss) {
                   $("#enterCnt").text(result);
                //문닫을떄
                }else if(status=='closeRoom'){
-                  opener.location.href="/testview/mainView.jsp";
+                  opener.location.href="/product/mainViewTOP6.sf";
                   window.close();
                }
                //현재 가격 

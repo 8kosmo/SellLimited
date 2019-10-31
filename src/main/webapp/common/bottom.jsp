@@ -6,12 +6,6 @@
 <meta charset="UTF-8">
 <title>공통부분 - Bottom, 퀵바</title>
 <script type="text/javascript">
-   //main
-   function open(){
-	    		  location.href='/product/mainViewTOP6.sf'
-   }
-
-  
    //입찰중경매
    function auctionInsProduct(){
        <%      
@@ -21,7 +15,7 @@
        <%
              }else{
        %> 
-       		  location.href='/product/auctionInsProduct.sf?mem_id=<%=mem_id%>'
+               location.href='/product/auctionInsProduct.sf?mem_id=<%=mem_id%>'
        <%
              }
        %>
@@ -35,7 +29,7 @@
        <%
              }else{
        %> 
-       		  location.href='/favorite/favSellerList.sf?mem_id=<%=mem_id%>'
+               location.href='/favorite/favSellerList.sf?mem_id=<%=mem_id%>'
        <%
              }
        %>
@@ -49,7 +43,7 @@
        <%
              }else{
        %> 
-       		  location.href='/favorite/favSellerList.sf?mem_id=<%=mem_id%>'
+               location.href='/favorite/favSellerList.sf?mem_id=<%=mem_id%>'
        <%
              }
        %>
@@ -63,7 +57,7 @@
        <%
              }else{
        %> 
-       		  location.href='/testview/ProductIns.jsp'
+               location.href='/testview/ProductIns.jsp'
        <%
              }
        %>
@@ -77,7 +71,7 @@
        <%
              }else{
        %> 
-       		  location.href='/product/seedImIn.sf?mem_id=<%=mem_id%>'
+               location.href='/product/seedImIn.sf?mem_id=<%=mem_id%>'
        <%
              }
        %>
@@ -91,14 +85,14 @@
        <%
              }else{
        %> 
-       		  location.href='/product/productDelivery.sf?mem_id=<%=mem_id%>'
+               location.href='/product/productDelivery.sf?mem_id=<%=mem_id%>'
        <%
              }
        %>
           }
    //TOP
    function goTop(){
-       		  location.href='#';
+               location.href='#';
           }
 
 </script>
@@ -157,7 +151,7 @@
 <!-- </div>end of div wrap -->
 
 <!-- 오른쪽 퀵바 -->
-	<div id="total" ></div>
-	<script src="/js/react/quickBar.bundle.js"></script>
+   <div id="total" ></div>
+   <script src="/js/react/quickBar.bundle.js"></script>
 </body>
 </html>
